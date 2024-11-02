@@ -1,5 +1,9 @@
+"use client";
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+
 import { Container, Button, Form } from 'react-bootstrap';
 
 import { Comment, handleTextSelection, handleAddComment, addReply } from './Comments';
@@ -7,7 +11,7 @@ import { Comment, handleTextSelection, handleAddComment, addReply } from './Comm
 import {fetchPostContent} from "./Backend";
 import {renderMarkdown} from "./MDRenderer";
 
-import '../App.css';
+import '../../App.css';
 
 
 const PostPage = () => {
@@ -83,7 +87,7 @@ const PostPage = () => {
                 ))
             )}
 
-            <Link to="/" className="btn btn-secondary mt-4">Back to Blog</Link>
+            <Link href="/" className="btn btn-secondary mt-4">Back to Blog</Link>
         </Container>
 
         </>
