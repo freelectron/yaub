@@ -3,6 +3,7 @@ import PostPage from '@/components/PostPage';
 import {fetchPostContent} from "@/components/PublicFiles";
 
 import '../../../styles/global.css';
+import './page.css';
 
 export default async function PostPageWrapper({params}) {
     const {id} = await params;
