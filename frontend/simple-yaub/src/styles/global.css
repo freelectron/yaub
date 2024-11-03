@@ -1,3 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -5,10 +15,6 @@ body {
   font-family: Arial, sans-serif; /* or any font you prefer */
   background-color: #f0f0f0; /* optional background color */
   color: #333; /* optional text color */
-}
-
-*, *::before, *::after {
-  box-sizing: inherit;
 }
 
 .App {
@@ -165,10 +171,6 @@ Navigation Bar
   text-decoration: none;
 }
 
-.mobile-menu a:hover {
-  color: orange;
-}
-
 /* Media queries for responsiveness */
 @media screen and (min-width: 680px) {
   .topnav {
@@ -185,9 +187,15 @@ Navigation Bar
   }
 }
 
+/*
+==============
+Posts
+==============
+*/
 
 .container {
-  padding: 20px;
+  padding: 10px;
+  margin-top: 10px; /* Ensure no margin on top */
 }
 
 .button-group.center {
@@ -217,27 +225,35 @@ Navigation Bar
 .col {
   flex: 0 0 33.3333%;
   max-width: 33.3333%;
-  padding: 15px;
+  padding: 10px;
 }
 
 .card {
   border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 20px;
   background-color: white;
-}
-
-.card-body {
-  padding: 10px;
+  border-radius: 12px;
 }
 
 .card-title {
+  margin-top: 10px;
   font-size: 1.25rem;
+  margin-bottom: 10px; /* Adjust the bottom margin as needed */
+  text-align: center; /* Center the text horizontally */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to the top */
+  height: 100%; /* Ensure the card body takes the full height of the card */
+  padding: 10px;
   margin-bottom: 10px;
 }
 
 .badge-group {
-  margin-bottom: 10px;
+  display: flex; /* Make the badge group a flex container */
+  justify-content: center; /* Center badges horizontally */
+  margin-bottom: 20px;
 }
 
 .badge {
@@ -246,8 +262,5 @@ Navigation Bar
   background-color: #0a490d;
   color: white; /* Change text color to white */
   border-radius: 3px;
-  margin-right: 5px;
-}
-.card-text {
-  margin-bottom: 10px;
+  margin: 0 5px; /* Optional: spacing between badges */
 }
