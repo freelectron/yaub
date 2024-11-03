@@ -11,6 +11,12 @@ body {
     color: #333;
 }
 
+p {
+    margin-top: 10px; /* Space above */
+    margin-bottom: 36px; /* Space below */
+}
+
+
 .post-container {
     max-width: 800px;
     margin: 0 auto;
