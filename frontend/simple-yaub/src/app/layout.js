@@ -1,9 +1,11 @@
+
 export default function RootLayout({ children }) {
   return (
     <html>
-      <body>
-        {children}
-      </body>
+    <body>
+    <title>{ 'YAUB' }</title>
+    {children}
+    </body>
     </html>
   );
 }
