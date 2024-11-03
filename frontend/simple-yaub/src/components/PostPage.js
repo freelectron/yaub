@@ -1,38 +1,26 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 import { Container, Button, Form } from 'react-bootstrap';
 
 import { Comment, handleTextSelection, handleAddComment, addReply } from './Comments';
-
-import {fetchPostContent} from "./Backend";
 import {renderMarkdown} from "./MDRenderer";
 
-import '../styles/global.css';
 
-
-const PostPage = () => {
-    const { id } = useParams();
-    console.log('PostPage id:', id);
-
+const PostPage = ( { postContentResponse } ) => {
+    const postContent = postContentResponse || '';
 
     const [selectedText, setSelectedText] = useState('');
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [showCommentForm, setShowCommentForm] = useState(false);
 
-    const [postContent, setPostContents] = useState(null);
-
     // Detect selected text
     const handleTextSelectionWrapper = () => handleTextSelection(setSelectedText, setShowCommentForm);
-
     const handleAddCommentWrapper = (e) => handleAddComment(e, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm);
-
     const addReplyWrapper = (commentId, replyContent) => addReply(commentId, replyContent, comments, setComments);
-
     // Listen for text selection
     useEffect(() => {
         document.addEventListener('mouseup', handleTextSelectionWrapper);
@@ -40,12 +28,6 @@ const PostPage = () => {
             document.removeEventListener('mouseup', handleTextSelectionWrapper);
         };
     }, []);
-
-    const fetchPostContentWrapper =   () => fetchPostContent({"postId":id}, setPostContents);
-
-    useEffect(() => { fetchPostContentWrapper().catch(
-            error => console.error('Error fetching post content:', error)); }
-        );
 
     return (
         <>
