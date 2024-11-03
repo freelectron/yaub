@@ -11,7 +11,7 @@ import { Comment, handleTextSelection, handleAddComment, addReply } from './Comm
 import {fetchPostContent} from "./Backend";
 import {renderMarkdown} from "./MDRenderer";
 
-import '../styles/App.css';
+import '../styles/global.css';
 
 
 const PostPage = () => {

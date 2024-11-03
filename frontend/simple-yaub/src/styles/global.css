@@ -1,3 +1,16 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif; /* or any font you prefer */
+  background-color: #f0f0f0; /* optional background color */
+  color: #333; /* optional text color */
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 .App {
   text-align: center;
 }
@@ -22,10 +35,6 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes App-logo-spin {
@@ -176,68 +185,68 @@ Navigation Bar
   }
 }
 
-/* Other styles */
-.content {
-  padding: 40px 20px;
-}
-
-
-/*
-==================
-Edges of the posts
-==================
-*/
-.custom-card {
-  border-radius: 15px; /* Smooth, rounded corners */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-}
-
-.custom-card:hover {
-  transform: translateY(-10px); /* Slight lift on hover */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
-}
 
 .container {
-  border-radius: 10px; /* Rounded edges for the container */
-  padding: 30px;
-  background-color: #bfbcbc;
+  padding: 20px;
 }
 
-/*
-==================
-Images
-==================
-*/
-/*Customising the background with images*/
-/* Container holding background images */
-.bg-images-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1; /* Ensure images are behind the content */
-  overflow: hidden;
+.button-group {
+  margin-bottom: 20px;
 }
 
-.bg-image {
-  position: absolute;
-  pointer-events: none; /* Makes sure images don't interfere with mouse interactions */
-  opacity: 0.8; /* Slight transparency for a subtle effect */
-  transform: rotate(var(--random-rotate)); /* Rotate the images */
+.filter-button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  background-color: #0a490d;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
-/* Random positions and sizes (meme) images */
-.imgYao {
-  top: 75%;
-  left: 85%;
-  width: 140px;
-  --random-rotate: 5deg;
+.filter-button:hover {
+  background-color: #0a490d;
 }
 
-/*
-=======================================================================================================================
-                                                               Posts
-=======================================================================================================================
-*/
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 0 0 33.3333%;
+  max-width: 33.3333%;
+  padding: 15px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: white;
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.badge-group {
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #0a490d;
+  color: white;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.card-text {
+  margin-bottom: 10px;
+}

@@ -1,12 +1,6 @@
 "use client";
-import React, {useState} from 'react';
-
-import { Container, Row, Col, Button, Badge, Card } from 'react-bootstrap';
-import Link  from 'next/link';
-
-import '../styles/App.css';
-import '../styles/styles.css';
-
+import React, { useState } from 'react';
+import Link from 'next/link';
 import NavigationBar from "./NavBar";
 
 const getUniqueTags = (posts) => {
@@ -19,14 +13,12 @@ const getUniqueTags = (posts) => {
                 });
             }
         });
-
         return Array.from(uniqueTags);
     }
     return [];
 };
 
-const MainPage  = ({defaultPostsMetaInfo}) => {
-
+const MainPage = ({ defaultPostsMetaInfo }) => {
     const posts = defaultPostsMetaInfo?.posts || [];
     const availableTags = getUniqueTags(posts);
 
@@ -41,65 +33,44 @@ const MainPage  = ({defaultPostsMetaInfo}) => {
 
     return (
         <>
-
-            {/*Navigation Bar*/}
             <NavigationBar />
-
-            {/* Posts */}
-            <Container style={{maxWidth: '700px', backgroundColor: 'transparent'}}>
-                {/* Tag Filter */}
-                <div className="d-flex justify-content-center mb-4">
+            <div className="container">
+                <div className="button-group">
                     {availableTags.map((tag) => (
-                        <Button
+                        <button
                             key={tag}
-                            // variant={selectedTag === tag ? 'success' : 'outline-success'}
-                            className="mx-2"
                             onClick={() => handleFilterChange(tag)}
-                            bsPrefix={'tag-button tag-button-container'}
+                            className="filter-button"
                         >
                             {tag}
-                        </Button>
+                        </button>
                     ))}
                 </div>
-
-                <div className="bg-images-container">
-                    <a href="https://www.freeiconspng.com/img/43112" title="Image from freeiconspng.com">
-                        <img
-                            className={'bg-image imgYao'}
-                            src="https://www.freeiconspng.com/uploads/yao-ming-meme-png-3.png" width="350"
-                            alt="Yao Ming Meme PNG"/>
-                    </a>
-                </div>
-
-                <Row>
+                <div className="row">
                     {filteredPosts.map((post) => (
-                        <Col md={4} key={post.id} className="mb-4">
-                            <Card className="custom-card">
-                                <Card.Body>
-                                    <Card.Title>{post.title}</Card.Title>
-                                    <div>
+                        <div className="col" key={post.id}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h5 className="card-title">{post.title}</h5>
+                                    <div className="badge-group">
                                         {post.tags.map((tag, index) => (
-                                            <Badge
-                                                bg="badge badge-container"
-                                                key={index}
-                                            >
+                                            <span className="badge" key={index}>
                                                 {tag}
-                                            </Badge>
+                                            </span>
                                         ))}
                                     </div>
-                                    <Card.Text className="mt-2">
+                                    <p className="card-text">
                                         {post.content.slice(0, 100)}...
-                                    </Card.Text>
-                                    <Link href={`/post/${post.id}`} className="custom-btn custom-btn-main">
+                                    </p>
+                                    <Link href={`/post/${post.id}`}>
                                         Read More
                                     </Link>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                                </div>
+                            </div>
+                        </div>
                     ))}
-                </Row>
-            </Container>
-
+                </div>
+            </div>
         </>
     );
 };
