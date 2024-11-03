@@ -1,0 +1,29 @@
+{
+  "posts":
+  [
+    {
+      "id": "bias_variance_decomposition",
+      "title": "Bias-Variance Tradeoff",
+      "content": "The first thing that you will forget when starting as a ML Developer",
+      "tags": ["ml-basics"]
+    },
+    {
+      "id": "svd",
+      "title": "Compress your ambitions with SVD",
+      "content": "SVD",
+      "tags": ["ml-basics", "math"]
+    },
+    {
+      "id": "linear_models",
+      "title": "Who run the world? - Girls & Linear Models",
+      "content": "Everybody likes a line",
+      "tags": ["ml-basics"]
+    },
+    {
+      "id": "kernel_models",
+      "title": "Use the force, Luke - Use the kernel",
+      "content": "Fallen from grace but still powerful",
+      "tags": ["ml-basics"]
+    }
+  ]
+}
