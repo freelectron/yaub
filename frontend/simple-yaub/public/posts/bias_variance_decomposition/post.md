@@ -210,7 +210,7 @@ options of choosing $h_D$) the more likely you are to be close to the
 true function (global minima of error) but you are also more likely to
 arrive to a different variation of the model hypothesis given a single
 sampled dataset (since you have more parameters to tune, degrees of
-freedom). Figure [1](#fig:trade_off_intuitive) illustrates this point. An
+freedom). Figure 1 illustrates this point. An
 inflexible model can only have a \"simple\" form that is likely to miss
 the true underlying target function but it will always stay within a
 small area of its hypothesis set. While a flexible, highly non-linear
@@ -221,7 +221,7 @@ from such a variety, it will be very dependent on the $D$ that it gets.
 <p align="center" id="fig:trade_off_intuitive">
     <strong> Figure 1: Trade-off between Bias and Variance </strong>
     <br>
-  <img width="300" height="150" src="https://i.ibb.co/hH3DnMx/trade-off2.png">
+  <img width="500" height="250" src="/posts/bias_variance_decomposition/pics/trade_off2.png">
 </p>
 
 
@@ -236,14 +236,15 @@ one.
 
 The seed of intuition behind bias and variance, and their connection, is
 planted. Let's look at the Picture
-[2](#fig:test_train_error){reference-type="ref"
+2 {reference-type="ref"
 reference="fig:test_train_error"} that represents what regularly happens
 with the train and test error in practice.
 
-[//]: # (![Two common \"regimes\" that arise when evaluating a model. If data is)
-[//]: # (complex enough, we would never know for sure which regime we are)
-[//]: # (in.]&#40;pics/bias-variance/test_train_error.png&#41;{#fig:test_train_error)
-[//]: # (width="0.7\\linewidth"})
+<p align="center" id="fig:test_train_error">
+    <strong> Figure 2: Two common Bias-Variance regimes </strong>
+    <br>
+  <img width="500" height="250" src="/posts/bias_variance_decomposition/pics/test_train_error.png">
+</p>
 
 Case #1 is when we trained a model and end up with a low training error
 while our test error is high. This means that $\mathit{A}$ was able to
@@ -257,23 +258,22 @@ Nonetheless, our test error is now close to the acceptable level meaning
 that implicit assumptions that were made during training resulted in
 better generalisation.
 
-[//]: # (::: wrapfigure)
-[//]: # (R0.5 ![image]&#40;pics/bias-variance/regimes3.png&#41;{width="0.9\\linewidth"})
-[//]: # (:::)
+<p align="center" id="fig:test_train_error">
+    <strong> Figure 3: Dealing with The Trade </strong>
+    <br>
+  <img width="500" height="450" src="/posts/bias_variance_decomposition/pics/regimes3.png">
+</p>
 
 It is often said that the second case is when we do not have enough
 power in the model. It lacks \"range\" and cannot capture the
 relationships between $x$ and $y$ well so it ends up making
 (simplifying) assumptions. Our error is then high due to high bias. See
-Picture [\[fig:regimes\]](#fig:regimes){reference-type="ref"
-reference="fig:regimes"} for some extra info.
+Picture 3 for some extra info.
 
 The first case is when error in variance prevails. Then, the data is
 fitted well on the training dataset but when evaluated on a different
 sample we get a high error. That is a trait of high variance since our
-model was \"too niche\" to generalise well. Picture
-[\[fig:regimes\]](#fig:regimes){reference-type="ref"
-reference="fig:regimes"} also shows what you can try to do in this case.
+model was \"too niche\" to generalise well. Picture 3 also shows what you can try to do in this case.
 
 
 ## References

@@ -12,14 +12,19 @@ matrix vector product. Later, we move onto a brief intro to
 eigenvectors. Finally, we describe what SVD is and the types of problems
 it tackles.
 
-## Matrix-Vector Multiplication {#sec:matrix-vector-multiplication}
+## Matrix-Vector Multiplication 
 
 ### Transformation
 
-::: wrapfigure
-R0.5
-![image](pics/svd/matrix_is_vector_transofrmation.png){width="0.9\\linewidth"}
-:::
+[//]: # (::: wrapfigure)
+[//]: # (R0.5)
+[//]: # (![image]&#40;pics/svd/matrix_is_vector_transofrmation.png&#41;{width="0.9\\linewidth"})
+[//]: # (:::)
+<p align="center" id="fig:test_train_error">
+    <strong> Figure 1: Matrix Vector Transformation </strong>
+    <br>
+  <img width="500" height="350" src="/posts/svd/images/matrix_is_vector_transofrmation.png">
+</p>
 
 For many people, the most common definition of matrix vector
 multiplication (dot product) is a transformation of a vector from one
@@ -33,8 +38,7 @@ For example, 90 degrees rotation matrix is $A = \begin{bmatrix}
    1 &  0 \\
 \end{bmatrix}$. If we wanted to position vector $\vec{v}$
 90anticlockwise, we can multiply it with $-A$ (see
- [\[fig:matrix-vector multiplication\]](#fig:matrix-vector multiplication){reference-type="ref"
-reference="fig:matrix-vector multiplication"}). Additionally, scaling
+Figure 1). Additionally, scaling
 the vector while rotating it in space could be done with just applying a
 constant factor to the multiplication.
 
@@ -42,7 +46,7 @@ Similarly, instead of a single vector you can transform an (infinite)
 collection of vectors. In that case you can represent the same points in
 space with different values.
 
-###  Change of Basis {#seq:matrix-change-of-basis}
+###  Change of Basis
 
 A matrix in linear algebra can also be viewed as a set of basis vectors
 that transforms a vector represented in one basis to another. Commonly,
@@ -122,18 +126,21 @@ $$
 \end{align}
 $$
 
-### Projection {#sec:matrix_projections}
+### Projection 
 
-::: wrapfigure
-R0.5 ![image](pics/svd/projection.png){width="0.9\\linewidth"}
-:::
+[//]: # (::: wrapfigure)
+[//]: # (R0.5 ![image]&#40;pics/svd/projection.png&#41;{width="0.9\\linewidth"})
+[//]: # (:::)
+<p align="center" id="fig:projection-line">
+    Figure 2: Matrix-Vector Multiplication as Projection 
+    <br>
+  <img width="400" height="300" src="/posts/svd/images/projection.png">
+</p>
 
 Last but not least, matrix vector product can be connected to the dot
 product operation and be seen as a projection onto a line defined in the
 same space. We can say that a projection is a multiplication of a unit
-vector on the line scaled by some factor. On Figure
-[\[fig:projection\]](#fig:projection){reference-type="ref"
-reference="fig:projection"} it is defined as $c\cdot \vec{v}$. We can
+vector on the line scaled by some factor. On Figure 2 it is defined as $c\cdot \vec{v}$. We can
 use the fact that the projection connects the line and the vector at the
 minimal (Euclidean) where the line and the distance vector are
 orthogonal to each other. Therefore,
@@ -171,9 +178,14 @@ $$
 \end{align}
 $$
 
-::: wrapfigure
-R0.5 ![image](pics/svd/projection_C_A.png){width="0.9\\linewidth"}
-:::
+[//]: # (::: wrapfigure)
+[//]: # (R0.5 ![image]&#40;pics/svd/projection_C_A.png&#41;{width="0.9\\linewidth"})
+[//]: # (:::)
+<p align="center" id="fig:projection-plane">
+    Figure 3: Matrix-Vector Multiplication as Projection
+    <br>
+  <img width="400" height="300" src="/posts/svd/images/projection_C_A.png">
+</p>
 
 Oh gods, but what if we have $A\vec{x} = \vec{b}$ where
 $A \in \mathit{R}^{n \times k}$, $A \in \mathit{R}^{k}$ and
@@ -183,9 +195,7 @@ dimensionality of the vector $dim(\vec{x})$ and the dimensionality of
 its projection $dim(\vec{b})$ are different. Since $\vec{b}$ is not in
 the columns space of $A$ ($C(A)$), we will try to find $\vec{x}^{*}$
 such that (Euclidean) distance between $\vec{b}$ and $A\vec{x}^{*}$ is
-minimised. See Figure
-[\[fig:projection_C\_A\]](#fig:projection_C_A){reference-type="ref"
-reference="fig:projection_C_A"} for another visual.
+minimised. See Figure 3 for another visual.
 
 Formally,
 
@@ -270,8 +280,7 @@ Thus, you can find eigenvalue (\"scalers\" of eigenvectors) by solving
 the last equation above. Eigenvectors are in turn found by substituting
 value of eigenvalues into the second from below equation and solving it.
 Then, the first equation of
-[\[eq:eigen_vectors_values\]](#eq:eigen_vectors_values){reference-type="ref"
-reference="eq:eigen_vectors_values"} can be rewritten as
+for eigen vectors  can be rewritten as
 
 $$
 \begin{align}
@@ -294,7 +303,7 @@ features into a (lower) dimensionality where linear relationships
 between features are assumed. That makes our data look linearly
 decorrelated while also capturing the maximum variation.
 
-### Why decorrelate & capture variance? {#seq:why_decorrelate_capture_variance}
+### Why decorrelate & capture variance? 
 
 Remember all familiar formulas for variance and covariance
 
@@ -319,16 +328,24 @@ a space where it is no longer the case, i.e., a single latent variable
 would capture this linear relationship and encode the dependent
 features.
 
-![Data points collected for three features. There seems to be a linear
-relationship between features $d_1$ and
-$d_3$.](pics/svd/svd_intro_change_of_basis_a.png){#fig:svd_intro_change_of_basis_a
-width="90%" height="0.32\\textheight"}
+[//]: # (![Data points collected for three features. There seems to be a linear)
+[//]: # (relationship between features $d_1$ and)
+[//]: # ($d_3$.]&#40;pics/svd/svd_intro_change_of_basis_a.png&#41;{#fig:svd_intro_change_of_basis_a)
+[//]: # (width="90%" height="0.32\\textheight"})
+[//]: # ()
+[//]: # (![We can encode each data point with two features instead of three. The)
+[//]: # (original features could be easily reconstructed since parameters $a$ and)
+[//]: # ($b$ are)
+[//]: # ([//]: # &#40;learnt.]&#40;pics/svd/svd_intro_change_of_basis_b.png&#41;{#fig:svd_intro_change_of_basis_b&#41;width="90%"})
+<p align="center" id="fig:svd_intro_change_of_basis">
+    Figure 4: Encoding features
+    <br>
+</p>
+<div style="display: flex;">
+    <img src="/posts/svd/images/svd_intro_change_of_basis_a.png" alt="Image 1" style="width: 50%;">
+    <img src="/posts/svd/images/svd_intro_change_of_basis_b.png" alt="Image 2" style="width: 50%;">
+</div>
 
-![We can encode each data point with two features instead of three. The
-original features could be easily reconstructed since parameters $a$ and
-$b$ are
-learnt.](pics/svd/svd_intro_change_of_basis_b.png){#fig:svd_intro_change_of_basis_b
-width="90%"}
 
 Imagine that we have collected a data sample with three features. With
 the sample, a pair of features $d_1$ and $d_3$ have a perfect (negative)
@@ -337,8 +354,7 @@ covariance. Further, imagine that there is a non-zero "weak\" covariance
 between $d_2$ and $d_3$. Besides, this weak covariance $d_2$ and $d_3$
 could be merely a result of random noise effecting the data collection
 process.
-Figure [1](#fig:svd_intro_change_of_basis_a){reference-type="ref"
-reference="fig:svd_intro_change_of_basis_a"} tries miserably to display
+Figure 1A tries miserably to display
 such scenario. Let's focus on $d_1$ and $d_3$ because their variation
 can be captured perfectly.
 
@@ -346,8 +362,7 @@ Using a modeling technique, we can parameterise the relationship between
 $d_1$ and $d_3$ and reconstruct them in a single latent variable $d_0$.
 Graphically, it means that $d_1$ and $d_3$ are squashed into a single
 line and the feature space is transformed, see
-Figure [2](#fig:svd_intro_change_of_basis_b){reference-type="ref"
-reference="fig:svd_intro_change_of_basis_b"}. Since the old correlated
+Figure 4B. Since the old correlated
 features no longer exist, the covariance between the new features on the
 2D plane is zero. Our data becomes decorrelated. Finally, the two
 features are encoded into one so we no longer need to store three values
@@ -381,16 +396,14 @@ the most (co)-variance and compress the data or inspect the patterns
 that occur in that new space.
 
 In the next
-Section [1.3.2](#seq:svd_change_of_basis), we see what we can actually do to
+section, we see what we can actually do to
 create this new latent space. There are multiple ways to look at the
 procedure of de-correlating data, e.g., linear problem for
 reconstructing original points, projection operation that maximises
 variance. We will take an approach where we present it as a change of
-basis operation that was discussed in
-Section [1.1.2](#seq:matrix-change-of-basis){reference-type="ref"
-reference="seq:matrix-change-of-basis"}.
+basis operation that was discussed previously.
 
-### Changing basis with the Covariance Matrix {#seq:svd_change_of_basis}
+### Changing basis with the Covariance Matrix 
 
 One can think of the given data points as representing a matrix of some
 sort ($X$). The data points are scattered around the feature space and
@@ -403,8 +416,7 @@ The new basis assumes that the data points are represented with some
 (latent) vector $\vec{z_i}$ where the vector addition
 $\vec{x_i} = \vec{s_i} + \vec{m} = A\vec{z_i} + \vec{m}$ holds. If you
 look back at the
-Section [1.1.2](#seq:matrix-change-of-basis){reference-type="ref"
-reference="seq:matrix-change-of-basis"}, you will also see the that the
+Change of Basis section, you will also see the that the
 vector $\vec{v^{'}}$ being translated to the standard basis is in units
 of the alternative basis.
 
@@ -415,20 +427,27 @@ noise data. Once multiplied by $A$ they actually show the behaviour that
 our original data had, i.e., they are translated to our standard basis
 and show how white noise got spread out in our multidimensional space.
 As in
-Section [\[subsection:matrix-change-of-basis\]](#subsection:matrix-change-of-basis){reference-type="ref"
-reference="subsection:matrix-change-of-basis"}, the columns of $A$ will
+the Change of Basis section, the columns of $A$ will
 be some sort of combination of the standard basis vectors and tell us in
 which directions the data gets stretched.
 
-![Each data point's vector $\vec{x_i}$ can be represented as the sun of
-the average vector $\vec{m}$ and the difference vector
-$\vec{s_i}$.](pics/svd/svd_change_of_basis_a.png){#fig:first
-width="\\textwidth"}
-
-![The difference vector can be represented in a new basis $\vec{z_i}$
-which is a scaled and translated version of
-$\vec{s_i}$.](pics/svd/svd_change_of_basis_b.png){#fig:third
-width="\\textwidth"}
+[//]: # (![Each data point's vector $\vec{x_i}$ can be represented as the sun of)
+[//]: # (the average vector $\vec{m}$ and the difference vector)
+[//]: # ($\vec{s_i}$.]&#40;pics/svd/svd_change_of_basis_a.png&#41;{#fig:first)
+[//]: # (width="\\textwidth"})
+[//]: # ()
+[//]: # (![The difference vector can be represented in a new basis $\vec{z_i}$)
+[//]: # (which is a scaled and translated version of)
+[//]: # ($\vec{s_i}$.]&#40;pics/svd/svd_change_of_basis_b.png&#41;{#fig:third)
+[//]: # (width="\\textwidth"})
+<p align="center" id="fig:svd_change_of_basis_a">
+    Figure 5: Change of basis
+    <br>
+</p>
+<div style="display: flex;">
+    <img src="/posts/svd/images/svd_change_of_basis_a.png" alt="Image 1" style="width: 50%;">
+    <img src="/posts/svd/images/svd_change_of_basis_b.png" alt="Image 2" style="width: 50%;">
+</div>
 
 *Now, I will closely follow Peter Bloem's tutorials/book. I read quite a
 few resources that try to explain PCA/SVD in an intuitive manner. None
@@ -504,14 +523,13 @@ data variance and make the data along those dimensions white noise!
 Thus, $P$ and ${D}^{\frac{1}{2}}$ give you all the info about your
 data's variance and how to describe it with just linear transformations.
 
-### Finding Maximum Variance directions {#seq:maximum_variance_directions}
+### Finding Maximum Variance Directions 
 
 We just saw how to transform (stretch and squeeze) our space to make the
 data be decorrelated and back. Encoding our features into a set of
 latent variables is therefore possible. However, as already briefly
 mentioned in the
-Section [1.3.1](#seq:why_decorrelate_capture_variance){reference-type="ref"
-reference="seq:why_decorrelate_capture_variance"}, we need to make sure
+Section about the reasons to decorrelate your data, we need to make sure
 that the linear relationships being considered are actually "strong\"
 and not just random deviations in the data. Thus, we are trying to
 figure out how to capture (co)-variance efficiently so that if we were
@@ -578,9 +596,8 @@ interactions then. That is why the maximum variance is reached if the
 unit variance distributed in this proportion $w_1/w_2= 0.375/0.625$, or
 in other words $\vec{w} = [0.375, 0.625]$.
 
-The grand finale.. Rewrite
-Equation [\[eq:svd_max_varaince_quadratic_form\]](#eq:svd_max_varaince_quadratic_form){reference-type="ref"
-reference="eq:svd_max_varaince_quadratic_form"} with the knowledge about
+The grand finale.. Rewrite the max variance 
+equation with the knowledge about
 the covariance matrix (of spectral theorem) that we acquired in the
 previous section 
 $$
@@ -621,13 +638,11 @@ We can finally intro the term *right singular vector* of $X$. That is a
 vector $\vec{v}$ which is an eigenvector of the covariance matrix
 $S = X^{\top}X$. Right singular vectors of a matrix show the directions
 of (maximum) variance in the data, see
-Section [1.3.3](#seq:maximum_variance_directions){reference-type="ref"
-reference="seq:maximum_variance_directions"}. Those directions also
+Section *Finding Maximum Variance Directions*. Those directions also
 correspond to the stretch direction that indicate where our data is
 spread more from its white noise form if converted back to the
 (original) standard basis, see
-Section [1.3.2](#seq:svd_change_of_basis){reference-type="ref"
-reference="seq:svd_change_of_basis"}. Therefore, right singular vectors
+Section *Change of Basis*. Therefore, right singular vectors
 serve our original purpose of encoding linear relationships within the
 data and capturing maximum (co)-variance while doing so.
 
@@ -637,8 +652,7 @@ our data points will take if we encode them in the new latent space with
 the vector $\vec{v}$. The equivalent operation for this is
 $\vec{y} = X \vec{v}$ or projecting (encoding) our data onto $\vec{v}$,
 i.e., this is exactly what we implicitly did to get $d_0$ in
-Section [1.3.1](#seq:why_decorrelate_capture_variance){reference-type="ref"
-reference="seq:why_decorrelate_capture_variance"}. Since throughout last
+Section *Why decorrelate & capture variance?*. Since throughout last
 parts of this article we assumed that our data $X$ is mean-centered, the
 variance is just a multiplication of each of the (latent) variable
 values with itself 
@@ -657,8 +671,7 @@ As already mentioned, $\vec{y}$ can be seen as a result of transferring
 our data into a latent space defined by $\vec{v}$. If we are to do this
 for all singular vectors $\vec{v}$, we create a new space that would
 decorrelate our data. This is very similar to what we did in
-Section [1.1.2](#seq:matrix-change-of-basis){reference-type="ref"
-reference="seq:matrix-change-of-basis"} when we were changing our bases.
+the section about Change of Basis, when we were changing our bases.
 In the new space, we would have our data decorrelated and some latent
 variables would have higher variance than others. We can then also
 define the direction of variance $\vec{u}$ for a latent variable that
