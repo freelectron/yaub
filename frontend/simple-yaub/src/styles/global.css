@@ -190,7 +190,9 @@ Navigation Bar
   padding: 20px;
 }
 
-.button-group {
+.button-group.center {
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
@@ -242,11 +244,10 @@ Navigation Bar
   display: inline-block;
   padding: 5px 10px;
   background-color: #0a490d;
-  color: white;
+  color: white; /* Change text color to white */
   border-radius: 3px;
   margin-right: 5px;
 }
-
 .card-text {
   margin-bottom: 10px;
 }
