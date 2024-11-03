@@ -1,9 +1,14 @@
+/*
+==============
+Posts
+==============
+*/
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f8f9fa;
     color: #333;
-    padding: 20px;
 }
 
 .post-container {
@@ -62,4 +67,65 @@ body {
     color: #fff;
     display: inline-block;
     margin-top: 20px;
+}
+
+
+/*
+==============
+Comments
+==============
+*/
+
+.comment-container {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.reply-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    padding: 0;
+    margin-top: 0.5rem;
+}
+
+.reply-button:hover {
+    color: #0056b3;
+}
+
+.reply-form {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.reply-input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.submit-reply-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.submit-reply-button:hover {
+    background-color: #0056b3;
+}
+
+.reply-container {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
 }

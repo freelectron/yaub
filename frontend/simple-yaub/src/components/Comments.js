@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
 
 // Recursive Comment component for rendering comments and threads
 const Comment = ({ comment, addReply }) => {
@@ -14,33 +13,35 @@ const Comment = ({ comment, addReply }) => {
     };
 
     return (
-        <div className="mb-3">
+        <div className="comment-container">
             <p>
                 <strong>{comment.user}</strong>: {comment.content} <br />
                 <small>Highlighted Text: "{comment.highlightedText}"</small>
             </p>
-            <Button variant="link" size="sm" onClick={() => setShowReplyForm(!showReplyForm)}>
+            <button
+                className="reply-button"
+                onClick={() => setShowReplyForm(!showReplyForm)}
+            >
                 Reply
-            </Button>
+            </button>
 
             {showReplyForm && (
-                <Form onSubmit={handleReplySubmit} className="mt-2">
-                    <Form.Group>
-                        <Form.Control
-                            type="text"
-                            placeholder="Write a reply..."
-                            value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="mt-2">
+                <form onSubmit={handleReplySubmit} className="reply-form">
+                    <input
+                        type="text"
+                        className="reply-input"
+                        placeholder="Write a reply..."
+                        value={replyContent}
+                        onChange={(e) => setReplyContent(e.target.value)}
+                    />
+                    <button type="submit" className="submit-reply-button">
                         Submit Reply
-                    </Button>
-                </Form>
+                    </button>
+                </form>
             )}
 
             {comment.replies && comment.replies.map((reply) => (
-                <div className="ml-4 mt-3" key={reply.id}>
+                <div className="reply-container" key={reply.id}>
                     <Comment comment={reply} addReply={addReply} />
                 </div>
             ))}
@@ -48,15 +49,25 @@ const Comment = ({ comment, addReply }) => {
     );
 };
 
+// Helper functions for handling text selection and adding comments
 const handleTextSelection = (setSelectedText, setShowCommentForm) => {
     const selection = window.getSelection().toString();
     if (selection) {
         setSelectedText(selection);
-        setShowCommentForm(true);  // Show the form when text is selected
+        setShowCommentForm(true);
     }
 };
 
-const handleAddComment = (e, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm) => {
+const handleAddComment = (
+    e,
+    comments,
+    setComments,
+    newComment,
+    setNewComment,
+    selectedText,
+    setSelectedText,
+    setShowCommentForm
+) => {
     e.preventDefault();
     const newCommentObject = {
         id: comments.length + 1,
@@ -68,14 +79,13 @@ const handleAddComment = (e, comments, setComments, newComment, setNewComment, s
     setComments([...comments, newCommentObject]);
     setNewComment('');
     setSelectedText('');
-    setShowCommentForm(false);  // Hide the form after submission
+    setShowCommentForm(false);
 };
 
 // Recursive function to handle reply addition
 const addReply = (commentId, replyContent, comments, setComments) => {
     const addReplyRecursive = (commentsArray) => {
         return commentsArray.map((comment) => {
-            // If this is the comment we're replying to
             if (comment.id === commentId) {
                 return {
                     ...comment,
@@ -85,7 +95,6 @@ const addReply = (commentId, replyContent, comments, setComments) => {
                     ]
                 };
             }
-            // If the comment has replies, apply recursion to its children
             if (comment.replies && comment.replies.length > 0) {
                 return {
                     ...comment,
