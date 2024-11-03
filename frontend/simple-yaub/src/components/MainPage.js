@@ -4,8 +4,8 @@ import React, {useState} from 'react';
 import { Container, Row, Col, Button, Badge, Card } from 'react-bootstrap';
 import Link  from 'next/link';
 
-import '../../App.css';
-import '../../styles.css';
+import '../styles/App.css';
+import '../styles/styles.css';
 
 import NavigationBar from "./NavBar";
 
