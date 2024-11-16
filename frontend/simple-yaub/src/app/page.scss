@@ -1,0 +1,118 @@
+/*
+==============
+Header
+==============
+*/
+@use '../styles/variables' as v;
+
+.blog-header {
+    text-align: center;
+    padding: 10px;
+}
+.blog-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: v.$sidebar-background-color;
+}
+.blog-description {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: v.$description-text-colour;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+/*
+==============
+Posts
+==============
+*/
+
+.container {
+    padding: 30px;
+}
+
+.button-group.center {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+    padding-left: 500px;
+}
+.filter-button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #313443;
+    color: whitesmoke;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.filter-button:hover {
+    background-color: v.$active-link-color;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+    padding: 10px;
+}
+
+
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius: 30px;
+}
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.card-link:hover .card {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+/* Make sure the text color doesn't change on hover */
+.card-link:hover .card-title,
+.card-link:hover .card-text {
+    color: inherit;
+}
+.card-title {
+    margin-top: 10px;
+    font-size: 1.25rem;
+    margin-bottom: 20px; /* Adjust the bottom margin as needed */
+    text-align: center; /* Center the text horizontally */
+
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align content to the top */
+    height: 100%; /* Ensure the card body takes the full height of the card */
+    padding: 10px;
+}
+.card-text {
+    color: v.$description-text-colour;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+.badge-group {
+    display: flex; /* Make the badge group a flex container */
+    justify-content: center; /* Center badges horizontally */
+    margin-bottom: 10px;
+}
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #313443;
+    color: whitesmoke;
+    border-radius: 3px;
+    margin: 0 5px; /* Optional: spacing between badges */
+}

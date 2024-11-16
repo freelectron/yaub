@@ -1,57 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Link from 'next/link';
 
-// Define MobileMenu component
-const MobileMenu = () => {
+const NavBar = () => {
     return (
-        <div className={'mobile-menu'}>
-            <a href='/'>Login</a>
-        </div>
+        <nav className="sidebar-navigation">
+            <ul>
+                <li className="active">
+                    <Link href="/">
+                        <i className="fa fa-newspaper"></i>
+                        <span className="tooltip">Blog</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/">
+                        <i className="fa fa-user"></i>
+                        <span className="tooltip">User</span>
+                    </Link>
+                </li>
+            </ul>
+        </nav>
     );
 };
 
-const DesktopMenu = () => {
-    return (
-        <div className={'menu'}>
-            <a href='/'>Login</a>
-        </div>
-    );
-};
-
-
-const NavigationBar = () => {
-    const [isShown, setIsShown] = useState(false);
-
-    const toggleMobileMenu = () => {
-        setIsShown(!isShown);
-    };
-
-    return (
-        <>
-            {/* Navigation Bar */}
-            <div className='topnav'>
-
-                {/* Your Logo/Brand here */}
-                <div className='logo'>
-                    Yet Another Useless Blog
-                </div>
-                {/* Desktop Menu, which only appears on large screens */}
-                <DesktopMenu/>
-
-                {/* This button only shows up on small screens. It is used to open the mobile menu */}
-                <button className='show-mobile-menu-button' onClick={toggleMobileMenu}>
-                    &#8801;
-                </button>
-            </div>
-
-            {/* The mobile menu and the close button */}
-            {isShown && <MobileMenu/>}
-            {isShown && (
-                <button className='close-mobile-menu-button' onClick={toggleMobileMenu}>
-                    &times;
-                </button>
-            )}
-        </>
-    );
-};
-
-export default NavigationBar;
+export default NavBar;

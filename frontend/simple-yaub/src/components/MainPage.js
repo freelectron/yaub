@@ -34,6 +34,15 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
     return (
         <>
             <NavigationBar />
+
+            {/* Blog Header Section */}
+            <header className="blog-header">
+                <h1 className="blog-title"> Yet another useless blog </h1>
+                <p className="blog-description">
+                    Мир, дружба, жвачка.
+                </p>
+            </header>
+
             <div className="container">
                 <div className="button-group center">
                     {availableTags.map((tag) => (
@@ -49,24 +58,23 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
                 <div className="row">
                     {filteredPosts.map((post) => (
                         <div className="col" key={post.id}>
-                            <div className="card">
-                                <div className="card-body">
-                                    <h5 className="card-title">{post.title}</h5>
-                                    <div className="badge-group">
-                                        {post.tags.map((tag, index) => (
-                                            <span className="badge" key={index}>
-                                                {tag}
-                                            </span>
-                                        ))}
+                            <Link href={`/post/${post.id}`} className="card-link">
+                                <div className="card">
+                                    <div className="card-body">
+                                        <h5 className="card-title">{post.title}</h5>
+                                        <div className="badge-group">
+                                            {post.tags.map((tag, index) => (
+                                                <span className="badge" key={index}>
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <p className="card-text">
+                                            {post.content.slice(0, 100)}...
+                                        </p>
                                     </div>
-                                    <p className="card-text">
-                                        {post.content.slice(0, 100)}...
-                                    </p>
-                                    <Link href={`/post/${post.id}`}>
-                                        Read More
-                                    </Link>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>
