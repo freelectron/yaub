@@ -9,7 +9,7 @@
     height: 60px; /* Set a height for the navbar */
     background-color: v.$sidebar-background-color;
     z-index: 1000; /* Ensure it stays above other elements */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
 
     ul {
         display: flex; /* Arrange list items horizontally */
@@ -74,11 +74,11 @@
 }
 .logo {
     font-family: v.$logo-font;
-    font-size: 36px; /* Increased font size for a bolder appearance */
+    font-size: 30px; /* Increased font size for a bolder appearance */
     font-weight: 1000; /* Moderate weight for less boldness */
     letter-spacing: 0.1em; /* Slightly stretched look */
     text-align: left;
-    padding-left: 40px;
+    padding-left: 80px;
     flex: 1; /* Center logo in the navbar */
     color: v.$logo-background-color;
 }

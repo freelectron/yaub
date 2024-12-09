@@ -1,36 +1,9 @@
 @use '../styles/variables' as v;
 
 body {
-    font-family: v.$logo-font;
-    line-height: 1.6;
     background-color: v.$general-background-color;
-    color: #333;
+    cursor: pointer;
 }
-
-/*
-==============
-Header
-==============
-*/
-
-.blog-header {
-    text-align: center;
-    padding: 10px;
-}
-.blog-title {
-    font-family: v.$logo-font;
-    font-size: 48px;
-    font-weight: bold;
-    color: v.$general-background-color;
-}
-.blog-description {
-    font-family: v.$logo-font;
-    font-size: 18px;
-    color: v.$description-text-colour;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 
 /*
 ==============
@@ -42,24 +15,23 @@ Posts
     padding: 10px;
 }
 
-/* <\ Filtering */
 .button-group.center {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 .filter-button {
+    cursor: pointer;
     margin-right: 10px;
     padding: 10px 20px;
-    background-color: #bfbcbc;//v.$sidebar-background-color;
+    background-color: v.$badge-background-color;
+    border: 1px solid v.$badge-background-color;
     border-radius: 5px;
-    border: none;
-    cursor: pointer;
+    box-shadow: 5px 10px 10px v.$badge-background-color;
 }
 .filter-button:hover {
     background-color: v.$active-link-color;
 }
-/* Filtering /> */
 
 .row {
     display: flex;
@@ -74,9 +46,10 @@ Posts
 
 .card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border-radius: 1px;
-    border: 1px solid v.$card-background-color;
+    border-radius: 10px;
+    border: 5px solid v.$card-background-color;
     background: v.$card-background-color;
+    box-shadow: 0 2px 6px v.$active-link-color;
 }
 .card-link {
     text-decoration: none;
@@ -85,7 +58,7 @@ Posts
 }
 .card-link:hover .card {
     transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 10px v.$active-link-color;
 }
 /* Make sure the text color doesn't change on hover */
 .card-link:hover .card-title,
@@ -93,11 +66,12 @@ Posts
     color: inherit;
 }
 .card-title {
+    font-family: v.$logo-font;
+    font-size: 1.2rem;
+    font-weight: 590;
     margin-top: 5px;
-    font-size: 1.25rem;
     margin-bottom: 10px; /* Adjust the bottom margin as needed */
     text-align: center; /* Center the text horizontally */
-
 }
 .card-body {
     display: flex;
@@ -106,21 +80,10 @@ Posts
     height: 100%; /* Ensure the card body takes the full height of the card */
     padding-top: 10px;
     padding-left: 10px;
-    margin-bottom: -20px;
+    margin-bottom: 10px;
 }
 .card-text {
     color: v.$description-text-colour;
     font-family: v.$logo-font;
     font-size: 16px;
-}
-
-/* Badge > */
-.badge-group {
-    display: flex; /* Make the badge group a flex container */
-    justify-content: center; /* Center badges horizontally */
-    margin-bottom: 1px;
-}
-.badge {
-    color: v.$description-text-colour;
-    margin: 0 5px; /* Optional: spacing between badges */
 }

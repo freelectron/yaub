@@ -1,14 +1,8 @@
 @use '../../../styles/variables' as v;
 
 body {
-    font-family: v.$logo-font;
-    line-height: 1.6;
-    background-color: v.$sidebar-background-color;
-    color: #333;
-}
-p {
-    margin-top: 10px; /* Space above */
-    margin-bottom: 36px; /* Space below */
+    background-color: v.$general-background-color;
+    cursor: pointer;
 }
 
 /*
@@ -23,11 +17,12 @@ Posts
     background-color: v.$post-background-color;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
 }
 
 .post-content {
-    margin-bottom: 20px;
+    margin-bottom: 400px;
+    font-family:  v.$logo-font;
 }
 
 .comment-form {

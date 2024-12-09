@@ -3,6 +3,7 @@ import PostPage from '@/components/PostPage';
 import {fetchPostContent} from "@/components/PublicFiles";
 
 import '../../../styles/global.css';
+import '../../../styles/nav-bar.scss';
 import './page.scss';
 
 export default async function PostPageWrapper({params}) {

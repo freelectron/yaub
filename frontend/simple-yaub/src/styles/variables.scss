@@ -1,11 +1,12 @@
 $sidebar-background-color: #fffdfd;
-$general-background-color: rgba(229, 229, 230, 0.91);
+$general-background-color: rgb(242, 242, 250);
 $logo-background-color: #161716;
-$card-background-color: rgb(246, 244, 244);
+$card-background-color: rgb(255, 255, 255);
 $tooltip-background-color: $sidebar-background-color;
-$post-background-color: rgba(248, 245, 239, 0.73);
+$post-background-color: $sidebar-background-color ;
+$badge-background-color: rgba(217, 221, 241, 0.61);
 
-$active-link-color: #696c6b;
+$active-link-color: rgba(86, 98, 174, 0.47);
 $active-sidebar-link-color: $active-link-color;
 
 $logo-font: 'Pacifico';
