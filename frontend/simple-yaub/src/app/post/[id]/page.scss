@@ -1,29 +1,29 @@
+@use '../../../styles/variables' as v;
+
+body {
+    font-family: v.$logo-font;
+    line-height: 1.6;
+    background-color: v.$sidebar-background-color;
+    color: #333;
+}
+p {
+    margin-top: 10px; /* Space above */
+    margin-bottom: 36px; /* Space below */
+}
+
 /*
 ==============
 Posts
 ==============
 */
 
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-p {
-    margin-top: 10px; /* Space above */
-    margin-bottom: 36px; /* Space below */
-}
-
-
 .post-container {
     max-width: 800px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: v.$post-background-color;
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .post-content {

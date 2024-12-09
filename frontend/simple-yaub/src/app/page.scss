@@ -1,22 +1,30 @@
+@use '../styles/variables' as v;
+
+body {
+    font-family: v.$logo-font;
+    line-height: 1.6;
+    background-color: v.$sidebar-background-color;
+    color: #333;
+}
+
 /*
 ==============
 Header
 ==============
 */
-@use '../styles/variables' as v;
 
 .blog-header {
     text-align: center;
     padding: 10px;
 }
 .blog-title {
-    font-family: 'Roboto', sans-serif;
+    font-family: v.$logo-font;
     font-size: 48px;
     font-weight: bold;
     color: v.$sidebar-background-color;
 }
 .blog-description {
-    font-family: 'Open Sans', sans-serif;
+    font-family: v.$logo-font;
     font-size: 18px;
     color: v.$description-text-colour;
     max-width: 800px;
@@ -31,20 +39,19 @@ Posts
 */
 
 .container {
-    padding: 30px;
+    padding: 10px;
 }
 
+/* < Filtering */
 .button-group.center {
     display: flex;
-    justify-content: left;
     margin-bottom: 10px;
-    padding-left: 500px;
+    justify-content: center;
 }
 .filter-button {
     margin-right: 10px;
     padding: 10px 20px;
-    background-color: #313443;
-    color: whitesmoke;
+    background-color: v.$sidebar-background-color;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -52,6 +59,7 @@ Posts
 .filter-button:hover {
     background-color: v.$active-link-color;
 }
+/* Filtering > */
 
 .row {
     display: flex;
@@ -63,11 +71,10 @@ Posts
     max-width: 33.3333%;
     padding: 10px;
 }
-
-
 .card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     border-radius: 30px;
+    border: 1px solid v.$description-text-colour;
 }
 .card-link {
     text-decoration: none;
@@ -95,24 +102,21 @@ Posts
     flex-direction: column;
     justify-content: flex-start; /* Align content to the top */
     height: 100%; /* Ensure the card body takes the full height of the card */
-    padding: 10px;
+    padding: 20px;
 }
 .card-text {
     color: v.$description-text-colour;
-    font-family: 'Open Sans', sans-serif;
+    font-family: v.$logo-font;
     font-size: 16px;
 }
 
+/* Badge > */
 .badge-group {
     display: flex; /* Make the badge group a flex container */
     justify-content: center; /* Center badges horizontally */
     margin-bottom: 10px;
 }
 .badge {
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #313443;
-    color: whitesmoke;
-    border-radius: 3px;
+    color: v.$description-text-colour;
     margin: 0 5px; /* Optional: spacing between badges */
 }

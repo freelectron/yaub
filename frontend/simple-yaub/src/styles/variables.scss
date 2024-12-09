@@ -1,7 +1,9 @@
-$sidebar-background-color: #313443;
-$active-sidebar-link-color: #22252E;
-$hover-sidebar-link-color: $active-sidebar-link-color;
-$active-link-color: #98D7EC;
+$sidebar-background-color: rgba(245, 222, 179, 0.66);
 $tooltip-background-color: $sidebar-background-color;
+$post-background-color: rgba(248, 245, 239, 0.73);
 
+$active-link-color: #696c6b;
+$active-sidebar-link-color: $active-link-color;
+
+$logo-font: 'Pacifico';
 $description-text-colour: #666;

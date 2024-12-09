@@ -4,25 +4,25 @@
     {
       "id": "bias_variance_decomposition",
       "title": "Bias-Variance Tradeoff",
-      "content": "The first thing that you will forget when starting as a ML Developer",
+      "content": "The first thing that you will forget when starting as a ML Developer.",
       "tags": ["ml-basics"]
     },
     {
       "id": "svd",
       "title": "Compress your ambitions with SVD",
-      "content": "SVD",
-      "tags": ["ml-basics", "math"]
+      "content": "Super Vital Device.",
+      "tags": ["ml-basics", "linear-algebra"]
     },
     {
       "id": "linear_models",
       "title": "Who run the world? - Girls & Linear Models",
-      "content": "Everybody likes a line",
+      "content": "Everybody likes a line. Especially when it's not straight.",
       "tags": ["ml-basics"]
     },
     {
       "id": "kernel_models",
       "title": "Use the force, Luke - Use the kernel",
-      "content": "Fallen from grace but still powerful",
+      "content": "Fallen from grace but still at the core.",
       "tags": ["ml-basics"]
     }
   ]

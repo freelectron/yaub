@@ -5,6 +5,10 @@ const NavBar = () => {
     return (
         <nav className="sidebar-navigation">
             <ul>
+                <div className="logo">
+                    <span>Yet Another Useless Blog</span>
+                </div>
+
                 <li className="active">
                     <Link href="/">
                         <i className="fa fa-newspaper"></i>
