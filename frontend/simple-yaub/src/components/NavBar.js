@@ -6,7 +6,7 @@ const NavBar = () => {
         <nav className="sidebar-navigation">
             <ul>
                 <div className="logo">
-                    <span>Yet Another Useless Blog</span>
+                    <span>yab|o</span>
                 </div>
 
                 <li className="active">

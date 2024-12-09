@@ -73,13 +73,14 @@
     }
 }
 .logo {
-    font-family: v.$logo-font, cursive;
+    font-family: v.$logo-font;
     font-size: 36px; /* Increased font size for a bolder appearance */
     font-weight: 1000; /* Moderate weight for less boldness */
     letter-spacing: 0.1em; /* Slightly stretched look */
-    text-align: center;
-    padding-left: 140px;
+    text-align: left;
+    padding-left: 40px;
     flex: 1; /* Center logo in the navbar */
+    color: v.$logo-background-color;
 }
 
  //Ensure content shifts down to accommodate the navbar

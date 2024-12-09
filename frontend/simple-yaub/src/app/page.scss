@@ -3,7 +3,7 @@
 body {
     font-family: v.$logo-font;
     line-height: 1.6;
-    background-color: v.$sidebar-background-color;
+    background-color: v.$general-background-color;
     color: #333;
 }
 
@@ -21,7 +21,7 @@ Header
     font-family: v.$logo-font;
     font-size: 48px;
     font-weight: bold;
-    color: v.$sidebar-background-color;
+    color: v.$general-background-color;
 }
 .blog-description {
     font-family: v.$logo-font;
@@ -42,7 +42,7 @@ Posts
     padding: 10px;
 }
 
-/* < Filtering */
+/* <\ Filtering */
 .button-group.center {
     display: flex;
     margin-bottom: 10px;
@@ -51,7 +51,7 @@ Posts
 .filter-button {
     margin-right: 10px;
     padding: 10px 20px;
-    background-color: v.$sidebar-background-color;
+    background-color: #bfbcbc;//v.$sidebar-background-color;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -59,22 +59,24 @@ Posts
 .filter-button:hover {
     background-color: v.$active-link-color;
 }
-/* Filtering > */
+/* Filtering /> */
 
 .row {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
-
 .col {
     flex: 0 0 33.3333%;
     max-width: 33.3333%;
-    padding: 10px;
+    padding: 5px;
 }
+
 .card {
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border-radius: 30px;
-    border: 1px solid v.$description-text-colour;
+    border-radius: 1px;
+    border: 1px solid v.$card-background-color;
+    background: v.$card-background-color;
 }
 .card-link {
     text-decoration: none;
@@ -91,9 +93,9 @@ Posts
     color: inherit;
 }
 .card-title {
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 1.25rem;
-    margin-bottom: 20px; /* Adjust the bottom margin as needed */
+    margin-bottom: 10px; /* Adjust the bottom margin as needed */
     text-align: center; /* Center the text horizontally */
 
 }
@@ -102,7 +104,9 @@ Posts
     flex-direction: column;
     justify-content: flex-start; /* Align content to the top */
     height: 100%; /* Ensure the card body takes the full height of the card */
-    padding: 20px;
+    padding-top: 10px;
+    padding-left: 10px;
+    margin-bottom: -20px;
 }
 .card-text {
     color: v.$description-text-colour;
@@ -114,7 +118,7 @@ Posts
 .badge-group {
     display: flex; /* Make the badge group a flex container */
     justify-content: center; /* Center badges horizontally */
-    margin-bottom: 10px;
+    margin-bottom: 1px;
 }
 .badge {
     color: v.$description-text-colour;
