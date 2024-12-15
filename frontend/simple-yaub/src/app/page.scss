@@ -1,7 +1,8 @@
 @use '../styles/variables' as v;
 
 body {
-    background-color: v.$general-background-color;
+    //background-color: v.$general-background-color;
+    background: linear-gradient(to bottom right, v.$active-link-color, v.$general-background-color);
     cursor: pointer;
 }
 
@@ -13,6 +14,9 @@ Posts
 
 .container {
     padding: 10px;
+    // Make this container full screen
+    width: 100vw;
+    height: 100vh;
 }
 
 .button-group.center {
@@ -24,10 +28,10 @@ Posts
     cursor: pointer;
     margin-right: 10px;
     padding: 10px 20px;
-    background-color: v.$badge-background-color;
-    border: 1px solid v.$badge-background-color;
+    background-color: v.$filter-badges-background-color;
+    border: None ;
     border-radius: 5px;
-    box-shadow: 5px 10px 10px v.$badge-background-color;
+    box-shadow: 1px 2px 2px v.$active-link-color;
 }
 .filter-button:hover {
     background-color: v.$active-link-color;
