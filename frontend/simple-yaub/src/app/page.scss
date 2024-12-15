@@ -70,7 +70,7 @@ Posts
     color: inherit;
 }
 .card-title {
-    font-family: v.$logo-font;
+    font-family: v.$post-font;
     font-size: 1.2rem;
     font-weight: 590;
     margin-top: 5px;
@@ -88,6 +88,6 @@ Posts
 }
 .card-text {
     color: v.$description-text-colour;
-    font-family: v.$logo-font;
+    font-family: v.$post-font;
     font-size: 16px;
 }
