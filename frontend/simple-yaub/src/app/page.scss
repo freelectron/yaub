@@ -1,8 +1,8 @@
 @use '../styles/variables' as v;
 
 body {
-    //background-color: v.$general-background-color;
-    background: linear-gradient(to bottom right, v.$active-link-color, v.$general-background-color);
+    background-color: v.$general-background-color;
+    //background: linear-gradient(to bottom right, v.$active-link-color, v.$general-background-color);
     cursor: pointer;
 }
 
@@ -32,6 +32,7 @@ Posts
     border: None ;
     border-radius: 5px;
     box-shadow: 1px 2px 2px v.$active-link-color;
+    font-family: v.$post-font;
 }
 .filter-button:hover {
     background-color: v.$active-link-color;
