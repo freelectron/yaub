@@ -34,3 +34,6 @@ backend/backend
 
 # go modules
 .mod
+
+# Temporary do not track file with docker set up
+docker-compose-set-up.md
