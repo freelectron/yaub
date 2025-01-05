@@ -20,15 +20,3 @@ services:
     volumes:
       - ${SECRETS_LETSENCRYPT}:/etc/letsencrypt:ro
       - ${SECRETS_CERTBOT_DATA}:/var/www/certbot
-#  certbot:
-#    container_name: certbot
-#    image: certbot/certbot:latest
-#    depends_on:
-#      - nginx
-#    volumes:
-#      - ${SECRETS_LETSENCRYPT}:/etc/letsencrypt
-#      - ${SECRETS_CERTBOT_DATA}:/var/www/certbot
-#    command: >-
-#      certonly --reinstall --webroot --webroot-path=/var/www/certbot
-#      --email ${EMAIL} --agree-tos --no-eff-email
-#      -d yablog.duckdns.org
