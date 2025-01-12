@@ -6,7 +6,7 @@ const NavBar = () => {
         <nav className="sidebar-navigation">
             <ul>
                 <div className="logo">
-                    <span>yablo</span>
+                    <span>Yablo</span>
                 </div>
 
                 <li className="active">
