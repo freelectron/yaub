@@ -1,26 +1,33 @@
-# Bias Variance Trade-off
+<center>
+    <h1> Bias-Variance Decomposition </h1>
+</center>
+
+$~$
+## Why do we care? 🤔
+$~$
 
 The point of this exercise is to try to create an understanding of what
 overfitting and underfitting mean in the context of machine learning.
-The terms that you will often encounter when doing anything related to
-data modeling.
 
-### The Error
 
-Let me try to start with a formulation of a standard modeling problem.
-It really does not matter whether it is just a simple regression that
-you are doing or a huge LLM model full of cross-connected layers, the
-principle stays the same - you want to predict an output given some
-input. Having said for this particular example imagine a scenario of the
-regression task. **Given** a dataset represented by i.i.d. pairs $x, y$,
-i.e., observations of independent random variables that follow some
-(joint) statistical distribution,
+$~$
+## The Model Error ⚙️
+$~$
+
+Let's start by saying that it does really not matter what kind of machine learning model 
+we want to evaluate a simple regression model, Variation Autoencoded,  transfformer model, Large Language model,
+climate model of the Earth, or a model of the Universe. 
+The principle stays the same - you want to predict an output given some input.
+input. Imagine a scenario of the regression task just because the math for it is the easiest to do.
+**Given** a dataset represented by i.i.d. pairs $x, y$,
+i.e., observations of independent random variables that follow some (joint) statistical distribution, 
+we can write the dataset as
 
 $$ 
 D=\left\{\left(x_1 ; y_1\right), \ldots, \left(x_n ; y_n\right)\right\}   .
 $$
 
-**We want to** predict the expected target $\bar{y}(x)$ given an
+**We then want to** predict the expected target $\bar{y}(x)$ given an
 observation (input) $x$
 
 $$
@@ -35,9 +42,8 @@ $$
 $$
 
 In our example, $\mathcal{A}$ could be any modelling technique, e.g.,
-MLP, SVM, OLS regression, and its (fixed) hyperparameter values. Then,
-$h_D$ is the resulting (trained) model.
-
+ANN, SVM, OLS regression, with its hyperparameter values. Then,
+$h_D$ is a resulting (trained) model, i.e., model hypothesis.
 In order to judge the quality of our trained model we want to compare it
 to the "true\" observed values from the population described by the
 function $\rho$. Thus, **our evaluation function** becomes the
@@ -47,27 +53,26 @@ $$
 \mathit{E}_{x, y \sim \rho}\left[\left(h_D(x)-y\right)^2\right]=\iint_{x y} p_{x,y} \cdot \left(h_D(x)-y\right)^2 d x d y
 $$
 
-where $\left\{p_{x, y}=Pr(x, y)\right\}$.
-
-
-In reality we do not have access to the generative function $\rho$.
+where $\left\{p_{x, y}=Pr(x, y)\right\}$. The caveat is that we usually do not have access to the generative function $\rho$.
 Therefore, we have to evaluate our models based on the already sampled
-dataset $D$, i.e., subdivide it into training and test. Thus, if we
-could sample infinitely many datasets $D$, we would have a model
-$\bar{h}$ such that
+dataset $D$, i.e., subdivide it into the training and test sets.  
 
+$~$
+
+If we could sample infinitely many datasets $D$, we would have a model $\bar{h}$ such that
 $$
 \bar{h}=\mathit{E}_{D \sim \rho^{(n)}}[\mathit{A}(D)]=\int h_D \cdot \operatorname{Pr}(D) d D  . 
 $$
 
-That is to say "if we had infinite time to sample and observe infinitely
-many data samples $D$ from the population we are interested in
-modelling\", and then run/train the algorithm $\mathit{A}$ on them, we
-would have arrived to $\bar{h}$. We cannot do better than $\bar{h}$
-(given $\mathit{A}$ )- it is our "expected function\".
+In other words, if we had infinite time to sample and observe infinitely
+many data samples $D$ from the population, and at the same time run/train the algorithm $\mathit{A}$ with them,
+we would have arrived to the best possible model $\bar{h}$. We cannot do better than $\bar{h}$ 
+which is our "expected function\" given $\mathit{A}$.
 
-Remember that $D$ becomes just another random variable in our analysis
-when we can condition on it. Then, we can apply the expectation operator
+$~$
+
+The variable $D$ becomes just another random variable in our analysis
+if we can condition on it. We can thus apply the expectation operator
 over $D$ and do all sort of crazy things. Speaking of crazy things,
 let's rewrite our expected error as if we trained and evaluated our
 model on infinitely many dataset $D$ of size $n$ sampled from the
@@ -81,17 +86,14 @@ $$
 Won't you agree that if we were to integrate over all possible
 combinations of $x, y, D$, we would know how good our model selection
 algorithm $\mathit{A}$ really is? Let's see if we can decompose this
-error into several components that could maybe tell us something about
-those mysterious terms "overfitting\" and "underfitting\"..
-
-Here, we will do a few cheeky-mathy tricks. We would want to decompose
-the error using some \"stable\" or, better, training-set-independent
+error into several components. We can do a few cheeky-mathy tricks, for example, 
+represent the error using some \"stable\" or, better said, training-set-independent
 functions $\bar{h}$ and later $\bar{y}$. Begin by
 
 $$
 \begin{align}
 \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}}\left[\left(h_D(x)-y\right)^2\right]
-&= \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}}\left[\left(\left(h_D(x)-\bar{h}(x)\right)+\left(\bar{h}(x) -y\right)^2\right)\right]  \\
+&= \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}}\left[\left(\left(h_D(x)-\bar{h}(x)\right)+\left(\bar{h}(x) -y\right)\right)^2\right]  \\
 &= \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}} \left[ \left(h_D(x)-\bar{h}(x)\right)^2 \right] + \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}} \left[ \left(\bar{h}(x) - y\right)^2 \right] + \\
 & 2 \mathit{E}_{\substack{x, y \sim \rho \\ D \sim \rho^{(n)}}}\left[\left(\left(h_D(x)-\bar{h}(x)\right) \cdot \left(\bar{h}(x) -y\right)\right)\right]
 \end{align}
@@ -110,7 +112,7 @@ $$
   \right]\end{align}
 $$
 
-because $\left(\bar{h}(x) -y\right) = c$ as both $h_D$ and $y$ are
+because $\left(\bar{h}(x) - y\right) = c$ as both $\bar{h}(x)$ and $y$ are
 independent of the training dataset $D$. Reminder, $x, y$ belong to the
 \"evaluation\"/test here.
 
@@ -132,7 +134,7 @@ $$
 \end{align}
 $$
 
-and the final expected error becomes,
+and the semi-final expected error becomes,
 
 $$
 \begin{align}
@@ -180,9 +182,7 @@ $$
 \end{align}
 $$
 
-and oh my, oh [my](https://youtu.be/ikllVKppHRE), what do we have here..
-
-We see that variance part is dependent on the (training) dataset, e.g.,
+and oh my, oh [my](https://youtu.be/ikllVKppHRE), what do we have here.. We see that variance part is dependent on the (training) dataset, e.g.,
 how large our sample is. Also, the variance component features $\bar{h}$
 which is the best possible model that could be fitted given the
 functional form allowed by the algorithm $\mathit{A}$. Variance is
@@ -202,7 +202,9 @@ in the data.
 And as for the noise term. Bad news, man. You will never know what it
 is...
 
+$~$
 ## The Trade-off
+$~$
 
 Why does bias increase when you reduce variance and vice versa? An
 intuitive explanation would be: the larger your hypothesis pool (more
