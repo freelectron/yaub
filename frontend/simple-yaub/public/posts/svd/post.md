@@ -1,29 +1,44 @@
-# Singular Value Decomposition 
+<center>
+    <h1> Singular Value Decomposition  </h1>
+</center>
 
-This section will present a thin slice of Linear Algebra. Though the
-slice is thin the applications of the techniques briefly discussed here
-stretch into various quantitative domains. Namely, the section gives you
-a whiff of a tool called Singular Value Decomposition (SVD) that is used
-in problems related to compression and uncovering hidden structures
-within your data.
+$~$
 
-We start with giving an overview of different visual interpretations of
-matrix vector product. Later, we move onto a brief intro to
-eigenvectors. Finally, we describe what SVD is and the types of problems
-it tackles.
+$~$
+## Why do we care? 🤔
+$~$
 
-## Matrix-Vector Multiplication 
+This post gives you a whiff of a tool called Singular Value Decomposition (SVD) that is used
+in problems related to compression and uncovering hidden structures within your data.
+This thin slice of Linear Algebra is ubiquitous in modeling and 
+the applications of this technique discussed here stretch into a number of domains.
 
+$~$
+
+$~$
+## Matrix-Vector Multiplication 📐
+$~$
+
+We start by giving an overview of different visual interpretations of
+matrix vector product. 
+
+$~$
+
+$~$
 ### Transformation
+$~$
 
 [//]: # (::: wrapfigure)
 [//]: # (R0.5)
 [//]: # (![image]&#40;pics/svd/matrix_is_vector_transofrmation.png&#41;{width="0.9\\linewidth"})
 [//]: # (:::)
 <p align="center" id="fig:test_train_error">
+    <br>
     <strong> Figure 1: Matrix Vector Transformation </strong>
     <br>
   <img width="500" height="350" src="/posts/svd/images/matrix_is_vector_transofrmation.png">
+    <br>
+    <br>
 </p>
 
 For many people, the most common definition of matrix vector
@@ -46,7 +61,11 @@ Similarly, instead of a single vector you can transform an (infinite)
 collection of vectors. In that case you can represent the same points in
 space with different values.
 
+$~$
+
+$~$
 ###  Change of Basis
+$~$
 
 A matrix in linear algebra can also be viewed as a set of basis vectors
 that transforms a vector represented in one basis to another. Commonly,
@@ -64,8 +83,8 @@ $\left[\begin{array}{l} - 4 \\ 1 \end{array}\right]$ in $B$ will have
 the same position as vector
 $\left[\begin{array}{l} - 1 \\ 2 \end{array}\right]$ in $B^{'}$. To get
 to that result, it is sufficient to apply the change of basis matrix on
-the vector that you want to know the coordinates of (in the standard
-basis)
+the vector that you want to know the coordinates of in the standard
+basis
 
 $$
 \begin{align}
@@ -77,8 +96,7 @@ where $A = (\vec{a_1}, \vec{a_2}) = (\vec{b^{'}}_1, \vec{b^{'}}_2)$ and
 $a_1 = 2 \cdot \vec{b_1} + 1 \cdot \vec{b_2} =  \left[\begin{array}{l} 2 \\ 1 \end{array}\right]$
 and
 $a_2 = -1 \cdot \vec{b_1} + 1 \cdot \vec{b_2} =  \left[\begin{array}{l} -1 \\ 1 \end{array}\right]$
-are the \"transformation\" vectors that map $B^{'}$ to $B$.
-
+are the \"transformation\" vectors that map $B^{'}$ to $B$. 
 To verify, you can use the fact that the change of basis matrix is
 represented in units of $B$ and calculate the coordinates of
 $\vec{v^{'}}$:
@@ -91,12 +109,14 @@ $$
 $$
 
 Therefore, by applying a matrix you transition to a new coordinate
-system (described in \"standard units\"). This is extremely useful if
-you are given a problem (e.g., 90 degrees rotation) and your basis is
+system (e.g., if the change of basis matrix is described in standard units then we move into the standard basis). 
+This is extremely useful if you are given a problem (e.g., 90 degrees rotation) and your basis is
 described in units that are hard to work with (e.g., a shape is
 described in weird transformed coordinates system). Then, one can change
 basis, solve the problem (e.g., apply a known 90 degrees rotation matrix
-on the shape) and change back to get the result.
+on the shape) and change the basis back to get the final vector.
+
+$~$
 
 Assume, we are given $\vec{v}$ and we want to find a $\vec{v}`$ that is
 a 90 degrees rotation of $\vec{v}$. We can first apply the change of
@@ -126,24 +146,30 @@ $$
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Projection 
+$~$
 
 [//]: # (::: wrapfigure)
 [//]: # (R0.5 ![image]&#40;pics/svd/projection.png&#41;{width="0.9\\linewidth"})
 [//]: # (:::)
 <p align="center" id="fig:projection-line">
-    Figure 2: Matrix-Vector Multiplication as Projection 
     <br>
-  <img width="400" height="300" src="/posts/svd/images/projection.png">
+    <strong> Figure 2: Matrix-Vector Multiplication as Projection </strong>
+    <br>
+   <img width="400" height="300" src="/posts/svd/images/projection.png">
+    <br>
+    <br>
 </p>
 
-Last but not least, matrix vector product can be connected to the dot
+Last but not least, a matrix vector product can be connected to the dot
 product operation and be seen as a projection onto a line defined in the
-same space. We can say that a projection is a multiplication of a unit
-vector on the line scaled by some factor. On Figure 2 it is defined as $c\cdot \vec{v}$. We can
-use the fact that the projection connects the line and the vector at the
-minimal (Euclidean) where the line and the distance vector are
-orthogonal to each other. Therefore,
+same space. In turn, we can say that the projection is multiplication of a unit
+vector on the line scaled by some factor. Figure 2 depicts $c\cdot \vec{v}$;
+the projection vector that appears on the line as a result of drawing a distance vector that connects 
+$\vec{x}$ and the line orthogonally. Therefore,
 
 $$
 \begin{align}
@@ -161,7 +187,7 @@ $$
 \end{align}
 $$
 
-Then we can rewrite the vector product as
+Then we can rewrite the vector product as a matrix-vector product 
 
 $$
 \begin{align}
@@ -182,9 +208,12 @@ $$
 [//]: # (R0.5 ![image]&#40;pics/svd/projection_C_A.png&#41;{width="0.9\\linewidth"})
 [//]: # (:::)
 <p align="center" id="fig:projection-plane">
-    Figure 3: Matrix-Vector Multiplication as Projection
+    <br>
+    <strong> Figure 3: Matrix-Vector Multiplication as Projection </strong> 
     <br>
   <img width="400" height="300" src="/posts/svd/images/projection_C_A.png">
+    <br>
+    <br>
 </p>
 
 Oh gods, but what if we have $A\vec{x} = \vec{b}$ where
@@ -226,7 +255,7 @@ Then,
 
 $$
 \begin{align}
-A \vec{x}^*-\vec{b} = \operatorname{Proj}_{C(A)}(\vec{b})-\vec{b}
+A \vec{x}^*-\vec{b} = \operatorname{Proj}_{C(A)}(\vec{b})-\vec{b} \ .
 \end{align}
 $$
 
@@ -254,7 +283,11 @@ $$
 This is coincidentally also the solution to the least-square
 approximation of a regression problem\...
 
-## Eigenvectors
+$~$
+
+$~$
+## Eigenvectors 📏
+$~$
 
 Remember that matrix multiplication is a transformation operation? Well,
 what if I told you that there are some vectors that may stay keep
