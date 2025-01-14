@@ -280,8 +280,7 @@ $$
 \end{align}
 $$
 
-This is coincidentally also the solution to the least-square
-approximation of a regression problem\...
+This is also what we call the least-square approximation of a regression problem.
 
 $~$
 
@@ -289,12 +288,11 @@ $~$
 ## Eigenvectors 📏
 $~$
 
-Remember that matrix multiplication is a transformation operation? Well,
-what if I told you that there are some vectors that may stay keep
-staying on the the same line when the transformation is applied on
-them.. Those vectors are called eigenvectors. While they keep being on
+As we saw, a matrix multiplication is a transformation operation. Well,
+there are some vectors that keep staying on the the same line when the transformation is applied on
+them. Those vectors are called eigenvectors. While they keep being on
 the same line, they often get scaled this means they might change their
-direction and/or magnitude. Mathematically, they are as following
+direction and/or magnitude. Mathematically, a single eigenvector could be represented as follows
 
 $$
 % \label{eq:eigen_vectors_values}
@@ -309,11 +307,7 @@ A \vec{v}=\lambda \vec{v} \\ A \vec{v}=\lambda I \vec{v} \\
 \end{align}
 $$
 
-Thus, you can find eigenvalue (\"scalers\" of eigenvectors) by solving
-the last equation above. Eigenvectors are in turn found by substituting
-value of eigenvalues into the second from below equation and solving it.
-Then, the first equation of
-for eigen vectors  can be rewritten as
+We can rewrite this equation for all eigenvectors of $A$ as
 
 $$
 \begin{align}
@@ -323,11 +317,14 @@ A &= {Q} {\lambda} {Q}^{-1}
 \end{align}
 $$
 
-to produce eigendecomposition of matrix $A$. Interesting fact that you
-can also do/find a proof that eigenvectors of symmetric matrices are
-orthogonal to each other and span the vector space of $A\vec{x}$.
+to produce the eigendecomposition of matrix $A$. Interesting fact that the eigenvectors of symmetric matrices
+are orthogonal to each other and span the entire vector space of $A$.
 
-## Singular Value Decomposition
+$~$
+
+$~$
+## Singular Value Decomposition 🦠🔄
+$~$
 
 This technique can be used to reconstruct a data sample with fewer
 features and/or inspect patterns within it. All of this becomes possible
@@ -336,7 +333,11 @@ features into a (lower) dimensionality where linear relationships
 between features are assumed. That makes our data look linearly
 decorrelated while also capturing the maximum variation.
 
+$~$
+
+$~$
 ### Why decorrelate & capture variance? 
+$~$
 
 Remember all familiar formulas for variance and covariance
 
@@ -355,11 +356,10 @@ for/capture. Similarly, covariance describes the degree of one feature
 varying linearly with respect to the other. A higher covariance signals
 that the two features might be linearly dependent, and informs about
 possible patterns within the data. Let us find the intuition behind the
-reasons to decorrelate the data. The assumption here is that if the data
-shows that there are two linearly dependent features, we want to create
+reasons to decorrelate data. The assumption here is that if the data
+shows that there are two linearly dependent features, we might want to create
 a space where it is no longer the case, i.e., a single latent variable
-would capture this linear relationship and encode the dependent
-features.
+would capture this linear relationship and encode the dependent features.
 
 [//]: # (![Data points collected for three features. There seems to be a linear)
 [//]: # (relationship between features $d_1$ and)
@@ -371,38 +371,40 @@ features.
 [//]: # ($b$ are)
 [//]: # ([//]: # &#40;learnt.]&#40;pics/svd/svd_intro_change_of_basis_b.png&#41;{#fig:svd_intro_change_of_basis_b&#41;width="90%"})
 <p align="center" id="fig:svd_intro_change_of_basis">
-    Figure 4: Encoding features
+    <br>
+    <strong> Figure 4: Encoding features </strong>
+    <div style="display: flex; justify-content: center;">
+        <img src="/posts/svd/images/svd_intro_change_of_basis_a.png" alt="Image 1" style="width: 30%; margin-right: 10px;">
+        <img src="/posts/svd/images/svd_intro_change_of_basis_b.png" alt="Image 2" style="width: 30%; margin-left: 10px;">
+        <br>
+        <br>
+    </div>
     <br>
 </p>
-<div style="display: flex;">
-    <img src="/posts/svd/images/svd_intro_change_of_basis_a.png" alt="Image 1" style="width: 50%;">
-    <img src="/posts/svd/images/svd_intro_change_of_basis_b.png" alt="Image 2" style="width: 50%;">
-</div>
 
 
-Imagine that we have collected a data sample with three features. With
-the sample, a pair of features $d_1$ and $d_3$ have a perfect (negative)
+Imagine that we have collected a data sample with three features. Within that sample,
+a pair of features $d_1$ and $d_3$ have a perfect (negative)
 linear relationship with each other and, therefore, "strong\"
 covariance. Further, imagine that there is a non-zero "weak\" covariance
 between $d_2$ and $d_3$. Besides, this weak covariance $d_2$ and $d_3$
 could be merely a result of random noise effecting the data collection
-process.
-Figure 1A tries miserably to display
-such scenario. Let's focus on $d_1$ and $d_3$ because their variation
-can be captured perfectly.
+process. Figure 4-Left tries miserably to display such scenario.
 
-Using a modeling technique, we can parameterise the relationship between
+Let's focus on $d_1$ and $d_3$ because their variation
+can be captured perfectly. Using a modeling technique, we can parameterise the relationship between
 $d_1$ and $d_3$ and reconstruct them in a single latent variable $d_0$.
 Graphically, it means that $d_1$ and $d_3$ are squashed into a single
-line and the feature space is transformed, see
-Figure 4B. Since the old correlated
-features no longer exist, the covariance between the new features on the
+line and the feature space is transformed, see Figure 4-Right. 
+Since the old correlated features no longer exist, the covariance between the new features on the
 2D plane is zero. Our data becomes decorrelated. Finally, the two
 features are encoded into one so we no longer need to store three values
 per data point. We can only store two values while remembering the
 coefficients of the linear model. We have achieved lossless data
 compression as we can perfectly reconstruct the original data with fewer
-values.
+values!
+
+$~$
 
 In the real world, perfect linear relationships between features are
 extremely rare. We can however still capture linear relationship within
@@ -412,56 +414,48 @@ linear relationship modeled will have a random error component of
 different magnitude. In general, the stronger the linear relationship
 the more variation in the data is captured by it, and the less the error
 is. That is why when encoding features, if we keep latent variables with
-strong linear dependence and low error - while dropping or merging the
-others - we can still able to compress the data and only lose minimal
-amount of information in it. As already mentioned, a simple estimate of
-the strength of a linear relationship is (co)-variance. Hence, the
-maximum (co)-variance property is necessary to be sure that we are
-efficiently encoding more of our data and not leaving too much to
-randomness.
+the strongest linear dependence (and low reconstruction error), 
+we can be able to compress the data and only lose minimal amount of information. 
+As already mentioned, a simple estimate of  the strength of a linear relationship is (co)-variance.
+Hence, maximising the (co)-variance we are trying to ensure that we are
+efficiently encoding more of our data.
 
-Most often, all $M$ features that we would be in the data set have
+$~$
+
+Most often, all $M$ features that would be in the data set have
 non-zero covariances. The idea behind Singular Value Decomposition (SVD)
 is that instead of creating just one latent variable, we create $M$ of
-them. Just like above, those variables will model linear relationships
-and de-correlate the data. In the end, we pick variables that capture
-the most (co)-variance and compress the data or inspect the patterns
-that occur in that new space.
-
-In the next
-section, we see what we can actually do to
-create this new latent space. There are multiple ways to look at the
+them. Those variables will capture linear relationships
+and de-correlate the data which will enable us to inspect the patterns occurring in a new space.
+In the next section, we see what we can actually do to
+create this latent space. There are multiple ways to look at the
 procedure of de-correlating data, e.g., linear problem for
 reconstructing original points, projection operation that maximises
-variance. We will take an approach where we present it as a change of
-basis operation that was discussed previously.
+variance, but we take an approach where it is presented as a change of
+basis operation previously discussed.
 
+$~$
+
+$~$
 ### Changing basis with the Covariance Matrix 
+$~$
 
-One can think of the given data points as representing a matrix of some
+One can think of a set of data points as representing a matrix of some
 sort ($X$). The data points are scattered around the feature space and
 one can find the average vector over all the points ($\vec{m}$). Thus,
-in order to arrive to any data point vector $\vec{x_i}$ we need to sum
+in order to arrive to any data point vector $\vec{x_i}$ we would need to add
 up the average vector and the difference vector
 $\vec{s_i} = \vec{x_i} - \vec{m}$. The difference vector then can be
 expressed with a new basis represented by a change of basis matrix $A$.
 The new basis assumes that the data points are represented with some
 (latent) vector $\vec{z_i}$ where the vector addition
-$\vec{x_i} = \vec{s_i} + \vec{m} = A\vec{z_i} + \vec{m}$ holds. If you
-look back at the
-Change of Basis section, you will also see the that the
-vector $\vec{v^{'}}$ being translated to the standard basis is in units
-of the alternative basis.
-
-Let's talk a little bit at that \"alternative\" basis. Out assumption is
-that there exists a basis in which all the data points are decorrelated,
-$Cov(X) = \mathit{1}$. Meaning that all the $z_i$'s constitute a white
-noise data. Once multiplied by $A$ they actually show the behaviour that
-our original data had, i.e., they are translated to our standard basis
-and show how white noise got spread out in our multidimensional space.
-As in
-the Change of Basis section, the columns of $A$ will
-be some sort of combination of the standard basis vectors and tell us in
+$\vec{x_i} = \vec{s_i} + \vec{m} = A\vec{z_i} + \vec{m}$ holds. 
+Within the new basis, all the data points are decorrelated,
+$Cov(X) = \mathit{1}$, i.e., $z_i$'s constitute a white
+noise data. However, once multiplied by the change of basis matrix $A$ 
+they actually show the behaviour that our original data had,
+i.e., they show how the white noise got spread out in our multidimensional space.
+Thus, the columns of $A$ will be some sort of combination of basis vectors and tell us in
 which directions the data gets stretched.
 
 [//]: # (![Each data point's vector $\vec{x_i}$ can be represented as the sun of)
@@ -473,18 +467,23 @@ which directions the data gets stretched.
 [//]: # (which is a scaled and translated version of)
 [//]: # ($\vec{s_i}$.]&#40;pics/svd/svd_change_of_basis_b.png&#41;{#fig:third)
 [//]: # (width="\\textwidth"})
-<p align="center" id="fig:svd_change_of_basis_a">
-    Figure 5: Change of basis
+<p align="center" id="fig:svd_intro_change_of_basis">
+    <br>
+    <strong> Figure 5: Change of basis </strong>
+    <div style="display: flex; justify-content: center;">
+        <img src="/posts/svd/images/svd_change_of_basis_a.png" alt="Image 1" style="width: 30%; margin-right: 10px;">
+        <img src="/posts/svd/images/svd_change_of_basis_b.png" alt="Image 2" style="width: 30%; margin-left: 10px;">
+        <br>
+        <br>
+    </div>
     <br>
 </p>
-<div style="display: flex;">
-    <img src="/posts/svd/images/svd_change_of_basis_a.png" alt="Image 1" style="width: 50%;">
-    <img src="/posts/svd/images/svd_change_of_basis_b.png" alt="Image 2" style="width: 50%;">
-</div>
 
 *Now, I will closely follow Peter Bloem's tutorials/book. I read quite a
 few resources that try to explain PCA/SVD in an intuitive manner. None
 of them connected with me as much as the explanations that Peter gave.*
+
+$~$
 
 Let's generalise the results from a single vector $\vec{x_i}$ to the
 whole dataset. Our data point vectors become columns in $X^T$ while
@@ -511,9 +510,9 @@ $$
 \end{align}
 $$
 
-The result is mind blowing, right? We have our covariance matrix popping
+The result is mind-blowing, right? We have the covariance matrix popping
 up in the transformation of white noise! What?! Who would have expected
-that?! Moreover, we once again see that our covariance matrix is
+that?! Moreover, we once again see that the covariance matrix is
 symmetric, and by the spectral theorem - [the
 proof](#https://peterbloem.nl/blog/pca-3) of which is not the easiest to
 do, and takes quite a bit of time to go through - we know that it can be
@@ -550,24 +549,29 @@ divide it by the square root of your covariance matrix's eigenvalues and
 transform by the eigenvectors, you will arrive to the basis that makes
 your data's covariance be a diagonal matrix, i.e., your data becomes
 white noise. Intuitively, this also means that your standard basis,
-where all your dimensions are a single units, gets reshaped. Some
-dimensions are more scaled (squeezed) than others to accommodate for the
+where all your dimensions are a unit vector, gets reshaped. Then, some
+dimensions are more squeezed than others to accommodate for the
 data variance and make the data along those dimensions white noise!
 Thus, $P$ and ${D}^{\frac{1}{2}}$ give you all the info about your
 data's variance and how to describe it with just linear transformations.
 
+$~$
+
+$~$
 ### Finding Maximum Variance Directions 
+$~$
 
 We just saw how to transform (stretch and squeeze) our space to make the
 data be decorrelated and back. Encoding our features into a set of
 latent variables is therefore possible. However, as already briefly
-mentioned in the
-Section about the reasons to decorrelate your data, we need to make sure
-that the linear relationships being considered are actually "strong\"
+mentioned in the Section about the reasons to decorrelate your data, we need to make sure
+that the linear relationships being created as a result of changing the basis are actually "strong\"
 and not just random deviations in the data. Thus, we are trying to
 figure out how to capture (co)-variance efficiently so that if we were
-to compress the data we would not be getting rid of too much
+to reduce the number of dimensions in the data we would not be getting rid of too much
 information.
+
+$~$
 
 Here, the concepts of maximum (co)-variance and eigenvectors/values of
 the covariance matrix need to be connected together. Previously, we said
@@ -577,12 +581,15 @@ Therefore, if we can find the directions of maximum variance, we can
 project the data on them, i.e., model the "stronger\" linear
 relationships between different features.
 
-We can look at the problem of finding maximum variance from a different
+$~$
+
+We can look at the problem of finding the maximum variance from a different
 point of view. How can we extrapolate our data further away from the
 origin - we assume that the data is already normalised - based on the
 existing linear relationships within the sample? The covariance matrix
-already describes our data/features in terms of their (co)-variance. We
-can thus check the "(co)-variance score" of the quadratic form.
+already describes our data/features in terms of their (co)-variance, so we
+can thus check the "(co)-variance score" of each direction by (i.e., the quadratic form).
+
 $$
 \begin{align}
 \nu(\vec{w}) = \vec{w}^{\top} S \vec{w}
@@ -598,7 +605,7 @@ i.e., maximum variability. The direction of maximum variance in the data
 is nothing more than a combination of feature values (a data point
 vector $\vec{w_{max}}$) where dimensions with higher data variances and
 covariances are given higher values relative to the rest of features
-with lower (co)-variances. Let's look at a 2D example where
+with lower (co)-variances. If take a 2D example
 
 $$
 \begin{align}
@@ -608,11 +615,16 @@ $$
 \end{array}\right) \vec{w} =  0.5 w_1{ }^2 + 2 w_2 w_1+ 2 w_1 w_2 + 1.1 w_2{ }^2 \ .
 \end{align}
 $$
+$\vec{w_{max}}$ would be the proportion $w_1 / w_2$ 
+that gives the highest result to $\vec{w}^{\top} S \vec{w}$
+given that $||\vec{w}||=c$ where $c$ could be in arbitrary scalar.
+
+$~$
 
 In other words, if we only had one unit of value to redistribute across
 all the features how much would we weigh each one so that the resulting
 combination would produce the highest overall (co)-variance score?
-Alternative formulation is thus the following
+The problem becomes 
 
 $$
 \begin{align}
@@ -622,12 +634,15 @@ $$
 \end{align}
 $$
 
-In the 2D example above, if we are to assign one unit of value
-$||\vec{w}||=1$ between $w_1$ and $w_2$ one might be tempted to just
-have $w_1=0$ and $w_2=1$ but we would loose out on the variance from the
-interactions then. That is why the maximum variance is reached if the
+If we are to assign one unit of value
+$||\vec{w}||=1$ between $w_1$ and $w_2$, one might be tempted to just
+have $w_1=0$ and $w_2=1$ (because the variance for the second dimension is the highest).
+but we would lose out on the variance from the interactions then. 
+That is why the maximum variance is reached if the
 unit variance distributed in this proportion $w_1/w_2= 0.375/0.625$, or
 in other words $\vec{w} = [0.375, 0.625]$.
+
+$~$
 
 The grand finale.. Rewrite the max variance 
 equation with the knowledge about
@@ -644,13 +659,13 @@ $$
 Now, if nothing is blowing your mind still, let me highlight two things
 here: $P$ is orthogonal and the column vectors $\vec{P_{:,i}}$, i.e.,
 eigenvectors of $S$, are orthonormal vectors while the matrix $D$ is
-diagonal with all values but the diagonal ones being zero. Thus, the sum
+diagonal and all values but the diagonal ones being zero. Thus, the sum
 $\vec{w}^{\top}PDP^{\top}\vec{w}$ is maximised when (a) the inner
 product between $\vec{w}$ and $\vec{P_{:,i}}$ is maximised and (b) then
 multiplied by the maximum value from the diagonal of $D$. However, the
-inner product is maximised when $\vec{w}$ and the eigenvectors
+inner product is maximised when $\vec{w}$ and an eigenvector
 $\vec{P_{:,i}}$ are pointing in the same direction! The inner product
-will actually be equal to 1 since $\vec{P_{:,i}}$ is a unit vector.
+will actually be equal to 1 since $\vec{P_{:,i}}$ and $\vec{w}$ are both unit vectors.
 Hence, the first maximum variance direction $\vec{w}_{max}$ can be
 defined by $\vec{P_{:,i}}$ where $D_{i,i}>D_{j,j} \forall j$, i.e., the
 eigenvector of $S$ with the highest eigenvalue. What about the second
@@ -659,15 +674,21 @@ same logic/intuition and the fact that there can only be $M$ ($Rank(S)$)
 orthogonal vectors in total, the second maximum direction can then be
 the eigenvector with the second largest eigenvalue.
 
-### Singular Vectors & Values
+$~$
 
-In the last two section, we got a high level understanding of two ideas.
-First, how we can de-correlate our data and transfer to in a different
+$~$
+### Singular Vectors & Values
+$~$
+
+In the last two sections, we got a high level understanding of two ideas.
+First one, how we can de-correlate our data and transfer it to a different
 latent space, i.e., different vector basis. Second, how eigenvectors of
 the data covariance matrix are the directions of maximum variance, i.e.,
 $\vec{P}_{:,i} = \vec{w}_{max}$.
 
-We can finally intro the term *right singular vector* of $X$. That is a
+$~$
+
+We can now finally intro the term *right singular vector* of $X$. That is a
 vector $\vec{v}$ which is an eigenvector of the covariance matrix
 $S = X^{\top}X$. Right singular vectors of a matrix show the directions
 of (maximum) variance in the data, see
@@ -679,8 +700,10 @@ Section *Change of Basis*. Therefore, right singular vectors
 serve our original purpose of encoding linear relationships within the
 data and capturing maximum (co)-variance while doing so.
 
-Moreover, we find exactly how much variance we are capturing with each
-singular vector. In order to do this, we need to see what value each of
+$~$
+
+Moreover, we find exactly how much variance is captured with each
+singular vector. In order to do this, one needs to see what value each of
 our data points will take if we encode them in the new latent space with
 the vector $\vec{v}$. The equivalent operation for this is
 $\vec{y} = X \vec{v}$ or projecting (encoding) our data onto $\vec{v}$,
@@ -689,6 +712,7 @@ Section *Why decorrelate & capture variance?*. Since throughout last
 parts of this article we assumed that our data $X$ is mean-centered, the
 variance is just a multiplication of each of the (latent) variable
 values with itself 
+
 $$
 \begin{align}
 ||\vec{y}||^2 =  \|X \vec{v}\|^2=\vec{v}^{\top} X^{\top} X \vec{v} = \vec{v}^{\top} D_{i,i} \vec{v} = D_{i,i} \vec{v}^{\top} \vec{v}= D_{i,i} \\ 
@@ -699,6 +723,8 @@ where $D_{i,i}$ is the eigenvalue of
 $\vec{P}_{:,i} = \vec{w}_{max} = \vec{v}$. This value also the value
 indicating how much variance we are capturing with the latent variable
 defined by $\vec{v}$.
+
+$~$
 
 As already mentioned, $\vec{y}$ can be seen as a result of transferring
 our data into a latent space defined by $\vec{v}$. If we are to do this
@@ -723,18 +749,20 @@ $$
 We call $\sigma$ a *singular value* of $X$. Finally,
 $\vec{u}$ is called the *right singular vector* of $X$.
 
-### Decomposition
+$~$
 
-Let's iterate why we are doing what we are doing: finding the directions
+$~$
+### Decomposition
+$~$
+
+Let's iterate again why we are doing what we are doing: finding the directions
 of maximum variance and going through a fair share of linear algebra
-(really really quickly) to do it. Meanwhile, our goal is represent out
+(really quickly) to do it. Meanwhile, our goal is to represent our 
 data points with new set of latent variables that encode linear
 relationships between features and decorrelate them. In the past
 sections, we saw that we are killing two birds with one stone if we are
-looking for a set of orthogonal vectors that are also maximum variance
-directions.
-
-We already saw that project our data onto a direction of maximum
+looking for a set of orthogonal vectors that are also maximum variance directions.
+We already saw that projecting our data onto a direction of maximum
 variance ($\vec{w}_{max} = \vec{v}$) gives the values of the latent
 variable produced by this projection. 
 
@@ -748,14 +776,14 @@ $$
 What if we were to project our data on to the space created by all
 $\vec{v}$'s, i.e., stack $\vec{v}$ into a matrix $V$? We would then get
 the representation of our data in the new latent space (for all latent
-variable). The unit vector $\vec{u}$'s and their $\sigma$'s would also
+variables). The unit vector $\vec{u}$'s and their $\sigma$'s would also
 need to be stacked up on the right side to create the equivalent
 matrix - matrix multiplication $U\Sigma$, i.e., matrix $U$ for
 $\vec{v}$'s and $\Sigma$ for $\sigma$'s. Previously, we mentioned that
-$X$ is $NxM$ matrix and, since in the most of real world cases it is
+$X$ is $NxM$ matrix and, since in the most of the real world cases it is
 very overdetermined ($N>>M$) and its covariance matrix $S=X^{\top}X$ is
 positive semi-definite with exactly $M$ non-zero eigenvalues/vectors, we
-can say that $Rank(X)=M$ and we will have exactly $M$ $\vec{v}$ vectors.
+can say that $Rank(X)=M$, and we will have exactly $M$ $\vec{v}$ vectors.
 This makes matrix $V$ to be $MxM$. We can then say that matrix $U$ must
 be $NxN$. In order for the multiplication to work and stacked-up
 $\vec{u}$'s be scaled properly, we need $\Sigma$ to be diagonal matrix
@@ -779,18 +807,17 @@ X =  U \Sigma  V^{\top} \ . \\
 \end{align}
 $$
 
-## References
+$~$
 
--   mathy explanation of change of basis\
-    https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter4/ChangeOfBasis.html
+$~$
+## References 📜
+$~$
 
--   explanation of matrix as transformation
-    https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:matrices-as-transformations/a/matrices-as-transformations
+- [This blogpost would not be possible without Peter Bloem's clarifications](https://peterbloem.nl/blog/)   
+- [Mathy explanation of change of basis](https://dbalague.pages.ewi.tudelft.nl/openlabook/Chapter4/ChangeOfBasis.html)
 
--   explanation for matrix vector product as a projection
-    http://mitran-lab.amath.unc.edu/courses/MATH547/lessons/Lesson12.pdf
+-   [Explanation of matrix as transformation](https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:matrices-as-transformations/a/matrices-as-transformations)
 
--   a lot of info taken from https://peterbloem.nl/blog/
+-   [Explanation for matrix vector product as a projection](http://mitran-lab.amath.unc.edu/courses/MATH547/lessons/Lesson12.pdf)
 
--   great read about intuition behind PCA
-    https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues
+-   [Great read about intuition behind PCA](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues)
