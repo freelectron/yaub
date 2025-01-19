@@ -1,27 +1,40 @@
-# Linear Models & Intro to Kernels
+<center>
+    <h1> Linear Models & Intro to Kernels  </h1>
+</center>
 
-The workhorse of data analysis in the industry is the linear model. If a
-company applies it somehow to the their data, then in 90% of the cases
-they are confidently bragging to their customers and investors saying
-"we utilising Machine learning and AI\". Well, this is a beautiful
-technique and, nowadays, I am more eager to use it then the most
-advanced transformer-based-state-of-the-art monster.
+$~$
 
-Equally beautiful is the kernel model. They have fallen from grace in
-the past few decades because of their scaling issues for large datasets
-(a manager screams: "big data!\"). Nonetheless, they are an amazing
-modelling tool that can get you far in your task.
+$~$
+## Why do we care? 🤔
+$~$
 
-Both of those tool rely heavily on probability theory.
+The workhorse of data modeling in many industries is still a linear model. If a such
+company applies it somehow on their data, then in 90% of the cases
+they are confidently bragging online that
+"we are utilising Machine learning and AI\". Well, a linear model is a beautiful, simple and powerful tool,
+and as experience comes you are more eager to use it rather than an advanced transformer-based-state-of-the-art "monster".
 
-## Exponential Family Probability Distributions
+Equally beautiful is a kernel model. Though, kernel models have slightly fallen from grace in
+the past few decades because of their scaling issues (read, can be slow on very large datasets), 
+they are still a must-have tool for anybody working in ML.
 
-Now, there is going to be a review of a few probability distributions
-from the exponential family. This is often the go to family of
-distributions when it comes to modeling something in the wild, i.e.,
-industry applications.
+Both of those tool rely heavily on probability theory so we start there.
 
+$~$
+
+$~$
+## Exponential Family of Probability Distributions 🎲
+$~$
+
+The exponential family of distributions can be applied in a wide-range of scenario and
+it is one of the easiest (if not the easiest) to use. 
+A large number of common modeling tools is based on it.
+
+$~$
+
+$~$
 ### Bernoulli
+$~$
 
 I heard somewhere a person referring to a Bernoulli distribution as a
 "damaged coin\" distribution. It tries to predict the likelihood of a
@@ -69,9 +82,18 @@ $$
 \end{align}
 $$
 
-### Binomial\*
+$~$
 
-What if instead of a single coin flip we would count the number of
+$~$
+### Binomial\*
+$~$
+ 
+This (*) distribution is not in the exponential family but it is a generalisation of the Bernoulli distribution.
+PLus, under certain condition it can be rewritten in the exponential form.
+
+$~$
+
+Let's consider now that instead of a single coin flip we count the number of
 successes $m$ we get out of $N$ flips: 
 
 $$
@@ -91,7 +113,11 @@ P(D | N, \mu)=\prod_{i=1}^k p\left(m_i | N, \mu\right) = \prod_{i=1}^k \operator
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Gamma
+$~$
 
 Gamma distribution is often used to describe a continues variable that
 is always positive and has skewness in its distribution frequency. It is
@@ -110,12 +136,14 @@ $$
 \end{align}
 $$
 
-The parameter $\alpha$ controls the shape/skewness of the density
+Parameter $\alpha$ controls the shape/skewness of the density
 function. A common use case for the Gamma distribution is modeling the
 wait time until $\alpha$-th event occurs. Parameter $\beta$ stretches or
 compresses the distribution horizontally. Larger values of $\beta$
 spread out the distribution, while smaller values concentrate it closer
 to zero.
+
+$~$
 
 The Gamma distribution is closely related to Exponential distribution
 and Chi-Squared distribution where the later are special cases of Gamma.
@@ -125,7 +153,11 @@ but for positive-real (and complex) numbers. It pretty much interpolates
 the common factorial function for integers making the function line
 smooth (and silky).
 
+$~$
+
+$~$
 ### Poisson
+$~$
 
 Models the number of occurrences of an event in a given unit of time,
 distance, area or volume. For example, number of accidents in a day or
@@ -141,7 +173,11 @@ P(x \mid \lambda)=\frac{\lambda^x e^{-\lambda}}{x!}
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Beta 
+$~$
 
 The Beta distribution is very frequently used in machine learning for it
 is perfectly suited to represent percentages, proportions or
@@ -156,8 +192,10 @@ $$
 where bot $a$ and $b$ change the shape of the probability density
 function.
 
+$~$
+
 This distribution is so used because its nice property of being a
-fabulous conjugate prior. Given **Bayes' rule** 
+fabulous conjugate prior. A little demonstration follows. Given the **Bayes' rule** 
 
 $$
 \begin{align} 
@@ -167,9 +205,7 @@ $$
 
 where $D$ is the all the previous knowledge (e.g.,
 parameters, observations) that we have acquired from the past data
-sample(s).
-
-Thus, if we wanted to do estimation of our posterior the following would
+sample(s). If we wanted to do estimation of our posterior the following would
 hold: 
 
 $$
@@ -194,9 +230,7 @@ p(\mu) = {Beta}(\mu \mid a, b) = \frac{\Gamma(a+b)}{\Gamma(a) \Gamma(b)} \mu^{a-
 \end{align}
 $$
 
-Then, following
-Equation [\[eq:prob_bayes_proportionate\]](#eq:prob_bayes_proportionate){reference-type="ref"
-reference="eq:prob_bayes_proportionate"} 
+Then, following the Equation 17
 
 $$
 \begin{align} 
@@ -224,11 +258,13 @@ single estimate as was the case for the maximum likelihood estimator.
 However, this posterior distribution could also be used to produce a
 point estimate for $\mu$ by calculating its mean or mode.
 
+$~$
+
 If we were to make predictions based on the data and the prior, we can
 calculate the variance of $\mu$ to access uncertainty about the
 estimator and our future predictions. Optionally, we can also sample
 from the posterior distribution to have a whole range of possible values
-for next predictions. Then, we need the posterior predictive
+for the next prediction phase. Then, we would use the posterior predictive
 distribution 
 
 $$
@@ -248,7 +284,11 @@ p(\hat{m} \mid D)=\mathbb{E}_{\mu \mid D}[p(\hat{m} \mid \mu)]  \ .
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Multinomial
+$~$
 
 The next distribution describes a vector $\vec{x} \in \mathbb{R}^k$
 where 1 of $k$ elements is 1 and the rest are 0's, or 
@@ -289,11 +329,9 @@ p(D \mid \vec{\mu} ) &= \prod_{n=1}^N \prod_{i=1}^K \mu_i^{x_{n, i}} = \prod_{i=
 $$ 
 
 where $m_i$ is the number of observations where $x_i$
-= 1. Thus, for each dimension $i$ of $\vec{x}$, we will have $m_i$ time
+= 1. For each dimension $i$ of $\vec{x}$, we will have $m_i$ time
 that we observed 1. A simple example of $m_i$ would be how many times we
-had 4 after rolling a dice 20 times.
-
-The Multinomial distribution describes the joint probability of
+had 4 after rolling a dice 20 times. Thus, the Multinomial distribution describes the joint probability of
 observing quantities $m_i$'s after $N$ total experiments (e.g, dice
 rolls) 
 
@@ -305,7 +343,11 @@ $$
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Dirichlet
+$~$
 
 Dirichlet distribution is a conjugate prior for the Multinomial. It uses
 $\vec{\alpha}$ to parameterise a function that is perfect for describing
@@ -326,10 +368,14 @@ p(\vec{\mu} \mid D, \alpha)=\operatorname{Dir}(\vec{\mu} \mid \vec{\alpha}+\vec{
 \end{align}
 $$
 
+$~$
+
+$~$
 ### Normal 
+$~$
 
 Yet another distribution that probably does not need a lot of intro is a
-Gaussian multivariate 
+Gaussian single-variate 
 
 $$
 \begin{align} 
@@ -345,18 +391,26 @@ N(\vec{x} \mid \vec{\mu}, \Sigma)=\frac{1}{(2 \pi)^{0 / 2}} \frac{1}{\mid \Sigma
 \end{align}
 $$
 
-The parameter $\mu \in \mathbb{R}^D$ is the mean of vector where $\mu_i$
+The parameter $\vec{\mu} \in \mathbb{R}^D$ is the mean vector where $\vec{\mu}$
 also show the expected values for each dimension of the variable vector
 $\vec{x} \in \mathbb{R}^D$. The $\Sigma$ matrix is called the covariance
 matrix and needs to be positive definite for the probability mass to
 exist. The covariance matrix can also be diagonal. That helps with its
-inversion (also called precision $\Sigma^{-1}$ is sometimes called the
+inversion ($\Sigma^{-1}$ is often called the
 precision matrix) and makes all the variables $x_i$ independent of one
 another. Gamma is a conjugate prior to the Gaussian.
 
-## Linear Models 
+$~$
 
+$~$
+## Linear Models 
+$~$
+
+Now, we can move on to building simple linear models.
+
+$~$
 ### Simple Linear Regression
+$~$
 
 Linear regression solves the problem of modeling a continues
 $t \in \mathbb{R}$ based on the observed data points $\vec{x}$'s. The
@@ -365,13 +419,13 @@ is generated by some deterministic linear process $y$ and a random
 (white-noise) variable $\varepsilon$. The random variable is normally
 distributed, zero centered and has a constant standard deviation
 $\sigma$, i.e., the exponent of a Gaussian can be simplified
-$\frac{1}{2}(\vec{x}-\vec{\mu})^{\top} \Sigma^{-1}(\vec{x} - \vec{\mu}) = \frac{1}{2} \sum_{i=1}^N\left(t_i-\vec{\omega}^{\top} \phi\left(\vec{x}_i\right)\right)^2$.
+$\frac{1}{2}(\vec{t}-\vec{\mu})^{\top} \Sigma^{-1}(\vec{t} - \vec{\mu}) = \frac{1}{2} \sum_{i=1}^N\left(t_i-\vec{\omega}^{\top} \phi\left(\vec{x}_i\right)\right)^2$.
 We say $\varepsilon \sim N (0, \beta^{-1})$ where $\sigma^{-2} = \beta$.
-Then, $t$ follows 
+Then, $\vec{t}$ follows 
 
 $$
-\begin{align} 
-t \sim N\left(y(\vec{x}, \vec{w}), \beta^{-1}\right)
+\begin{align}
+\vec{t} \sim N\left(y(\vec{x}, \vec{w}), \beta^{-1}\right)
 \end{align}
 $$
 [//]: # (\label{eq:linear_reg_y})
