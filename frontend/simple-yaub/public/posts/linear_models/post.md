@@ -677,7 +677,7 @@ p(t \mid \vec{t}, \alpha, \beta)=\int_{\vec{w}} p(t \mid \vec{w}, \beta) p(\vec{
 \end{align}
 $$
 
-produces the the Gaussian distribution fo the form 
+which is a joint Gaussian distribution. If we marginalise over $\vec{w}$, the resulting Gaussian distribution is 
 
 $$
 \begin{align}
@@ -785,30 +785,34 @@ is a lot of dot products N (instead of $M$ as for primal form solution
 where it is $\Phi^{\top}\Phi$), plus we need to invert it too. Well,
 when we want to represent our data in a very very high dimensional
 space, we can choose $\phi(\cdot)$ for which the dot product
-$\phi(\vec{x})^{\top}\phi(\vec{x})$ is well defined and easy to
-calculate (look at Kernalisation section
-[here](#https://ml-course.github.io/master/intro.html)). Then, instead
-of doing all the products and explicitly defining
-$\vec{\phi}(\vec{x}) \in \mathbb{R}^{100000}$, we just operate and do
-all the calculations with just 10 numbers defined by
-$\vec{x} \in \mathbb{R}^{10}$. This enables us to easily transition -
+$\phi(\vec{x})^{\top}\phi(\vec{x})$ is "well-defined" and easy to
+calculate formula (that needs to have certain properties, look at the Kernalisation section  
+[here](https://ml-course.github.io/master/intro.html)). 
+Then, instead of doing all the products and explicitly defining
+$\vec{\phi}(\vec{x}) \in \mathbb{R}^{100000}$ (i.e., coming up with a formula for each $\phi(\cdot)_i$, 
+and keeping the results of those calculations in-memory) and doing the dot product, 
+we just do all the calculations according to the "well-defined" formula 
+that is easy to compute (aka the kernel trick). This enables us to easily transition -
 conveniently compute dot products - between raw observation space
 $\vec{x}$ and the kernel space, that is implicitly very high
 dimensional, to model more complex relationships with a lower memory
-footprint. Thus, the ideal us of kernels is when for
+footprint. Thus, the ideal scenario when kernels would be very useful is when for
 $\vec{x} \in \mathbb{R}^k$ and $\vec{\phi}(\vec{x}) \in \mathbb{R}^m$,
 $k<<m$ and the number of observations $N$ is small enough to fit in
 memory. Use kernels when you do not want to explicitly calculate feature
 design matrix $\Phi$ and do all the dot products.
 
+$~$
+
+$~$
 ### Kernel Regression
+$~$
 
 There could be a pure non-parametric regression defined with kernels.
 Here, kernels will measure the distance (in the space defined by the
 kernel) between the new observation $\vec{x}$ and all the past
 observations giving higher weights to the ones that are closer. We will
-not assume a functional form and rely on the new understanding of a
-regression means: 
+not assume a functional form and rely on how the regression task is (probabilistically) defined: 
 
 $$
 \begin{align} 
@@ -817,11 +821,12 @@ y(\vec{x}) = E(t \mid \vec{x}) = \int {t} p (t \mid \vec{x})dt = \frac{\int t p(
 $$
 [//]: # (\label{eq:kernel_reg_0})
 
-The simplest case of kernel regression is when we take a point
-$\vec{x}_0$ and make a prediction for it $t_0$ based on its neighbours
-in the observed data. We consider a point $\vec{x}_i$ a neighbor if it
-is within distance $h$ from $\vec{x}_0$ and we weigh each neighbour
-equally. Then, 
+A simple estimation for $E(t \mid \vec{x})$ could a local area around $\vec{x}$. 
+We would take all target values of the $\vec{x}$'s neighbors and weigh them equally.
+Thus, we take a point($\vec{x}_0$) and make a prediction for it ($t_0$) based on its neighbours
+in the observed data. Then, we could consider a point $\vec{x}_i$ a neighbor if it
+is within distance $h$ from $\vec{x}_0$ and if we weigh each neighbour
+equally 
 
 $$
 \begin{align} 
