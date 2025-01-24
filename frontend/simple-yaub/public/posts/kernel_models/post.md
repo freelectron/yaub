@@ -1,27 +1,39 @@
-# Kernel Methods
+<center>
+    <h1> Kernel Methods  </h1>
+</center>
+
+$~$
+
+$~$
+## Why do we care? 🤔
+$~$
 
 A previous blog post on Linear Models explained a
 beautiful connection between linear models and kernels. It has also set
-the stage for us to go progress towards what more commonly referred to
+the stage for us to progress towards what more commonly referred to
 as Kernel Methods. Probabilistic techniques that utilise kernel
 functions to model complex behaviours in the data.
 
-## Gaussian Processes for Regression
+$~$
+## Gaussian Processes for Regression ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ
+$~$
 
 In Linear models, we saw a bunch of linear models that
 assumed some functional form. Most of them, if not all, can be
 represented by some (linear) combination of the targets. Now, consider
 that instead of finding optimal function parameters, we would try to
 find functions (function mappings). This way, we can directly sample a
-function from a governing (multivariate) distribution. How could one
-parameterise a distribution over functions? Well, do not parameterise
+function from a governing (multivariate) distribution. However, a question arirse: 
+how could one parameterise a distribution over functions? Well, we do not parameterise
 functions directly, but model the joint marginal probabilities of their
 values. We then reason about the entire function space by evaluating the
 joint probabilities at any set of input points.
 
+$~$
+
 Let $X = \{\vec{x}_1, \vec{x}_2 ... \vec{x}_N\}$ be a finite set of
 elements and consider a set $\mathcal{H}$ of all possible functions
-$f \mapsto t$ mapping from $\mathcal{X}$ to $\mathbb{R}^{N}$. If we
+$f$ mapping from $\mathcal{X}$ to $\mathbb{R}^{N}$. If we
 assume that the domain of any $f(\cdot) \in \mathcal{H}$ has a limited
 ($N$) number of elements, we can say that $f$ is "represented" by its
 vector $\vec{f} = [f(\vec{x}_1), f(\vec{x}_2)... f(\vec{x}_N)]$. Note
@@ -29,12 +41,14 @@ that $f(\vec{x}_i)$'s by themselves can be seen as random
 variables/functions if the underlying function $f(\cdot)$ is also
 random. Thus, there is a one-to-one correspondence between a function
 $f(\cdot) \in \mathcal{H}$ and its "vector form\" representation.
-Finally, we can specify a governing probability distribution such that
+Consequently, we can specify a governing probability distribution where
 $\vec{f} \sim N(\vec{\mu}, \Lambda)$. This implies a (joint) probability
 distribution over random variables/functions that could have produced
-those values, i.e., $p(\vec{f}|X) = N(\vec{\mu}, K))$. Hence, the
+the values we are trying to predict, i.e., $p(\vec{f}|X) = N(\vec{\mu}, K))$. Hence, the
 probability distribution for the underlying function
 $f(\cdot) \in \mathcal{H}$.
+
+$~$
 
 In most of the cases, we need to assume that our stream of data is
 infinite and we can always make new predictions based on the new
@@ -47,6 +61,8 @@ underlying $f$, now any new collection $\vec{f}^{*}$ must come from the
 same $f$, i.e., random variables, elements of $\vec{f}^{*}$, come from
 the same joint multivariate distribution.
 
+$~$
+
 Assume a GP is defined as $\vec{f} \sim N(\vec{0}, K(\cdot, \cdot))$.
 The function that produces $\vec{f}$ or $\vec{f}^{*}$ is zero-meaned and
 generates values according to the kernel function $K(\cdot, \cdot)$.
@@ -54,9 +70,11 @@ Just like before the kernel identifies how we are going to take
 neighbours of a new observation and mix/combine/weigh their target
 values to arrive to the prediction for the new observation. Generally,
 if two points are similar in the kernel space, the function values at
-these points will also be also similar.
+these points will also be similar.
 
-Lastly, we look of how to make prediction with GP. Imagine, we have
+$~$
+
+Finally, let's look at how to make prediction with GP. Imagine, we have
 collected a training set $S=\{\vec{x_i}, t_i \}_{i=1}^N$ of i.i.d.
 examples. If we zero-mean the sample's observations - GP was assumed
 with the mean 0 - we can apply our process to the data and say
@@ -144,7 +162,11 @@ its own behaviour and hyperparameters. As a result, a practitioner can
 spend a considerable amount of time in choosing the right kernel and
 optimising its hyperparameters.
 
-## Gaussian Processes for Classification
+$~$
+
+$~$
+## Gaussian Processes for Classification 🔡
+$~$
 
 The solution for GP's in the case of a regression task, though
 computationally heavy, is analytical. If we put GP's into the framework
