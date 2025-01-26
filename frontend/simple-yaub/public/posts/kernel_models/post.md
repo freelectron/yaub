@@ -99,7 +99,6 @@ K\left(X^*, X\right) & K\left(X^*, X^*\right)
 \end{bmatrix}\right) 
 \end{align}
 $$
-[//]: # (\label{eq:gp_0})
 
 Additionally, there is white noise i.i.d. noise that is natural to all
 the real-world data 
@@ -112,7 +111,6 @@ $$
 \end{array}\right]\right)
 \end{align}
 $$
-[//]: # (\label{eq:gp_1})
 
 This gives us function values with some white noise around them. Since
 the white noise is i.i.d. we can still use GP frame, but instead of
@@ -129,7 +127,6 @@ $$
 \left[\begin{array}{l}\vec{\varepsilon} \\ \vec{\varepsilon}\end{array}\right] \sim \mathcal{N}\left(\vec{0},\left[\begin{array}{cc}K(X, X)+\sigma^2\mathbb{1} & K(X, X^{*}) \\ K\left(X^*, X\right) & \left.K\left(X, X^*\right)+\sigma^2\mathbb{1}\right]\end{array}\right]\right. \ . 
 \end{align}
 $$
-[//]: # (\label{eq:gp_2})
 
 If we were to take the rules of [conditional distributions of the
 multivariate
@@ -143,7 +140,6 @@ $$
 \Sigma^* &= K\left(X^* , X^*\right) + \sigma^2 \mathbb{1} - K\left(X^* , X\right) - \left(K(X, X) + \sigma^2 \mathbb{1} \right)^{-1} K\left(X, X^*\right)
 \end{align}
 $$
-[//]: # (\label{eq:gp_3})
 
 There are two things to keep in mind when using GP in the wild. First,
 look how compute and memory expensive it is to make a new prediction..
@@ -182,7 +178,6 @@ a(\vec{x}) : \vec{x} \in \mathbb{R}^M \mapsto a \in \mathbb{R}^1 \\
 \sigma(a): a \in \mathbb{R}^1 \mapsto [0,1] \ .
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_0})
 
 Then, define the probability for the target to follow a Bernoulli
 distribution 
@@ -192,7 +187,6 @@ $$
 p(t \mid a)=\sigma(a)^t (1-\sigma(a))^{1-t} . \ 
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_1_a})
 
 Unlike the regression case, variable $t$ is defined with a non-Gaussian
 distribution. This prevents us from entering the GP framework right away
@@ -206,7 +200,6 @@ $$
 p(\vec{a}) = N(\vec{a} | \vec{0}, C_N) \ .
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_1_b})
 
 The final predictive probability distribution, the probability of
 $\vec{t}^*$ given $\vec{t}, X, \vec{x}^{*}$, is predictably
@@ -216,7 +209,6 @@ $$
 p(t^* \mid \vec{t}, X, \vec{x}^{*}) \text{\ or, simply, \ \ } p(t^* \mid \vec{t}) = ?
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_2})
 
 We can rewrite it as 
 
@@ -225,7 +217,6 @@ $$
 p\left(t^* \mid \vec{t}\right) = \int p\left(t^* \mid a^{*}\right) p\left(a^{*} | \vec{t}\right) d a^{*}
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_3})
 
 where
 $p\left(t^* \mid a^{*}\right) = p\left(t^* = 1 | a^{*}\right) = \sigma\left(a^{*}\right)$.
@@ -245,7 +236,6 @@ p\left(a_{*} \mid \vec{t} \right) &= \int p\left(a^{*}, \vec{a} \mid \vec{t} \ri
 & = \int p\left(a^{*} | \vec{a} \right) p\left(\vec{a} \mid \vec{t} \right) d \vec{a} \ .
 \end{align}
 $$
-[//]: # (\label{eq:gp_class_4})
 
 The integral $p\left(t^* \mid \vec{t}\right)$ can be approximate using multiple methods, see [Bishop's Section
 6.4.5](https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf)
