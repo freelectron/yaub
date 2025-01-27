@@ -3,3 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+.empty{
+        margin: 0;
+        padding: 0;
+}

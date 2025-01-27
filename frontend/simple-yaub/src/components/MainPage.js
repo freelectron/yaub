@@ -32,7 +32,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
         : posts.filter((post) => post.tags.includes(selectedTag));
 
     return (
-        <>
+        <div className="empty">
             <NavigationBar />
 
             <div className="container">
@@ -64,7 +64,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

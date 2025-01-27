@@ -27,7 +27,7 @@ const PostPage = ({ postContentResponse }) => {
     }, []);
 
     return (
-        <>
+        <div className="empty">
             <NavigationBar />
             <div className="post-container">
                 <div className="post-content">
@@ -67,7 +67,7 @@ const PostPage = ({ postContentResponse }) => {
                 <Link href="/" className="btn back-btn">Back to Blog</Link>
             </div>
 
-        </>
+        </div>
 
     );
 };

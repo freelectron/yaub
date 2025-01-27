@@ -2,11 +2,11 @@
 
 .sidebar-navigation {
     display: flex;
+    align-items: center;
     top: 0; /* Stick to the top */
     width: 100%; /* Full width */
     z-index: 1000; /* Ensure it stays above other elements */
-    position: fixed; /* Stick to the top */
-    padding-top: 15px;
+    position: relative;
 }
 
 .logo {
@@ -14,9 +14,7 @@
     font-size: 35px; /* Increased font size for a bolder appearance */
     font-weight: 1000; /* Moderate weight for less boldness */
     letter-spacing: 0.1em; /* Slightly stretched look */
-    position: fixed;
-    left: 0;
-    padding-left: 20px;
+    padding-left: 40px;
     color: v.$logo-background-color;
 }
 .logo:hover {
@@ -24,12 +22,9 @@
 }
 
 .logo-image {
-    position: fixed;
-    left: 50%;
-
     img {
-        width: 50px;
-        height: 50px;
+        width: 90px;
+        height: 90px;
     }
 }
 
@@ -40,7 +35,6 @@ ul {
     padding: 0 20px; /* Adjust padding for spacing */
     list-style: none; /* Remove default list styling */
     right: 0;
-    position: fixed;
 
     li {
         display: flex;
@@ -78,12 +72,11 @@ ul {
         opacity: 0.8;
     }
 }
-.sidebar-navigation:hover{
-    background-color: black;
-    opacity: 1;
-}
+//.sidebar-navigation:hover{
+//    background-color: black;
+//    opacity: 1;
+//}
 
 body {
     margin: 0;
-    padding-top: 80px; /* Add padding equal to navbar height */
 }
