@@ -1,16 +1,16 @@
-$nav-background-color: #fffdfd;
 
 $general-background-color: rgb(242, 242, 250);
+$nav-background-color: $general-background-color;
 $logo-background-color: #161716;
 $card-background-color: rgb(255, 255, 255);
 
 $tooltip-background-color: $nav-background-color;
-$post-background-color: $general-background-color;
+$post-background-color: $card-background-color;
 
 $active-link-color: rgb(223, 219, 219);
 $active-sidebar-link-color: $active-link-color;
 
-$filter-badges-background-color: $nav-background-color;
+$filter-badges-background-color: $card-background-color;
 
 $logo-font: 'Marker Felt';
 $post-font: 'Rockwell';

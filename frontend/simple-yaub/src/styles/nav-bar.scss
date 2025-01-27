@@ -2,88 +2,87 @@
 
 .sidebar-navigation {
     display: flex;
-    position: absolute;
     top: 0; /* Stick to the top */
-    left: 0; /* Align to the left */
     width: 100%; /* Full width */
-    height: 60px; /* Set a height for the navbar */
-    background-color: v.$nav-background-color;
     z-index: 1000; /* Ensure it stays above other elements */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better visibility */
+    position: fixed; /* Stick to the top */
+    padding-top: 15px;
+}
 
-    ul {
-        display: flex; /* Arrange list items horizontally */
-        align-items: center; /* Vertically center the icons */
-        justify-content: center; /* Optional: Center the nav items horizontally */
-        margin: 0;
-        padding: 0;
-        list-style: none; /* Remove default list styling */
-        width: 100%; /* Stretch the list to fill the navbar */
+.logo {
+    font-family: v.$logo-font;
+    font-size: 35px; /* Increased font size for a bolder appearance */
+    font-weight: 1000; /* Moderate weight for less boldness */
+    letter-spacing: 0.1em; /* Slightly stretched look */
+    position: fixed;
+    left: 0;
+    padding-left: 20px;
+    color: v.$logo-background-color;
+}
+.logo:hover {
+    font-size: 40px; /* Increase font size on hover */
+}
 
-        li {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 28px; /* Horizontal padding */
-            height: 100%; /* Full height of the navbar */
-            cursor: pointer;
-            transition: all ease-out 120ms;
-            position: relative; /* For tooltip positioning */
+.logo-image {
+    position: fixed;
+    left: 50%;
 
-            i {
-                font-size: 24px;
-                transition: all ease 450ms;
-            }
+    img {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 20px; /* Adjust padding for spacing */
+    list-style: none; /* Remove default list styling */
+    right: 0;
+    position: fixed;
+
+    li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 28px; /* Horizontal padding */
+        height: 100%; /* Full height of the navbar */
+        cursor: pointer;
+        transition: all ease-out 120ms;
+
+        i {
+            font-size: 24px;
+            transition: all ease 450ms;
+        }
+        .tooltip {
+            display: inline-block;
+            position: absolute;
+            padding: 8px 15px;
+            border-radius: 3px;
+            bottom: -35px; /* Position the tooltip below the navbar */
+            left: 50%; /* Center the tooltip horizontally */
+            transform: translateX(-50%);
+            visibility: hidden;
+        }
+
+        &:hover {
             .tooltip {
-                display: inline-block;
-                position: absolute;
-                background-color: v.$tooltip-background-color;
-                padding: 8px 15px;
-                border-radius: 3px;
-                bottom: -35px; /* Position the tooltip below the navbar */
-                left: 50%; /* Center the tooltip horizontally */
-                transform: translateX(-50%);
-                opacity: 0;
                 visibility: hidden;
-                font-size: 13px;
-                letter-spacing: 0.5px;
-
-                &:before {
-                    content: '';
-                    display: block;
-                    position: absolute;
-                    top: -5px;
-                    left: 50%;
-                    transform: translateX(-50%) rotate(45deg);
-                    width: 10px;
-                    height: 10px;
-                    background-color: inherit;
-                }
-            }
-
-            &:hover {
-                background-color: v.$active-sidebar-link-color;
-
-                .tooltip {
-                    visibility: visible;
-                    opacity: 1;
-                }
+                opacity: 1;
             }
         }
     }
+    li:hover {
+        background-color: v.$active-link-color;
+        opacity: 0.8;
+    }
 }
-.logo {
-    font-family: v.$logo-font ;
-    font-size: 40px; /* Increased font size for a bolder appearance */
-    font-weight: 1000; /* Moderate weight for less boldness */
-    letter-spacing: 0.1em; /* Slightly stretched look */
-    text-align: left;
-    padding-left: 80px;
-    flex: 1; /* Center logo in the navbar */
-    color: v.$logo-background-color;
+.sidebar-navigation:hover{
+    background-color: black;
+    opacity: 1;
 }
 
- //Ensure content shifts down to accommodate the navbar
 body {
     margin: 0;
     padding-top: 80px; /* Add padding equal to navbar height */

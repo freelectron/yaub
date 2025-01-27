@@ -9,7 +9,14 @@ const NavBar = () => {
                     <span>Yablo</span>
                 </div>
 
-                <li className="active">
+                <div className="logo-image img">
+                    <img
+                        src="/favicon.svg"
+                        alt="Logo"
+                    />
+                </div>
+
+                <li>
                     <Link href="/">
                         <i className="fa fa-newspaper"></i>
                         <span className="tooltip">Blog</span>
