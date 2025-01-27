@@ -2,26 +2,34 @@
 
 .sidebar-navigation {
     display: flex;
-    align-items: center;
-    top: 0; /* Stick to the top */
-    width: 100%; /* Full width */
-    z-index: 1000; /* Ensure it stays above other elements */
+    //align-items: center;
+    //justify-content: space-between; // This helps distribute space
+    top: 0;
+    width: 100%;
+    z-index: 1000;
     position: relative;
+    padding: 10px 20px;
 }
 
 .logo {
     font-family: v.$logo-font;
-    font-size: 35px; /* Increased font size for a bolder appearance */
-    font-weight: 1000; /* Moderate weight for less boldness */
-    letter-spacing: 0.1em; /* Slightly stretched look */
-    padding-left: 40px;
+    font-size: 35px;
+    font-weight: 1000;
+    letter-spacing: 0.1em;
     color: v.$logo-background-color;
-}
-.logo:hover {
-    font-size: 40px; /* Increase font size on hover */
+    flex: 1;
+    margin: auto; // Pushes the navigation to the right
+
+    &:hover {
+        font-size: 40px;
+    }
 }
 
 .logo-image {
+    display: flex;
+    justify-content: center;
+    flex: 1; // Prevent logo from growing or shrinking
+    margin: auto 30%; // Pushes the navigation to the right
     img {
         width: 90px;
         height: 90px;
@@ -31,17 +39,17 @@
 ul {
     display: flex;
     align-items: center;
-    margin: 0;
-    padding: 0 20px; /* Adjust padding for spacing */
-    list-style: none; /* Remove default list styling */
-    right: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1; // Prevent logo from growing or shrinking
+    margin: auto 20px; // Pushes the navigation to the right
 
     li {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 28px; /* Horizontal padding */
-        height: 100%; /* Full height of the navbar */
+        padding: 0 28px;
+        height: 100%;
         cursor: pointer;
         transition: all ease-out 120ms;
 
@@ -49,13 +57,14 @@ ul {
             font-size: 24px;
             transition: all ease 450ms;
         }
+
         .tooltip {
             display: inline-block;
             position: absolute;
             padding: 8px 15px;
             border-radius: 3px;
-            bottom: -35px; /* Position the tooltip below the navbar */
-            left: 50%; /* Center the tooltip horizontally */
+            bottom: -35px;
+            left: 50%;
             transform: translateX(-50%);
             visibility: hidden;
         }
@@ -65,17 +74,12 @@ ul {
                 visibility: hidden;
                 opacity: 1;
             }
+
+            background-color: v.$active-link-color;
+            opacity: 0.8;
         }
     }
-    li:hover {
-        background-color: v.$active-link-color;
-        opacity: 0.8;
-    }
 }
-//.sidebar-navigation:hover{
-//    background-color: black;
-//    opacity: 1;
-//}
 
 body {
     margin: 0;
