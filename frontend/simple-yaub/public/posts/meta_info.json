@@ -5,24 +5,32 @@
       "id": "bias_variance_decomposition",
       "title": "Bias-Variance Tradeoff",
       "content": "The first thing that you will forget when starting as a ML Developer.",
+      "author": "FreElectron",
+      "date": "2024-02-01",
       "tags": ["ml-basics"]
     },
     {
       "id": "svd",
       "title": "Compress your ambitions with SVD",
       "content": "Super Vital Device.",
+      "author": "FreElectron",
+      "date": "2024-04-09",
       "tags": ["ml-basics", "linear-algebra"]
     },
     {
       "id": "linear_models",
       "title": "Who run the world? - Girls & Linear Models",
       "content": "Everybody likes a line. Especially when it's not straight.",
+      "author": "FreElectron",
+      "date": "2024-06-21",
       "tags": ["ml-basics"]
     },
     {
       "id": "kernel_models",
       "title": "Use the force, Luke - Use the kernel",
       "content": "Fallen from grace but still at the core.",
+      "author": "FreElectron",
+      "date": "2024-09-10",
       "tags": ["ml-basics"]
     }
   ]

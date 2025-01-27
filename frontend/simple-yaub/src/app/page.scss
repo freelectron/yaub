@@ -13,14 +13,22 @@ Posts
 
 .posts-container {
     height: 80vh;
-    max-width: 100vh;
+    max-width: 150vh;
     margin: 0 auto;
     background-color: v.$post-background-color;
     border-radius: 30px;
     padding: 20px;
     box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
 }
-
+.posts-header1 {
+    font-family: v.$post-font;
+    font-size: 1rem;
+    font-weight: 50;
+    margin-top: 5px;
+    margin-bottom: 10px; /* Adjust the bottom margin as needed */
+    text-align: center; /* Center the text horizontally */
+}
 .button-group.center {
     display: flex;
     margin-bottom: 20px;
@@ -67,9 +75,8 @@ Posts
 .card-link:hover .card {
     transform: translateY(-3px);
     box-shadow: 0 8px 10px v.$active-link-color;
-    background: v.$active-link-color;
-    border: 5px solid v.$active-link-color;
-    background: v.$active-link-color;
+    border: 5px solid v.$card-background-color;
+    //background: v.$active-link-color;
 }
 /* Make sure the text color doesn't change on hover */
 .card-link:hover .card-title,
@@ -83,6 +90,14 @@ Posts
     margin-top: 5px;
     margin-bottom: 10px; /* Adjust the bottom margin as needed */
     text-align: center; /* Center the text horizontally */
+}
+.card-details {
+    font-family: v.$post-font;
+    font-size: 0.7rem;
+    font-weight: 200;
+    margin-top: 10px;
+    margin-bottom: 5px; /* Adjust the bottom margin as needed */
+    text-align: right; /* Center the text horizontally */
 }
 .card-body {
     display: flex;

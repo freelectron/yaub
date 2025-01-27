@@ -1,0 +1,13 @@
+@use '../styles/variables' as v;
+
+.footer{
+    margin-top: 50px;
+    padding-bottom: 20px;
+}
+.footer-text {
+    padding: 10px;
+    font-family: v.$logo-font;
+}
+body {
+    margin: 20px;
+}

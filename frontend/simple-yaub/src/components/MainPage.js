@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import NavigationBar from "./NavBar";
+import Footer from "@/components/Footer";
 
 const getUniqueTags = (posts) => {
     if (posts && Array.isArray(posts)) {
@@ -33,9 +34,15 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
 
     return (
         <div className="empty">
+
             <NavigationBar />
 
             <div className="posts-container">
+
+                <div className="posts-header1">
+                    <h1> Best Selected </h1>
+                </div>
+
                 <div className="button-group center">
                     {availableTags.map((tag) => (
                         <button
@@ -54,6 +61,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
                                 <div className="card">
                                     <div className="card-body">
                                         <p className="card-title">{post.title}</p>
+                                        <p className="card-details"> By {post.author} @ {post.date}</p>
                                         <p className="card-text">
                                             {post.content.slice(0, 100)}
                                         </p>
@@ -64,6 +72,9 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
                     ))}
                 </div>
             </div>
+
+            <Footer />
+
         </div>
     );
 };
