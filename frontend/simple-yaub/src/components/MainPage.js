@@ -35,7 +35,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
         <div className="empty">
             <NavigationBar />
 
-            <div className="container">
+            <div className="posts-container">
                 <div className="button-group center">
                     {availableTags.map((tag) => (
                         <button

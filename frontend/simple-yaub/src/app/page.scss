@@ -2,7 +2,6 @@
 
 body {
     background-color: v.$general-background-color;
-    //background: linear-gradient(to bottom right, v.$active-link-color, v.$general-background-color);
     cursor: pointer;
 }
 
@@ -12,11 +11,14 @@ Posts
 ==============
 */
 
-.container {
-    padding: 10px;
-     //Make this container full screen
-    width: 100vw;
-    height: 100vh;
+.posts-container {
+    height: 80vh;
+    max-width: 100vh;
+    margin: 0 auto;
+    background-color: v.$post-background-color;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
 }
 
 .button-group.center {
@@ -35,7 +37,8 @@ Posts
     font-family: v.$post-font;
 }
 .filter-button:hover {
-    background-color: v.$active-link-color;
+    font-weight: bold;
+
 }
 
 .row {
@@ -64,6 +67,9 @@ Posts
 .card-link:hover .card {
     transform: translateY(-3px);
     box-shadow: 0 8px 10px v.$active-link-color;
+    background: v.$active-link-color;
+    border: 5px solid v.$active-link-color;
+    background: v.$active-link-color;
 }
 /* Make sure the text color doesn't change on hover */
 .card-link:hover .card-title,

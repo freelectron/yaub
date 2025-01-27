@@ -2,8 +2,6 @@
 
 .sidebar-navigation {
     display: flex;
-    //align-items: center;
-    //justify-content: space-between; // This helps distribute space
     top: 0;
     width: 100%;
     z-index: 1000;
@@ -13,26 +11,29 @@
 
 .logo {
     font-family: v.$logo-font;
-    font-size: 35px;
-    font-weight: 1000;
+    font-size: 30px;
     letter-spacing: 0.1em;
     color: v.$logo-background-color;
-    flex: 1;
-    margin: auto; // Pushes the navigation to the right
+    margin: auto 0vw; // Pushes the navigation to the right
 
     &:hover {
-        font-size: 40px;
+        text-decoration: line-through;
     }
 }
 
 .logo-image {
     display: flex;
     justify-content: center;
-    flex: 1; // Prevent logo from growing or shrinking
-    margin: auto 30%; // Pushes the navigation to the right
+    margin: auto 40vmax; // Pushes the navigation to the right
     img {
-        width: 90px;
-        height: 90px;
+        width: 50px;
+        height: 50px;
+        transition: all 0.3s ease;
+    }
+    &:hover {
+        img {
+            transform: rotate(360deg);
+        }
     }
 }
 
@@ -41,14 +42,13 @@ ul {
     align-items: center;
     padding: 0;
     list-style: none;
-    flex: 1; // Prevent logo from growing or shrinking
-    margin: auto 20px; // Pushes the navigation to the right
+    margin: auto 0vw ; // Pushes the navigation to the right
 
     li {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 28px;
+        padding: 0 15px;
         height: 100%;
         cursor: pointer;
         transition: all ease-out 120ms;
@@ -75,8 +75,11 @@ ul {
                 opacity: 1;
             }
 
-            background-color: v.$active-link-color;
             opacity: 0.8;
+            i {
+                font-size: 28px; // Enlarge icon on hover
+                color: v.$active-link-color;
+            }
         }
     }
 }
