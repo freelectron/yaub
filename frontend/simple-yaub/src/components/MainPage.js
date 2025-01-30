@@ -40,7 +40,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
             <div className="posts-container">
 
                 <div className="posts-header1">
-                    <h1> Best Selected </h1>
+                    <p> Your selection </p>
                 </div>
 
                 <div className="button-group center">
@@ -59,9 +59,10 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
                         <div className="col" key={post.id} style={{ flex: '0 0 60%', maxWidth: '60%' }}>
                             <Link href={`/post/${post.id}`} className="card-link">
                                 <div className="card">
+                                    <img src={post.iconImage}/>
                                     <div className="card-body">
                                         <p className="card-title">{post.title}</p>
-                                        <p className="card-details"> By {post.author} @ {post.date}</p>
+                                        <p className="card-details"> On {post.date} by By {post.author}</p>
                                         <p className="card-text">
                                             {post.content.slice(0, 100)}
                                         </p>

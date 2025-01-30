@@ -7,6 +7,7 @@
       "content": "The first thing that you will forget when starting as a ML Developer.",
       "author": "FreElectron",
       "date": "2024-02-01",
+      "iconImage": "http://www.endtoend.ai/assets/blog/misc/bias-variance-tradeoff-in-reinforcement-learning/front.png",
       "tags": ["ml-basics"]
     },
     {
@@ -15,6 +16,7 @@
       "content": "Super Vital Device.",
       "author": "FreElectron",
       "date": "2024-04-09",
+      "iconImage": "http://blogs.sas.com/content/iml/files/2017/08/svd1.png",
       "tags": ["ml-basics", "linear-algebra"]
     },
     {
@@ -23,6 +25,7 @@
       "content": "Everybody likes a line. Especially when it's not straight.",
       "author": "FreElectron",
       "date": "2024-06-21",
+      "iconImage": "https://image1.slideserve.com/3103821/projection-on-to-a-plane-l.jpg",
       "tags": ["ml-basics"]
     },
     {
@@ -31,6 +34,7 @@
       "content": "Fallen from grace but still at the core.",
       "author": "FreElectron",
       "date": "2024-09-10",
+      "iconImage": "https://miro.medium.com/max/630/1*l91ZC3CQ9mD4eaYZAIB_IQ.jpeg",
       "tags": ["ml-basics"]
     }
   ]

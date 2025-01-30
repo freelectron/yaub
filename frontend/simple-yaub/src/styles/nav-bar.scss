@@ -18,6 +18,7 @@
 
     &:hover {
         text-decoration: line-through;
+        color: v.$active-link-color;
     }
 }
 
@@ -84,6 +85,9 @@ ul {
     }
 }
 
+.nav-bar-icon{
+    color: v.$nav-bar-icon-color;
+}
 body {
     margin: 0;
 }

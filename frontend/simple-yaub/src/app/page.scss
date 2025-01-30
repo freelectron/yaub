@@ -23,8 +23,7 @@ Posts
 }
 .posts-header1 {
     font-family: v.$post-font;
-    font-size: 1rem;
-    font-weight: 50;
+    font-size: 1.2rem;
     margin-top: 5px;
     margin-bottom: 10px; /* Adjust the bottom margin as needed */
     text-align: center; /* Center the text horizontally */
@@ -67,6 +66,13 @@ Posts
     background: v.$card-background-color;
     box-shadow: 0 2px 6px v.$active-link-color;
 }
+.card img {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    float: right;
+    margin-right: 10px;
+}
 .card-link {
     text-decoration: none;
     color: inherit;
@@ -97,7 +103,8 @@ Posts
     font-weight: 200;
     margin-top: 10px;
     margin-bottom: 5px; /* Adjust the bottom margin as needed */
-    text-align: right; /* Center the text horizontally */
+    text-align: left; /* Center the text horizontally */
+    color: v.$description-text-colour;
 }
 .card-body {
     display: flex;

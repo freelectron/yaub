@@ -18,13 +18,13 @@ const NavBar = () => {
 
                 <li>
                     <Link href="/">
-                        <i className="fa fa-newspaper"></i>
+                        <i className="nav-bar-icon fa fa-newspaper"></i>
                         <span className="tooltip">Blog</span>
                     </Link>
                 </li>
                 <li>
                     <Link href="/">
-                        <i className="fa fa-user"></i>
+                        <i className="nav-bar-icon fa fa-user"></i>
                         <span className="tooltip">User</span>
                     </Link>
                 </li>
