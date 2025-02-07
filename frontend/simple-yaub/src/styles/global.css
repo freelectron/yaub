@@ -7,3 +7,33 @@
         margin: 0;
         padding: 0;
 }
+
+
+/* For the login modal */
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.relative {
+    position: relative;
+}
+.bg-opacity-50 {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.shape-login-form {
+    border-radius: 8px;
+}
+.shadow-login-form {
+    box-shadow: 0 4px 10px rgb(71, 66, 66);
+    background-color: #8e7855;
+
+}
+.width-login-form {
+    width: 28rem;
+    height: 30rem;
+}
+
+
