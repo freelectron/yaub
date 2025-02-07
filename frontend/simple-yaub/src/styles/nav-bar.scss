@@ -88,6 +88,11 @@ ul {
 .nav-bar-icon{
     color: v.$nav-bar-icon-color;
 }
+.nav-bar-icon-login-button{
+    background: v.$general-background-color;
+    color: v.$nav-bar-icon-color ;
+}
+
 body {
     margin: 0;
 }

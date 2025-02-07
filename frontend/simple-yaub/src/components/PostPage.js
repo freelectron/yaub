@@ -1,11 +1,13 @@
 "use client";
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+
 import { Comment, handleTextSelection, handleAddComment, addReply } from './Comments';
 import { renderMarkdown } from "./MDRenderer";
 import NavigationBar from "@/components/NavBar";
 
-const PostPage = ({ postContentResponse }) => {
+const PostPage = ({ postContentResponse, session }) => {
     const postContent = postContentResponse || '';
 
     const [selectedText, setSelectedText] = useState('');
@@ -25,6 +27,19 @@ const PostPage = ({ postContentResponse }) => {
             document.removeEventListener('mouseup', handleTextSelectionWrapper);
         };
     }, []);
+
+    if (!session) {
+        return (
+            <div className="empty">
+                <NavigationBar />
+                <div className="post-container">
+                    <div className="post-content">
+                        {renderMarkdown(postContent)}
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="empty">
@@ -68,7 +83,6 @@ const PostPage = ({ postContentResponse }) => {
             </div>
 
         </div>
-
     );
 };
 

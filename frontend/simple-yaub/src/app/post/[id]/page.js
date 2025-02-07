@@ -1,6 +1,9 @@
 import React from 'react';
-import PostPage from '@/components/PostPage';
 import {fetchPostContent} from "@/components/PublicFiles";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+import PostPage from '@/components/PostPage';
 
 import '../../../styles/global.css';
 import '../../../styles/nav-bar.scss';
@@ -11,5 +14,9 @@ export default async function PostPageWrapper({params}) {
     const {id} = await params;
     const postContentResponse = await fetchPostContent(id)
 
-    return <PostPage postContentResponse={postContentResponse}/>;
+    const session = await getServerSession(authOptions);
+
+    return (
+        <PostPage postContentResponse={postContentResponse} session={session}/>
+    );
 }

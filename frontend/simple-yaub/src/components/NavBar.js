@@ -30,8 +30,8 @@ const NavBar = () => {
                         </a>
                     </li>
                     <li>
-                        <button onClick={openLogin} className="nav-bar-icon">
-                            <i className="fa fa-user"></i>
+                        <button onClick={openLogin}>
+                            <i className="nav-bar-icon-login-button fa fa-user"></i>
                             <span className="tooltip">User</span>
                         </button>
                     </li>
