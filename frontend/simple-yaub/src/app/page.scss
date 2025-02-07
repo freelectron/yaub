@@ -13,7 +13,7 @@ Posts
 
 .posts-container {
     height: 80vh;
-    max-width: 150vh;
+    max-width: v.$posts-box-size;
     margin: 0 auto;
     background-color: v.$post-background-color;
     border-radius: 30px;
