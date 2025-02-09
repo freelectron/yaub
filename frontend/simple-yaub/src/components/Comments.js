@@ -79,7 +79,7 @@ const handleAddComment = (
     setComments([...comments, newCommentObject]);
     setNewComment('');
     setSelectedText('');
-    setShowCommentForm(false);
+    setShowCommentForm(true);
 };
 
 // Recursive function to handle reply addition

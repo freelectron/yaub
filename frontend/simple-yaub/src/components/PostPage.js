@@ -13,7 +13,7 @@ const PostPage = ({ postContentResponse, session }) => {
     const [selectedText, setSelectedText] = useState('');
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-    const [showCommentForm, setShowCommentForm] = useState(false);
+    const [showCommentForm, setShowCommentForm] = useState(true);
 
     // Detect selected text
     const handleTextSelectionWrapper = () => handleTextSelection(setSelectedText, setShowCommentForm);
@@ -28,6 +28,7 @@ const PostPage = ({ postContentResponse, session }) => {
         };
     }, []);
 
+    //  If not logged, do not allow commenting
     if (!session) {
         return (
             <div className="empty">
