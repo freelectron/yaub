@@ -1,5 +1,27 @@
 import React, { useState } from 'react';
 
+const parseComments = (rawComments) => {
+    return rawComments.map((rawComment) => {
+        if (!rawComment.Replies || rawComment.Replies.length === 0) {
+         return {
+             id: rawComment.Id,
+             user: rawComment.User,
+             content: rawComment.Content,
+             highlightedText: rawComment.HighlightedText,
+             replies: []
+         };
+        } else {
+            return {
+                id: rawComment.Id,
+                user: rawComment.User,
+                content: rawComment.Content,
+                highlightedText: rawComment.HighlightedText,
+                replies: parseComments(rawComment.Replies)
+            };
+        }
+    });
+}
+
 // Recursive Comment component for rendering comments and threads
 const Comment = ({ comment, addReply }) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
@@ -60,6 +82,7 @@ const handleTextSelection = (setSelectedText, setShowCommentForm) => {
 
 const handleAddComment = (
     e,
+    user,
     comments,
     setComments,
     newComment,
@@ -71,7 +94,7 @@ const handleAddComment = (
     e.preventDefault();
     const newCommentObject = {
         id: comments.length + 1,
-        user: 'User', // Replace with real user in a real app
+        user: user,
         content: newComment,
         highlightedText: selectedText,
         replies: []
@@ -83,7 +106,7 @@ const handleAddComment = (
 };
 
 // Recursive function to handle reply addition
-const addReply = (commentId, replyContent, comments, setComments) => {
+const addReply = (user, commentId, replyContent, comments, setComments) => {
     const addReplyRecursive = (commentsArray) => {
         return commentsArray.map((comment) => {
             if (comment.id === commentId) {
@@ -91,7 +114,7 @@ const addReply = (commentId, replyContent, comments, setComments) => {
                     ...comment,
                     replies: [
                         ...comment.replies,
-                        { id: Date.now(), user: 'User', content: replyContent, highlightedText: '', replies: [] }
+                        { id: Date.now(), user: user, content: replyContent, highlightedText: '', replies: [] }
                     ]
                 };
             }
@@ -107,4 +130,4 @@ const addReply = (commentId, replyContent, comments, setComments) => {
     setComments(addReplyRecursive(comments));
 };
 
-export { handleTextSelection, handleAddComment, addReply, Comment };
+export { handleTextSelection, handleAddComment, addReply, Comment, parseComments};

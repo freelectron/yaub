@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"backend/lib/comments"
 )
 
 type Handler struct{}
@@ -34,7 +36,7 @@ func NewDefaultHandler() *Handler {
 
 func (h *Handler) GetPostsMetaInfo(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	// read json file and return it as a string
-	filePath := filepath.Join("data", "posts", "meta_info.json")
+	filePath := filepath.Join("..", "..", "frontend", "public", "posts", "meta_info.json")
 	content, err := readFileContent(filePath)
 	if err != nil {
 		alog.Error(ctx, "Error reading JSON file: %v", err)
@@ -49,19 +51,20 @@ func (h *Handler) GetPostsMetaInfo(ctx context.Context, w http.ResponseWriter, r
 	w.WriteHeader(http.StatusOK)
 }
 
-func (h *Handler) GetPost(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetPostComments(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	postId := r.URL.Query().Get("postId")
 	if postId == "" {
 		http.Error(w, "Missing postId parameter", http.StatusBadRequest)
 		return
 	}
-	filePath := filepath.Join("data", "posts", postId, "post.md")
-	content, err := readFileContent(filePath)
+
+	content, err := comments.FetchComments(postId)
 	if err != nil {
-		alog.Error(context.Background(), "Error when reading the content %s", err)
+		alog.Error(context.Background(), "Error when fetching comment %s", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
-	if _, err = w.Write([]byte(content)); err != nil {
+
+	if _, err = w.Write(content); err != nil {
 		alog.Error(ctx, "error writing data %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}

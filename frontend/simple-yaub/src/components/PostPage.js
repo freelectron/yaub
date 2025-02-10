@@ -3,22 +3,27 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-import { Comment, handleTextSelection, handleAddComment, addReply } from './Comments';
-import { renderMarkdown } from "./MDRenderer";
+import {Comment, handleTextSelection, handleAddComment, addReply, parseComments} from './Comments';
 import NavigationBar from "@/components/NavBar";
 
-const PostPage = ({ postContentResponse, session }) => {
-    const postContent = postContentResponse || '';
+const PostPage = ({ serverRenderedPost, session, rawComments }) => {
+    const renderedPost = serverRenderedPost || '';
+
+    console.log("rawComments:: ", rawComments);
+
+    const postComments = parseComments(rawComments);
+
+    console.log("postComments:: ", postComments);
 
     const [selectedText, setSelectedText] = useState('');
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(postComments);
     const [newComment, setNewComment] = useState('');
     const [showCommentForm, setShowCommentForm] = useState(true);
 
     // Detect selected text
     const handleTextSelectionWrapper = () => handleTextSelection(setSelectedText, setShowCommentForm);
-    const handleAddCommentWrapper = (e) => handleAddComment(e, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm);
-    const addReplyWrapper = (commentId, replyContent) => addReply(commentId, replyContent, comments, setComments);
+    const handleAddCommentWrapper = (e) => handleAddComment(e, session.user.name, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm);
+    const addReplyWrapper = (commentId, replyContent) => addReply(session.user.name, commentId, replyContent, comments, setComments);
 
     // Listen for text selection
     useEffect(() => {
@@ -35,7 +40,7 @@ const PostPage = ({ postContentResponse, session }) => {
                 <NavigationBar />
                 <div className="post-container">
                     <div className="post-content">
-                        {renderMarkdown(postContent)}
+                        {renderedPost}
                     </div>
                 </div>
             </div>
@@ -43,47 +48,51 @@ const PostPage = ({ postContentResponse, session }) => {
     }
 
     return (
+        <>
         <div className="empty">
             <NavigationBar />
             <div className="post-container">
                 <div className="post-content">
-                    {renderMarkdown(postContent)}
+                    {renderedPost}
                 </div>
-
-                {/* Comment Form */}
-                {showCommentForm && (
-                    <form onSubmit={handleAddCommentWrapper} className="comment-form">
-                        <h5>Comment on: "{selectedText}"</h5>
-                        <div className="form-group">
-                            <textarea
-                                className="form-control"
-                                rows="3"
-                                placeholder="Write your comment here..."
-                                value={newComment}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            />
-                        </div>
-                        <button type="submit" className="btn primary-btn">Add Comment</button>
-                        <button type="button" className="btn secondary-btn" onClick={() => setShowCommentForm(false)}>
-                            Cancel
-                        </button>
-                    </form>
-                )}
-
-                {/* Comments Section */}
-                <h4>Comments</h4>
-                {comments.length === 0 ? (
-                    <p>No comments yet. Highlight some text to add a comment!</p>
-                ) : (
-                    comments.map((comment) => (
-                        <Comment key={comment.id} comment={comment} addReply={addReplyWrapper} />
-                    ))
-                )}
-
-                <Link href="/" className="btn back-btn">Back to Blog</Link>
             </div>
-
         </div>
+
+        <div className="empty">
+            {/* Comment Form */}
+            {showCommentForm && (
+                <form onSubmit={handleAddCommentWrapper} className="comment-form">
+                    <h5>Comment on: "{selectedText}"</h5>
+                    <div className="form-group">
+                        <textarea
+                            className="form-control"
+                            rows="3"
+                            placeholder="Write your comment here..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                    </div>
+                    <button type="submit" className="btn primary-btn">Add Comment</button>
+                    <button type="button" className="btn secondary-btn" onClick={() => setShowCommentForm(false)}>
+                        Cancel
+                    </button>
+                </form>
+            )}
+
+            {/* Comments Section */}
+            <h4>Comments</h4>
+            {comments.length === 0 ? (
+                <p>No comments yet. Highlight some text to add a comment!</p>
+            ) : (
+                comments.map((comment) => (
+                    console.log("LOGGING:: ", comment.id),
+                    <Comment key={comment.id} comment={comment} addReply={addReplyWrapper} />
+                ))
+            )}
+
+            <Link href="/" className="btn back-btn">Back to Blog</Link>
+        </div>
+    </>
     );
 };
 

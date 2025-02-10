@@ -9,14 +9,21 @@ import '../../../styles/global.css';
 import '../../../styles/nav-bar.scss';
 import '../../../styles/footer.scss';
 import './page.scss';
+import {renderMarkdown} from "@/components/MDRenderer";
+import {fetchPostComments} from "@/components/CommentsBackend";
 
 export default async function PostPageWrapper({params}) {
     const {id} = await params;
     const postContentResponse = await fetchPostContent(id)
+    const postContent = postContentResponse || '';
+    const renderedPost = renderMarkdown(postContent);
 
     const session = await getServerSession(authOptions);
 
+    // Fetch and parse comments from backend
+    const comments =  await fetchPostComments(id);
+
     return (
-        <PostPage postContentResponse={postContentResponse} session={session}/>
+        <PostPage serverRenderedPost={renderedPost} session={session} rawComments = {comments}/>
     );
 }

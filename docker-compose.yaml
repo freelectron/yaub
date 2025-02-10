@@ -26,8 +26,8 @@ services:
     container_name: mongodb
     hostname: mongodb
     volumes:
-      - mongodb-data:/data/db/
-      - mongodb-log:/var/log/mongodb/
+      - ${MONGODB_DATA}:/data/db/
+      - ${MONGODB_LOGS}:/var/log/mongodb/
     env_file:
       - .env
     environment:
@@ -55,14 +55,6 @@ services:
       - mongodb_network
     depends_on:
       - mongodb
-
-volumes:
-  mongodb-data:
-    driver: local
-    #ToDo: specify local directory
-  mongodb-log:
-    #ToDo: specify local directory
-    driver: local
 
 networks:
   mongodb_network:
