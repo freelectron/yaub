@@ -8,12 +8,7 @@ import NavigationBar from "@/components/NavBar";
 
 const PostPage = ({ serverRenderedPost, session, rawComments }) => {
     const renderedPost = serverRenderedPost || '';
-
-    console.log("rawComments:: ", rawComments);
-
     const postComments = parseComments(rawComments);
-
-    console.log("postComments:: ", postComments);
 
     const [selectedText, setSelectedText] = useState('');
     const [comments, setComments] = useState(postComments);

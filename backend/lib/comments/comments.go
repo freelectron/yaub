@@ -17,6 +17,8 @@ type Comment struct {
 
 func FetchComments(postId string) ([]byte, error) {
 	alog.Info(context.Background(), "Simulate a comments fetch for post %s", postId)
+
+	// ToDo: replace with a call to the database
 	comments := []Comment{
 		{
 			Id:              "1212",
@@ -44,9 +46,6 @@ func FetchComments(postId string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error marshalling comments: %w", err)
 	}
-
-	fmt.Println()
-	fmt.Println("===================== FetchComments =====================", string(b))
 
 	return b, nil
 }
