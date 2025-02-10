@@ -80,7 +80,6 @@ const PostPage = ({ serverRenderedPost, session, rawComments }) => {
                 <p>No comments yet. Highlight some text to add a comment!</p>
             ) : (
                 comments.map((comment) => (
-                    console.log("LOGGING:: ", comment.id),
                     <Comment key={comment.id} comment={comment} addReply={addReplyWrapper} />
                 ))
             )}

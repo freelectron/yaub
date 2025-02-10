@@ -5,7 +5,8 @@ import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for 
 import rehypeRaw from 'rehype-raw'
 
 const renderMarkdown = (MarkdownContent) => {
-    console.log(`renderMarkdown is called at ${new Date().toLocaleString()}..`);
+    // This is slow/costly operation, remove logging later
+    console.log(`Render raw post to string ${new Date().toLocaleString()}..`);
     return (
         <Markdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex, rehypeRaw]}>
             {MarkdownContent}
