@@ -8,11 +8,11 @@ import (
 )
 
 type Comment struct {
-	Id              string    `json:"Id"`
-	User            string    `json:"User"`
-	Content         string    `json:"Content"`
-	HighlightedText string    `json:"HighlightedText"`
-	Replies         []Comment `json:"Replies"`
+	Id              string    `bson:"Id"`
+	User            string    `bson:"User"`
+	Content         string    `bson:"Content"`
+	HighlightedText string    `bson:"HighlightedText"`
+	Replies         []Comment `bson:"Replies"`
 }
 
 func FetchComments(postId string) ([]byte, error) {
