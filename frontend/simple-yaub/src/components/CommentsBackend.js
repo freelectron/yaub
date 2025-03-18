@@ -1,6 +1,7 @@
 
 const fetchPostComments = async (postId) => {
-    const response = await fetch(`http://localhost:3001/api/get_comments?postId=${postId}`);
+    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const response = await fetch(`${backendURL}/api/get_comments?postId=${postId}`);
     return await response.json();
 }
 

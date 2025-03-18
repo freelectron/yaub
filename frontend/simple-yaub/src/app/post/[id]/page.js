@@ -15,8 +15,7 @@ import {fetchPostComments} from "@/components/CommentsBackend";
 export default async function PostPageWrapper({params}) {
     const {id} = await params;
     const postContentResponse = await fetchPostContent(id)
-    const postContent = postContentResponse || '';
-    const renderedPost = renderMarkdown(postContent);
+    const renderedPost = renderMarkdown(postContentResponse);
 
     const session = await getServerSession(authOptions);
 

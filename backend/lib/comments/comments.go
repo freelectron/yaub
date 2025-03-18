@@ -54,7 +54,7 @@ func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) 
 
 	results, err := dbClient.GetPostComments(ctx, postId)
 
-	jsonString, err := bsonToJSONStringToBytes(results)
+	jsonString, err := bsonToJSONBytes(results)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse the output from mongodb: %w", err)
 	}

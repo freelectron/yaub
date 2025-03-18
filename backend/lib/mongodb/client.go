@@ -35,7 +35,7 @@ func newMongoClient(user, pass, addr string, port int, database string) (Client,
 func New() (Client, error) {
 	user := os.Getenv("MONGO_DB_USERNAME")
 	pass := os.Getenv("MONGO_DB_PASSWORD")
-	addr := "mongodb"
+	addr := os.Getenv("MONGO_DB_ADDR")
 	port := 27017
 	db := "prod-blog"
 

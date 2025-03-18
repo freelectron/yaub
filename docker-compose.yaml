@@ -12,12 +12,17 @@ services:
     environment:
       MONGO_DB_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_DB_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_DB_ADDR: "mongodb"
+
   nextjs:
     build:
       context: ./frontend/simple-yaub
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: http://backend:3001
+
   nginx:
     restart: unless-stopped
     build:
