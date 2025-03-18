@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 
 const parseComments = (rawComments) => {
-    return rawComments.map((rawComment) => {
-        if (!rawComment.Replies || rawComment.Replies.length === 0) {
-         return {
-             id: rawComment.Id,
-             user: rawComment.User,
-             content: rawComment.Content,
-             highlightedText: rawComment.HighlightedText,
-             replies: []
-         };
-        } else {
-            return {
-                id: rawComment.Id,
-                user: rawComment.User,
-                content: rawComment.Content,
-                highlightedText: rawComment.HighlightedText,
-                replies: parseComments(rawComment.Replies)
-            };
-        }
-    });
-}
+    if (!rawComments || rawComments.length === 0) {
+        return [];
+    }
+    return rawComments.map((rawComment) => ({
+        id: rawComment.Id,
+        user: rawComment.User,
+        content: rawComment.Content,
+        highlightedText: rawComment.HighlightedText,
+        replies: parseComments(rawComment.Replies)
+    }));
+};
 
 // Recursive Comment component for rendering comments and threads
 const Comment = ({ comment, addReply }) => {
