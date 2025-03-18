@@ -1,6 +1,7 @@
 package webserver
 
 import (
+	"backend/webserver/handlers"
 	"context"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -15,7 +16,6 @@ type WebService struct {
 	Host       string
 	Port       int
 	Name       string
-	Handler    *Handler
 	HttpServer http.Server
 	Router     *mux.Router
 }
@@ -27,7 +27,6 @@ func NewDefaultWebService() *WebService {
 	router := mux.NewRouter()
 	baseCtx, _ := context.WithCancel(context.Background())
 
-	// Configure CORS
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
@@ -36,11 +35,10 @@ func NewDefaultWebService() *WebService {
 	})
 
 	return &WebService{
-		Host:    host,
-		Port:    port,
-		Name:    "Web Server for the Blog's API",
-		Handler: NewDefaultHandler(),
-		Router:  router,
+		Host:   host,
+		Port:   port,
+		Name:   "Web Server for the Blog's API",
+		Router: router,
 		HttpServer: http.Server{
 			Addr:    fmt.Sprintf("%s:%d", host, port),
 			Handler: c.Handler(router),
@@ -51,6 +49,6 @@ func NewDefaultWebService() *WebService {
 	}
 }
 
-func (s *WebService) RegisterRoute(method, url string, f HandlerFunc) {
-	s.Router.Methods(method).Path(url).HandlerFunc(HandlerWithContext(f))
+func (s *WebService) RegisterRoute(method, url string, f handlers.HandlerFunc) {
+	s.Router.Methods(method).Path(url).HandlerFunc(handlers.HandlerWithContext(f))
 }

@@ -2,9 +2,11 @@ package comments
 
 import (
 	"backend/alog"
+	"backend/lib/mongodb"
 	"context"
 	"encoding/json"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Comment struct {
@@ -15,37 +17,67 @@ type Comment struct {
 	Replies         []Comment `bson:"Replies"`
 }
 
-func FetchComments(postId string) ([]byte, error) {
-	alog.Info(context.Background(), "Simulate a comments fetch for post %s", postId)
-
-	// ToDo: replace with a call to the database
-	comments := []Comment{
-		{
-			Id:              "1212",
+func PostComments(ctx context.Context, dbClient mongodb.Client, postId string) error {
+	comments := []interface{}{
+		Comment{
+			Id:              "1",
 			User:            "1221",
 			Content:         "This is a comment",
 			HighlightedText: "highlighted text",
 			Replies: []Comment{
 				{
-					Id:      "1213",
+					Id:      "2",
 					User:    "1222",
 					Content: "This is a reply",
 				},
 			},
 		},
-		{
-			Id:              "1214",
+		Comment{
+			Id:              "3",
 			User:            "1221",
 			Content:         "Another comment",
 			HighlightedText: "another highlighted text",
-			Replies:         nil,
+			Replies:         []Comment{},
 		},
 	}
 
-	b, err := json.Marshal(comments)
+	err := dbClient.PostComments(ctx, postId, comments)
 	if err != nil {
-		return nil, fmt.Errorf("error marshalling comments: %w", err)
+		return fmt.Errorf("error posting comments: %w", err)
 	}
 
-	return b, nil
+	return nil
+}
+
+func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) ([]byte, error) {
+	alog.Info(context.Background(), "Simulate a comments fetch for post %s", postId)
+
+	results, err := dbClient.GetPostComments(ctx, postId)
+
+	jsonString, err := bsonToJSONStringToBytes(results)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse the output from mongodb: %w", err)
+	}
+
+	return jsonString, nil
+}
+
+func bsonToJSONStringToBytes(data []bson.M) ([]byte, error) {
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling BSON to JSON: %w", err)
+	}
+	bytesData, err := json.Marshal(string(jsonData))
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling BSON to JSON: %w", err)
+	}
+	return bytesData, nil
+}
+
+func bsonToJSONBytes(data []bson.M) ([]byte, error) {
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		return nil, fmt.Errorf("error marshalling BSON to JSON: %w", err)
+	}
+	return jsonData, nil
 }

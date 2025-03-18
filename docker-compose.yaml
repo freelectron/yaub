@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - mongodb_network
+    environment:
+      MONGO_DB_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_DB_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
   nextjs:
     build:
       context: ./frontend/simple-yaub
