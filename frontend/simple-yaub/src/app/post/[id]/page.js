@@ -23,6 +23,6 @@ export default async function PostPageWrapper({params}) {
     const comments =  await fetchPostComments(id);
 
     return (
-        <PostPage serverRenderedPost={renderedPost} session={session} rawComments = {comments}/>
+        <PostPage postId={id} serverRenderedPost={renderedPost} session={session} rawComments = {comments}/>
     );
 }

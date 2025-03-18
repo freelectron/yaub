@@ -13,6 +13,7 @@ import (
 type Client interface {
 	GetPostComments(ctx context.Context, postId string) ([]bson.M, error)
 	PostComments(ctx context.Context, postId string, comments []interface{}) error
+	PostComment(ctx context.Context, postId string, comment interface{}) error
 }
 
 type mongoClient struct {
@@ -54,6 +55,18 @@ func (c *mongoClient) PostComments(ctx context.Context, postId string, comments 
 	}
 
 	return nil
+}
+
+func (c *mongoClient) PostComment(ctx context.Context, postId string, comment interface{}) error {
+	collection := c.client.Database(c.database).Collection(postId)
+
+	_, err := collection.InsertOne(ctx, comment)
+	if err != nil {
+		return fmt.Errorf("failed to insert comment: %w", err)
+	}
+
+	return nil
+
 }
 
 func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bson.M, error) {

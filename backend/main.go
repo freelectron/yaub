@@ -2,7 +2,6 @@ package main
 
 import (
 	"backend/alog"
-	"backend/lib/comments"
 	"backend/lib/mongodb"
 	"backend/webserver"
 	"backend/webserver/handlers"
@@ -22,10 +21,11 @@ func main() {
 	}
 
 	commentsHandler := handlers.NewDefaultCHandler(mongoDB)
-	svc.RegisterRoute("GET", "/api/get_comments", commentsHandler.GetPostComments)
+	svc.RegisterRoute("GET", "/api/get_comments", commentsHandler.GetComments)
+	svc.RegisterRoute("POST", "/api/post_comment", commentsHandler.PostComment)
 
 	// Run
-	err = comments.PostComments(sysCtx, mongoDB, "svd")
+	//err = comments.PostCommentsTest(sysCtx, mongoDB, "svd")
 	fmt.Println("Error: ", err)
 
 	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())

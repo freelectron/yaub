@@ -7,33 +7,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"io"
 )
 
 type Comment struct {
-	Id              string    `bson:"Id"`
+	Id              int       `bson:"_id"`
 	User            string    `bson:"User"`
 	Content         string    `bson:"Content"`
 	HighlightedText string    `bson:"HighlightedText"`
 	Replies         []Comment `bson:"Replies"`
 }
 
-func PostComments(ctx context.Context, dbClient mongodb.Client, postId string) error {
+func PostCommentsTest(ctx context.Context, dbClient mongodb.Client, postId string) error {
 	comments := []interface{}{
 		Comment{
-			Id:              "1",
+			Id:              1,
 			User:            "1221",
 			Content:         "This is a comment",
 			HighlightedText: "highlighted text",
 			Replies: []Comment{
 				{
-					Id:      "2",
+					Id:      2,
 					User:    "1222",
 					Content: "This is a reply",
 				},
 			},
 		},
 		Comment{
-			Id:              "3",
+			Id:              3,
 			User:            "1221",
 			Content:         "Another comment",
 			HighlightedText: "another highlighted text",
@@ -47,6 +48,21 @@ func PostComments(ctx context.Context, dbClient mongodb.Client, postId string) e
 	}
 
 	return nil
+}
+
+func AddComment(ctx context.Context, dbClient mongodb.Client, postId string, commentResponseBody io.ReadCloser) error {
+	var comment Comment
+	if err := json.NewDecoder(commentResponseBody).Decode(&comment); err != nil {
+		return fmt.Errorf("error decoding comment: %w", err)
+	}
+
+	err := dbClient.PostComment(ctx, postId, comment)
+	if err != nil {
+		return fmt.Errorf("error adding comment: %w", err)
+	}
+
+	return nil
+
 }
 
 func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) ([]byte, error) {

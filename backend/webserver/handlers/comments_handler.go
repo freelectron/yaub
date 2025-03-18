@@ -16,7 +16,7 @@ func NewDefaultCHandler(dbClient mongodb.Client) *CHandler {
 	return &CHandler{dbClient: dbClient}
 }
 
-func (h *CHandler) GetPostComments(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+func (h *CHandler) GetComments(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	postId := r.URL.Query().Get("postId")
 	if postId == "" {
 		http.Error(w, "Missing postId parameter", http.StatusBadRequest)
@@ -34,4 +34,20 @@ func (h *CHandler) GetPostComments(ctx context.Context, w http.ResponseWriter, r
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func (h *CHandler) PostComment(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	postId := r.URL.Query().Get("postId")
+	if postId == "" {
+		http.Error(w, "Missing postId parameter", http.StatusBadRequest)
+		return
+	}
+
+	if err := comments.AddComment(ctx, h.dbClient, postId, r.Body); err != nil {
+		alog.Error(ctx, "Error saving comment: %v", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
 }

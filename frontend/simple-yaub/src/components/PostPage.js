@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {Comment, handleTextSelection, handleAddComment, addReply, parseComments} from './Comments';
 import NavigationBar from "@/components/NavBar";
 
-const PostPage = ({ serverRenderedPost, session, rawComments }) => {
+const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
     const renderedPost = serverRenderedPost || '';
     const postComments = parseComments(rawComments);
 
@@ -14,10 +14,11 @@ const PostPage = ({ serverRenderedPost, session, rawComments }) => {
     const [comments, setComments] = useState(postComments);
     const [newComment, setNewComment] = useState('');
     const [showCommentForm, setShowCommentForm] = useState(true);
+    const [currentCommentsLength, setCurrentCommentsLength] = useState(comments.length);
 
     // Detect selected text
     const handleTextSelectionWrapper = () => handleTextSelection(setSelectedText, setShowCommentForm);
-    const handleAddCommentWrapper = (e) => handleAddComment(e, session.user.name, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm);
+    const handleAddCommentWrapper = (e) => handleAddComment(e, session.user.name, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm, postId, currentCommentsLength, setCurrentCommentsLength);
     const addReplyWrapper = (commentId, replyContent) => addReply(session.user.name, commentId, replyContent, comments, setComments);
 
     // Listen for text selection

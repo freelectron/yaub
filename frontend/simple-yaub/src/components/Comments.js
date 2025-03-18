@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import {postPostComment} from "@/components/CommentsBackend";
 
 const parseComments = (rawComments) => {
     if (!rawComments || rawComments.length === 0) {
         return [];
     }
     return rawComments.map((rawComment) => ({
-        id: rawComment.Id,
+        id: rawComment._id,
         user: rawComment.User,
         content: rawComment.Content,
         highlightedText: rawComment.HighlightedText,
@@ -71,7 +72,7 @@ const handleTextSelection = (setSelectedText, setShowCommentForm) => {
     }
 };
 
-const handleAddComment = (
+const handleAddComment = async (
     e,
     user,
     comments,
@@ -80,16 +81,22 @@ const handleAddComment = (
     setNewComment,
     selectedText,
     setSelectedText,
-    setShowCommentForm
+    setShowCommentForm,
+    postId,
+    currentCommentsLength,
+    setCurrentCommentsLength
 ) => {
     e.preventDefault();
+    setCurrentCommentsLength(currentCommentsLength + 1);
     const newCommentObject = {
-        id: comments.length + 1,
+        id: currentCommentsLength + 1,
         user: user,
         content: newComment,
         highlightedText: selectedText,
         replies: []
     };
+    // send post request to backend to save the comment
+    await postPostComment(postId, newCommentObject).then(r => console.log(r));
     setComments([...comments, newCommentObject]);
     setNewComment('');
     setSelectedText('');
