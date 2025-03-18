@@ -21,8 +21,8 @@ func main() {
 		alog.Fatal(sysCtx, "Error connecting to mongodb: ", err)
 	}
 
-	postHandler := handlers.NewDefaultCHandler(mongoDB)
-	svc.RegisterRoute("GET", "/api/get_comments", postHandler.GetPostComments) //http://localhost:3001/api/get_comments?postId=svd
+	commentsHandler := handlers.NewDefaultCHandler(mongoDB)
+	svc.RegisterRoute("GET", "/api/get_comments", commentsHandler.GetPostComments)
 
 	// Run
 	err = comments.PostComments(sysCtx, mongoDB, "svd")

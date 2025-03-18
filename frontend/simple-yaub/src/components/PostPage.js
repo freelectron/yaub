@@ -41,7 +41,6 @@ const PostPage = ({ serverRenderedPost, session, rawComments }) => {
             </div>
         )
     }
-
     return (
         <>
         <div className="empty">
