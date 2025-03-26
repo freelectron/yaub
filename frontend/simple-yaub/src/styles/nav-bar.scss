@@ -2,11 +2,19 @@
 
 .sidebar-navigation {
     display: flex;
+    justify-content: center; // Center the navigation bar
+    align-items: center;
     top: 0;
     width: 100%;
+    max-width: v.$posts-box-size; // Match the max-width of the posts container
+    margin: 0 auto 20px auto; // Center the navigation bar horizontally and add bottom margin
     z-index: 1000;
     position: relative;
-    padding: 10px 20px;
+    padding: 20px; // Match the padding of the posts container
+    border-bottom: 2px solid black; // Add a bottom border
+    background-color: v.$post-background-color; // Match the background color of the posts container
+    border-radius: 30px; // Match the border radius of the posts container
+    box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1); // Match the box shadow of the posts container
 }
 
 .logo {
@@ -14,7 +22,7 @@
     font-size: 30px;
     letter-spacing: 0.1em;
     color: v.$logo-background-color;
-    margin: auto 0vw; // Pushes the navigation to the right
+    margin: 0 20px; // Adjust margin for centering
 
     &:hover {
         text-decoration: line-through;
@@ -25,7 +33,7 @@
 .logo-image {
     display: flex;
     justify-content: center;
-    margin: auto 40vmax; // Pushes the navigation to the right
+    margin: 0 20px; // Adjust margin for centering
     img {
         width: 50px;
         height: 50px;
@@ -43,7 +51,7 @@ ul {
     align-items: center;
     padding: 0;
     list-style: none;
-    margin: auto -2vw ; // Pushes the navigation to the right
+    margin: 0; // Remove margin to center
 
     li {
         display: flex;
@@ -85,12 +93,13 @@ ul {
     }
 }
 
-.nav-bar-icon{
+.nav-bar-icon {
     color: v.$nav-bar-icon-color;
 }
-.nav-bar-icon-login-button{
-    background: v.$general-background-color;
-    color: v.$nav-bar-icon-color ;
+
+.nav-bar-icon-login-button {
+    background: v.$post-background-color;
+    color: v.$nav-bar-icon-color;
 }
 
 body {

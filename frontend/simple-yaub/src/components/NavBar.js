@@ -15,9 +15,9 @@ const NavBar = () => {
             {/* Navigation Bar */}
             <nav className="sidebar-navigation">
                 <ul>
-                    <div className="logo">
-                        <span>yaBlo</span>
-                    </div>
+                    {/*<div className="logo">*/}
+                    {/*    <span>yaBlo</span>*/}
+                    {/*</div>*/}
 
                     <div className="logo-image img">
                         <img src="/favicon.svg" alt="Logo" />
