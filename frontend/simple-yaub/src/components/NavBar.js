@@ -15,21 +15,13 @@ const NavBar = () => {
             {/* Navigation Bar */}
             <nav className="sidebar-navigation">
                 <ul>
-                    {/*<div className="logo">*/}
-                    {/*    <span>yaBlo</span>*/}
-                    {/*</div>*/}
-
-                    <div className="logo-image img">
-                        <img src="/favicon.svg" alt="Logo" />
-                    </div>
-
-                    <li>
+                    <li className="nav-item">
                         <a href="/">
                             <i className="nav-bar-icon fa fa-newspaper"></i>
                             <span className="tooltip">Blog</span>
                         </a>
                     </li>
-                    <li>
+                    <li className="nav-item">
                         <button onClick={openLogin}>
                             <i className="nav-bar-icon-login-button fa fa-user"></i>
                             <span className="tooltip">User</span>
@@ -51,7 +43,7 @@ const NavBar = () => {
                         <motion.div
                             className="bg-white shape-login-form shadow-login-form width-login-form relative"
                             initial={{ y: "0", opacity: 0 }}
-                            animate={{ y: "50%", x: "50%",opacity: 1 }}
+                            animate={{ y: "50%", x: "50%", opacity: 1 }}
                             exit={{ y: "0", opacity: 0 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
@@ -62,7 +54,6 @@ const NavBar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-
         </div>
     );
 };

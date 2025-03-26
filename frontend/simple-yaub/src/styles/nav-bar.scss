@@ -2,7 +2,7 @@
 
 .sidebar-navigation {
     display: flex;
-    justify-content: center; // Center the navigation bar
+    justify-content: space-between; // Space out the elements
     align-items: center;
     top: 0;
     width: 100%;
@@ -17,78 +17,49 @@
     box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1); // Match the box shadow of the posts container
 }
 
-.logo {
-    font-family: v.$logo-font;
-    font-size: 30px;
-    letter-spacing: 0.1em;
-    color: v.$logo-background-color;
-    margin: 0 20px; // Adjust margin for centering
-
-    &:hover {
-        text-decoration: line-through;
-        color: v.$active-link-color;
-    }
-}
-
-.logo-image {
-    display: flex;
-    justify-content: center;
-    margin: 0 20px; // Adjust margin for centering
-    img {
-        width: 50px;
-        height: 50px;
-        transition: all 0.3s ease;
-    }
-    &:hover {
-        img {
-            transform: rotate(360deg);
-        }
-    }
-}
-
 ul {
+    margin: 0 auto 0; // Center horizontally and move right
     display: flex;
     align-items: center;
     padding: 0;
     list-style: none;
-    margin: 0; // Remove margin to center
+}
 
-    li {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 15px;
-        height: 100%;
-        cursor: pointer;
-        transition: all ease-out 120ms;
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 50px;
+    height: 100%;
+    cursor: pointer;
+    transition: all ease-out 120ms;
 
-        i {
-            font-size: 24px;
-            transition: all ease 450ms;
-        }
+    i {
+        font-size: 24px;
+        transition: all ease 450ms;
+    }
 
+    .tooltip {
+        display: inline-block;
+        position: absolute;
+        padding: 8px 15px;
+        border-radius: 3px;
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        visibility: hidden;
+    }
+
+    &:hover {
         .tooltip {
-            display: inline-block;
-            position: absolute;
-            padding: 8px 15px;
-            border-radius: 3px;
-            bottom: -35px;
-            left: 50%;
-            transform: translateX(-50%);
             visibility: hidden;
+            opacity: 1;
         }
 
-        &:hover {
-            .tooltip {
-                visibility: hidden;
-                opacity: 1;
-            }
-
-            opacity: 0.8;
-            i {
-                font-size: 28px; // Enlarge icon on hover
-                color: v.$active-link-color;
-            }
+        opacity: 0.8;
+        i {
+            font-size: 28px; // Enlarge icon on hover
+            color: v.$active-link-color;
         }
     }
 }
