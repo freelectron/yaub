@@ -11,26 +11,24 @@ const NavBar = () => {
     const closeLogin = () => setShowLogin(false);
 
     return (
-        <div>
-            {/* Navigation Bar */}
-            <nav className="sidebar-navigation">
-                <ul>
-                    <li className="nav-item">
-                        <a href="/">
-                            <i className="nav-bar-icon fa fa-newspaper"></i>
-                            <span className="tooltip">Blog</span>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <button onClick={openLogin}>
-                            <i className="nav-bar-icon-login-button fa fa-user"></i>
-                            <span className="tooltip">User</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-
-            {/* Animated Login Modal */}
+        <nav className="sidebar-navigation">
+            <div className="logo-image">
+                <img src="/icon_yablo.png" alt="Yablo Logo" />
+            </div>
+            <ul>
+                <li className="nav-item">
+                    <a href="/">
+                        <i className="nav-bar-icon fa fa-newspaper"></i>
+                        <span className="tooltip">Blog</span>
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <button onClick={openLogin}>
+                        <i className="nav-bar-icon-login-button fa fa-user"></i>
+                        <span className="tooltip">User</span>
+                    </button>
+                </li>
+            </ul>
             <AnimatePresence>
                 {showLogin && (
                     <motion.div
@@ -46,7 +44,7 @@ const NavBar = () => {
                             animate={{ y: "50%", x: "50%", opacity: 1 }}
                             exit={{ y: "0", opacity: 0 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
-                            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+                            onClick={(e) => e.stopPropagation()}
                         >
                             <h2 className="text-2xl font-bold mb-4">Login</h2>
                             <LoginForm onClose={closeLogin} />
@@ -54,7 +52,7 @@ const NavBar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </nav>
     );
 };
 

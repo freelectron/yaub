@@ -2,23 +2,37 @@
 
 .sidebar-navigation {
     display: flex;
-    justify-content: space-between; // Space out the elements
     align-items: center;
+    justify-content: space-between;
     top: 0;
     width: 100%;
-    max-width: v.$posts-box-size; // Match the max-width of the posts container
-    margin: 0 auto 20px auto; // Center the navigation bar horizontally and add bottom margin
+    max-width: v.$posts-box-size;
+    margin: 0 auto 10px auto;
     z-index: 1000;
     position: relative;
-    padding: 20px; // Match the padding of the posts container
-    border-bottom: 1px solid black; // Add a bottom border
-    background-color: v.$post-background-color; // Match the background color of the posts container
-    border-radius: 30px; // Match the border radius of the posts container
-    box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1); // Match the box shadow of the posts container
+    padding: 20px;
+    border-bottom: 1px solid black;
+    background-color: v.$post-background-color;
+    border-radius: 30px;
+    box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
+}
+
+.logo-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+}
+
+.logo-image img {
+    height: 40px;
+    width: 120px;
+    display: block;
 }
 
 ul {
-    margin: 0 auto 0; // Center horizontally and move right
+    margin-left: auto;
     display: flex;
     align-items: center;
     padding: 0;
@@ -29,7 +43,7 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 50px;
+    padding: 0 10px;
     height: 100%;
     cursor: pointer;
     transition: all ease-out 120ms;
@@ -71,8 +85,4 @@ ul {
 .nav-bar-icon-login-button {
     background: v.$post-background-color;
     color: v.$nav-bar-icon-color;
-}
-
-body {
-    margin: 0;
 }
