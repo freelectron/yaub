@@ -12,10 +12,11 @@ const NavBar = () => {
 
     return (
         <nav className="sidebar-navigation">
+            <div className="nav-left"></div>
             <div className="logo-image">
                 <img src="/icon_yablo.png" alt="Yablo Logo" />
             </div>
-            <ul>
+            <ul className="nav-right">
                 <li className="nav-item">
                     <a href="/">
                         <i className="nav-bar-icon fa fa-newspaper"></i>

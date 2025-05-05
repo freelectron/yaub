@@ -3,7 +3,7 @@
 .sidebar-navigation {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     top: 0;
     width: 100%;
     max-width: v.$posts-box-size;
@@ -17,18 +17,31 @@
     box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
 }
 
+.nav-left {
+    flex: 1;
+}
+
 .logo-image {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
-    height: 100%;
+    flex: 0 0 auto;
 }
 
 .logo-image img {
     height: 40px;
     width: 120px;
     display: block;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    margin-left: 0;
+    padding: 0;
+    list-style: none;
 }
 
 ul {
