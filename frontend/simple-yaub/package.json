@@ -21,6 +21,9 @@
     "remark-math": "^6.0.0"
   },
   "devDependencies": {
-    "sass": "^1.81.0"
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "sass": "^1.81.0",
+    "typescript": "^5.8.3"
   }
 }

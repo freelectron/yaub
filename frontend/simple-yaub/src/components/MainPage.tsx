@@ -4,7 +4,23 @@ import Link from 'next/link';
 import NavigationBar from "./NavBar";
 import Footer from "@/components/Footer";
 
-const getUniqueTags = (posts) => {
+interface Post {
+    id: string;
+    title: string;
+    date: string;
+    author: string;
+    content: string;
+    iconImage: string;
+    tags: string[];
+}
+
+interface MainPageProps {
+    defaultPostsMetaInfo?: {
+        posts: Post[];
+    };
+}
+
+const getUniqueTags = (posts: Post[]): string[] => {
     if (posts && Array.isArray(posts)) {
         const uniqueTags = new Set(["All"]);
         posts.forEach(post => {
@@ -19,7 +35,7 @@ const getUniqueTags = (posts) => {
     return [];
 };
 
-const MainPage = ({ defaultPostsMetaInfo }) => {
+const MainPage: React.FC<MainPageProps> = ({ defaultPostsMetaInfo }) => {
     const posts = defaultPostsMetaInfo?.posts || [];
     const availableTags = getUniqueTags(posts);
 
