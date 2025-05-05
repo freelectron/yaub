@@ -75,8 +75,9 @@ Posts
 .card img {
     width: 80px;
     height: 80px;
-    margin: 5px;
+    margin: 0 auto; /* Center horizontally */
     object-fit: cover;
+    display: block;
 }
 .card-link {
     text-decoration: none;
@@ -87,7 +88,6 @@ Posts
     transform: translateY(-3px);
     box-shadow: 0 8px 10px v.$active-link-color;
     border: 5px solid v.$card-background-color;
-    //background: v.$active-link-color;
 }
 /* Make sure the text color doesn't change on hover */
 .card-link:hover .card-title,
