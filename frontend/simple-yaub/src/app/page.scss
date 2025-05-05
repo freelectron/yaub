@@ -12,14 +12,13 @@ Posts
 */
 
 .posts-container {
-    height: 80vh;
+    min-height: 50vh;
     max-width: v.$posts-box-size;
     margin: 0 auto;
     background-color: v.$post-background-color;
     border-radius: 30px;
-    padding: 20px;
+    padding: 1px;
     box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
-    min-height: 100vh;
 }
 .posts-header1 {
     font-family: v.$post-font;
@@ -30,7 +29,7 @@ Posts
 }
 .button-group.center {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     justify-content: center;
 }
 .filter-button {
@@ -52,26 +51,32 @@ Posts
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
+    padding: 20px;
 }
 .col {
-    flex: 0 0 33.3333%;
-    max-width: 33.3333%;
-    padding: 5px;
+    flex: none;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    margin: 0;
 }
-
 .card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 250px;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
     border: 5px solid v.$card-background-color;
     background: v.$card-background-color;
     box-shadow: 0 2px 6px v.$active-link-color;
+    margin: 0;
 }
 .card img {
-    width: 100px;
-    height: 100px;
-    position: relative;
-    float: right;
-    margin-right: 10px;
+    width: 80px;
+    height: 80px;
+    margin: 5px;
+    object-fit: cover;
 }
 .card-link {
     text-decoration: none;
@@ -109,11 +114,10 @@ Posts
 .card-body {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align content to the top */
-    height: 100%; /* Ensure the card body takes the full height of the card */
-    padding-top: 10px;
-    padding-left: 10px;
-    margin-bottom: 10px;
+    justify-content: flex-start;
+    padding: 15px;
+    flex-grow: 1;
+    overflow: hidden;
 }
 .card-text {
     color: v.$description-text-colour;
