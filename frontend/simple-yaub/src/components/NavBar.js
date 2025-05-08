@@ -35,6 +35,7 @@ const NavBar = () => {
                 {showLogin && (
                     <motion.div
                         className="fixed inset-0 bg-black bg-opacity-50"
+                        style={{ zIndex: 50 }} // Ensure this is below the signing-window
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
