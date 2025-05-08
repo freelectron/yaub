@@ -1,9 +1,7 @@
 @use '../styles/variables' as v;
 
 .signing-window {
-    position: relative; /* Change from fixed to relative */
-    min-height: 300px;
-    max-width: 300px;
+    position: relative;
     margin: 0;
     background: #FFF;
     border-radius: 32px;
@@ -13,6 +11,7 @@
     overflow: hidden;
     z-index: 100;
     font: v.$post-font;
+    transition: min-height 0.3s ease; /* Smooth resizing */
 }
 
 .overlay {
@@ -54,9 +53,28 @@
     opacity: 0;
 }
 
-.page.signup {
+input[type="radio"]#signin:checked ~ .pages .page:nth-of-type(1) {
     background: linear-gradient(to left, white, white);
+    max-height: 250px;
+    /* Add any additional styles for signinActive */
+}
 
+input[type="radio"]#register:checked ~ .pages .page.signup {
+    background: linear-gradient(to left, white, white);
+    height: 350px;
+    /* Add any additional styles for the signup page */
+}
+
+.page.signup {
+    height: 0; /* Default height when not active */
+    overflow: hidden; /* Prevent content from being visible */
+    transition: height 0.3s ease; /* Smooth transition */
+}
+
+.page.signin {
+    height: 0; /* Default height when not active */
+    overflow: hidden; /* Prevent content from being visible */
+    transition: height 0.3s ease; /* Smooth transition */
 }
 
 .title {

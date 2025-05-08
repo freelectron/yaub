@@ -38,12 +38,14 @@ export default function LoginForm({ onClose }) {
         setLoading(false);
     }
 
+    const [activeTab, setActiveTab] = useState("signin");
+
     return (
         <div className="signing-window">
             <input type="radio" name="tab" id="signin" defaultChecked />
             <input type="radio" name="tab" id="register" />
             <div className="pages">
-                <div className="page">
+                <div className="page signinActive">
                     <form onSubmit={handleSubmit}>
                         <div className="input">
                             <div className="title">Username</div>
@@ -69,6 +71,10 @@ export default function LoginForm({ onClose }) {
                             <input className="text" type="email" name="email" placeholder="" required />
                         </div>
                         <div className="input">
+                            <div className="title">Password</div>
+                            <input className="text" type="password" name="password" placeholder="" required />
+                        </div>
+                        <div className="input">
                             <input type="submit" value="Sign Me Up!" disabled={loading} />
                         </div>
                     </form>
@@ -78,7 +84,7 @@ export default function LoginForm({ onClose }) {
                 <label className="tab" htmlFor="signin">
                     <span className="text">Sign In</span>
                 </label>
-                <label className="tab" htmlFor="register">
+                <label className="tab" htmlFor="register" >
                     <span className="text">Register</span>
                 </label>
             </div>
