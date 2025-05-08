@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import LoginForm from "./LogInForm";
 import "../styles/signing-window.css";
 
@@ -31,29 +30,16 @@ const NavBar = () => {
                     </button>
                 </li>
             </ul>
-            <AnimatePresence>
-                {showLogin && (
-                    <motion.div
-                        className="fixed inset-0 bg-black bg-opacity-50"
-                        style={{ zIndex: 50 }} // Ensure this is below the signing-window
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={closeLogin}
-                    >
-                        <motion.div
-                            className="relative"
-                            initial={{ y: "0", opacity: 0 }}
-                            animate={{ y: "0", x: "0", opacity: 1 }}
-                            exit={{ y: "0", opacity: 0 }}
-                            transition={{ duration: 0.4, ease: "easeOut" }}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            <LoginForm onClose={closeLogin} />
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {showLogin && (
+                <div
+                    className="overlay"
+                    onClick={closeLogin}
+                >
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <LoginForm onClose={closeLogin} />
+                    </div>
+                </div>
+            )}
         </nav>
     );
 };

@@ -1,7 +1,5 @@
 .signing-window {
-    position: fixed;
-    top: 20%;
-    left: 42%;
+    position: relative; /* Change from fixed to relative */
     min-height: 300px;
     max-width: 300px;
     margin: 0;
@@ -11,7 +9,20 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    animation: hi 0.5s;
+    z-index: 100;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
 }
 
 .pages {
