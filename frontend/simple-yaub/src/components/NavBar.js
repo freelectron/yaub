@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginForm from "./LogInForm";
+import "../styles/signing-window.css";
 
 const NavBar = () => {
     const [showLogin, setShowLogin] = useState(false);
@@ -40,14 +41,13 @@ const NavBar = () => {
                         onClick={closeLogin}
                     >
                         <motion.div
-                            className="bg-white shape-login-form shadow-login-form width-login-form relative"
+                            className="relative"
                             initial={{ y: "0", opacity: 0 }}
                             animate={{ y: "50%", x: "50%", opacity: 1 }}
                             exit={{ y: "0", opacity: 0 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <h2 className="text-2xl font-bold mb-4">Login</h2>
                             <LoginForm onClose={closeLogin} />
                         </motion.div>
                     </motion.div>
