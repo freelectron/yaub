@@ -14,7 +14,7 @@ const NavBar = () => {
         <nav className="sidebar-navigation">
             <div className="nav-left"></div>
             <div className="logo-image">
-                <img src="/icon_yablo.png" alt="Yablo Logo" />
+                <img src="/icon_yablo_no_background.png" alt="Yablo Logo" />
             </div>
             <ul className="nav-right">
                 <li className="nav-item">
