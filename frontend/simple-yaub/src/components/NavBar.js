@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import LoginForm from "./LogInForm";
-import "../styles/signing-window.css";
+import "../styles/signing-window.scss";
 
 const NavBar = () => {
     const [showLogin, setShowLogin] = useState(false);
