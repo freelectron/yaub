@@ -7,22 +7,15 @@ export default function LoginForm({ onClose }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    async function handleSubmitSignIn(eventSignIn) {
+        eventSignIn.preventDefault();
+        // Use the same states for both sign in and sign up
         setLoading(true);
         setError(null);
 
-        const formData = new FormData(event.currentTarget);
+        const formData = new FormData(eventSignIn.currentTarget);
         const email = formData.get("email");
         const password = formData.get("password");
-        const name = formData.get("name");
-
-        // If name is present, this is a registration attempt
-        if (name) {
-            // TODO: Implement registration logic
-            console.log("Registration attempt with:", { name, email, password });
-            return;
-        }
 
         const response = await signIn("credentials", {
             redirect: false,
@@ -38,7 +31,38 @@ export default function LoginForm({ onClose }) {
         setLoading(false);
     }
 
-    const [activeTab, setActiveTab] = useState("signin");
+    async function handleSubmitSignUp(eventSignUp) {
+        eventSignUp.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        const formData = new FormData(eventSignUp.currentTarget);
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        try {
+            const response = await fetch('/api/register', { // Replace with your actual register endpoint
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Something went wrong');
+            }
+
+            // No error — registration request was successful (even if confirmation is pending)
+            alert('Registration successful! Please wait — we are processing your account.');
+
+        } catch (err) {
+            setError(err.message || 'An error occurred during registration');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <div className="signing-window">
@@ -46,7 +70,7 @@ export default function LoginForm({ onClose }) {
             <input type="radio" name="tab" id="register" />
             <div className="pages">
                 <div className="page signinActive">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmitSignIn}>
                         <div className="input">
                             <div className="title">Username</div>
                             <input className="text" type="text" name="email" placeholder="" required />
@@ -61,7 +85,7 @@ export default function LoginForm({ onClose }) {
                     </form>
                 </div>
                 <div className="page signup">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmitSignUp}>
                         <div className="input">
                             <div className="title">Name</div>
                             <input className="text" type="text" name="name" placeholder="" required />
