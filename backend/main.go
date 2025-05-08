@@ -6,7 +6,6 @@ import (
 	"backend/webserver"
 	"backend/webserver/handlers"
 	"context"
-	"fmt"
 )
 
 func main() {
@@ -24,9 +23,9 @@ func main() {
 	svc.RegisterRoute("GET", "/api/get_comments", commentsHandler.GetComments)
 	svc.RegisterRoute("POST", "/api/post_comment", commentsHandler.PostComment)
 
-	// Run
-	//err = comments.PostCommentsTest(sysCtx, mongoDB, "svd")
-	fmt.Println("Error: ", err)
+	iamHandler := handlers.NewDefaultIAMHandler(mongoDB)
+	svc.RegisterRoute("POST", "/api/sigin", iamHandler.SignIn)
 
+	// Run
 	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())
 }
