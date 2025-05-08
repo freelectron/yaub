@@ -34,7 +34,7 @@ const NavBar = () => {
             <AnimatePresence>
                 {showLogin && (
                     <motion.div
-                        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                        className="fixed inset-0 bg-black bg-opacity-50"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -43,7 +43,7 @@ const NavBar = () => {
                         <motion.div
                             className="relative"
                             initial={{ y: "0", opacity: 0 }}
-                            animate={{ y: "50%", x: "50%", opacity: 1 }}
+                            animate={{ y: "0", x: "0", opacity: 1 }}
                             exit={{ y: "0", opacity: 0 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                             onClick={(e) => e.stopPropagation()}

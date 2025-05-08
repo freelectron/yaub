@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function LoginForm({ onClose }) {
@@ -46,38 +46,30 @@ export default function LoginForm({ onClose }) {
                 <div className="page">
                     <form onSubmit={handleSubmit}>
                         <div className="input">
-                            <div className="title">
-                                <i className="material-icons">account_box</i> USERNAME
-                            </div>
+                            <div className="title">Username</div>
                             <input className="text" type="text" name="email" placeholder="" required />
                         </div>
                         <div className="input">
-                            <div className="title">
-                                <i className="material-icons">lock</i> PASSWORD
-                            </div>
+                            <div className="title">Password</div>
                             <input className="text" type="password" name="password" placeholder="" required />
                         </div>
                         <div className="input">
-                            <input type="submit" value="ENTER" disabled={loading} />
+                            <input type="submit" value="Enter" disabled={loading} />
                         </div>
                     </form>
                 </div>
                 <div className="page signup">
                     <form onSubmit={handleSubmit}>
                         <div className="input">
-                            <div className="title">
-                                <i className="material-icons">person</i> NAME
-                            </div>
+                            <div className="title">Name</div>
                             <input className="text" type="text" name="name" placeholder="" required />
                         </div>
                         <div className="input">
-                            <div className="title">
-                                <i className="material-icons">markunread_mailbox</i> EMAIL
-                            </div>
+                            <div className="title">Email</div>
                             <input className="text" type="email" name="email" placeholder="" required />
                         </div>
                         <div className="input">
-                            <input type="submit" value="SIGN ME UP!" disabled={loading} />
+                            <input type="submit" value="Sign Me Up!" disabled={loading} />
                         </div>
                     </form>
                 </div>
