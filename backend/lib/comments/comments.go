@@ -29,7 +29,6 @@ func AddComment(ctx context.Context, dbClient mongodb.Client, postId string, com
 	}
 
 	return nil
-
 }
 
 func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) ([]byte, error) {

@@ -25,7 +25,7 @@ func (sw *syncWriter) write(i *LogEntry) {
 	}
 	sw.mu.Lock()
 	defer sw.mu.Unlock()
-	_, err = sw.w.Write(data)
+	_, err = sw.w.Write(append(data, '\n'))
 	if err != nil {
 		log.Fatal(err)
 	}

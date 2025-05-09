@@ -55,7 +55,7 @@ export default function LoginForm({ onClose }) {
             }
 
             // No error — registration request was successful (even if confirmation is pending)
-            alert('Registration successful! Please wait — we are processing your account.');
+            alert('Registration successful! Please wait — we will process your account in 1-2 minutes.');
 
         } catch (err) {
             setError(err.message || 'An error occurred during registration');

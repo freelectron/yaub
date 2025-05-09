@@ -10,10 +10,17 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                // FIXME: Replace with a database call
-                const user = { id: "1", name: "admin", email: "admin@example.com" };
+                const response = await fetch("http://localhost:3001/api/signin", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(credentials),
+                });
 
-                if (credentials.email === "admin@admin.com" && credentials.password === "1234") {
+                if (response.ok) {
+                    const user = await response.json();
+
+                    console.log(process.env.NEXTAUTH_SECRET);
+
                     return user; // Authentication successful
                 }
                 return null; // Authentication failed

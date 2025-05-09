@@ -33,7 +33,6 @@ func (h *CHandler) GetComments(ctx context.Context, w http.ResponseWriter, r *ht
 		alog.Error(ctx, "error writing data %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
-	w.WriteHeader(http.StatusOK)
 	// todo: set header for json
 }
 

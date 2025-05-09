@@ -1,19 +1,22 @@
 package mongodb
 
 import (
+	"backend/alog"
+	"backend/lib/myerrors"
 	"context"
+	"errors"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"os"
 )
 
 type Client interface {
 	GetPostComments(ctx context.Context, postId string) ([]bson.M, error)
 	PostComments(ctx context.Context, postId string, comments []interface{}) error
 	PostComment(ctx context.Context, postId string, comment interface{}) error
+	GetUserInfo(ctx context.Context, email, password, table string) (string, string, error)
 }
 
 type mongoClient struct {
@@ -33,12 +36,12 @@ func newMongoClient(user, pass, addr string, port int, database string) (Client,
 
 }
 
-func New() (Client, error) {
-	user := os.Getenv("MONGO_DB_USERNAME")
-	pass := os.Getenv("MONGO_DB_PASSWORD")
-	addr := os.Getenv("MONGO_DB_ADDR")
+func New(dbName string) (Client, error) {
+	user := "admin"     //os.Getenv("MONGO_DB_USERNAME")
+	pass := "admin"     //os.Getenv("MONGO_DB_PASSWORD")
+	addr := "localhost" //os.Getenv("MONGO_DB_ADDR")
 	port := 27017
-	db := "prod-blog"
+	db := dbName
 
 	if user == "" || pass == "" {
 		return nil, fmt.Errorf("missing required environment variables")
@@ -66,7 +69,6 @@ func (c *mongoClient) PostComment(ctx context.Context, postId string, comment in
 	}
 
 	return nil
-
 }
 
 func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bson.M, error) {
@@ -84,4 +86,35 @@ func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bso
 	}
 
 	return results, nil
+}
+
+func (c *mongoClient) GetUserInfo(ctx context.Context, email, password, table string) (string, string, error) {
+	collection := c.client.Database(c.database).Collection(table)
+
+	// Query the database for a user with matching email and password
+	filter := bson.M{"email": email}
+	var user struct {
+		Id       string `bson:"_id"`
+		Name     string `bson:"name"`
+		Password string `bson:"password"`
+	}
+
+	err := collection.FindOne(ctx, filter).Decode(&user)
+
+	alog.Info(ctx, "Found user %v", user)
+
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return "", "", fmt.Errorf("%w", myerrors.ErrUserNotFound)
+		}
+		// Other errors
+		return "", "", fmt.Errorf("error querying database: %w", err)
+	}
+
+	if user.Password != password {
+		alog.Info(ctx, "Invalid password for user with email %s", email)
+		return "", "", fmt.Errorf("%w", myerrors.ErrUserNotFound)
+	}
+
+	return user.Id, user.Name, nil
 }
