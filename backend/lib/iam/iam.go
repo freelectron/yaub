@@ -24,6 +24,12 @@ type User struct {
 	Credentials Credentials `json:"credentials"`
 }
 
+type signUpFields struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Name     string `json:"name"`
+}
+
 func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.ReadCloser) ([]byte, error) {
 	var creds Credentials
 	err := json.NewDecoder(signInRequestBody).Decode(&creds)
@@ -48,4 +54,20 @@ func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.R
 	}
 
 	return jsonString, nil
+}
+
+func SignUp(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.ReadCloser) error {
+	var signUp signUpFields
+	err := json.NewDecoder(signInRequestBody).Decode(&signUp)
+	if err != nil {
+		return fmt.Errorf("decoding sign up request body: %w", err)
+	}
+
+	alog.Info(ctx, "Creating a database entry for user user %s, %s", signUp.Name, signUp.Email)
+	err = dbClient.CreateUser(ctx, signUp.Name, signUp.Email, signUp.Password, UsersCollection)
+	if err != nil {
+		return fmt.Errorf("error creating use in database: %w", err)
+	}
+
+	return nil
 }

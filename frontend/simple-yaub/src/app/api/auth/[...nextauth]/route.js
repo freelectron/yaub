@@ -17,13 +17,9 @@ export const authOptions = {
                 });
 
                 if (response.ok) {
-                    const user = await response.json();
-
-                    console.log(process.env.NEXTAUTH_SECRET);
-
-                    return user; // Authentication successful
+                    return await response.json();
                 }
-                return null; // Authentication failed
+                return null;
             },
         }),
     ],
@@ -36,7 +32,7 @@ export const authOptions = {
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET, // Set this in your .env file
+    secret: process.env.NEXTAUTH_SECRET, // Set this in your .env.local file
 };
 
 const handler = NextAuth(authOptions);

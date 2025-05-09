@@ -17,6 +17,7 @@ type Client interface {
 	PostComments(ctx context.Context, postId string, comments []interface{}) error
 	PostComment(ctx context.Context, postId string, comment interface{}) error
 	GetUserInfo(ctx context.Context, email, password, table string) (string, string, error)
+	CreateUser(ctx context.Context, name, email, password, table string) error
 }
 
 type mongoClient struct {
@@ -117,4 +118,24 @@ func (c *mongoClient) GetUserInfo(ctx context.Context, email, password, table st
 	}
 
 	return user.Id, user.Name, nil
+}
+
+func (c *mongoClient) CreateUser(ctx context.Context, name, email, password, table string) error {
+	collection := c.client.Database(c.database).Collection(table)
+
+	// Create a new user document
+	newUser := bson.M{
+		"name":     name,
+		"email":    email,
+		"password": password,
+	}
+
+	// Insert the new user into the collection
+	_, err := collection.InsertOne(ctx, newUser)
+	if err != nil {
+		return fmt.Errorf("failed to create user: %w", err)
+	}
+
+	alog.Info(ctx, "User created successfully: %s", email)
+	return nil
 }

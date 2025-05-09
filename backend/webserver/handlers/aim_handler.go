@@ -34,3 +34,17 @@ func (h *IAMHandler) SignIn(ctx context.Context, w http.ResponseWriter, r *http.
 	}
 	// todo: set header for json
 }
+
+func (h *IAMHandler) SignUp(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		alog.Error(ctx, "Invalid method %s", r.Method)
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	err := iam.SignUp(ctx, h.dbClient, r.Body)
+	if err != nil {
+		alog.Error(ctx, "Error signing up: %w", err)
+		http.Error(w, "Error Signing up", http.StatusInternalServerError)
+	}
+	w.WriteHeader(http.StatusCreated)
+}

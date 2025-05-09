@@ -42,6 +42,7 @@ func main() {
 
 	iamHandler := handlers.NewDefaultIAMHandler(mongoDBUsers)
 	svc.RegisterRoute("POST", "/api/signin", iamHandler.SignIn)
+	svc.RegisterRoute("POST", "/api/register_user", iamHandler.SignUp)
 
 	// Run
 	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())

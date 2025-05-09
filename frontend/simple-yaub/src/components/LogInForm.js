@@ -39,14 +39,18 @@ export default function LoginForm({ onClose }) {
         const formData = new FormData(eventSignUp.currentTarget);
         const email = formData.get("email");
         const password = formData.get("password");
+        const name = formData.get("name");
+
+        const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL_PUBLIC || 'http://localhost:3001';
 
         try {
-            const response = await fetch('/api/register', { // Replace with your actual register endpoint
+            console.log("Trying to register", email, password, name);
+            const response = await fetch(`${backendURLPublic}/api/register_user`, { // Replace with your actual register endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({ email, password, name }),
             });
 
             if (!response.ok) {
