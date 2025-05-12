@@ -13,11 +13,9 @@ import (
 )
 
 type Client interface {
-	GetPostComments(ctx context.Context, postId string) ([]bson.M, error)
-	PostComments(ctx context.Context, postId string, comments []interface{}) error
-	PostComment(ctx context.Context, postId string, comment interface{}) error
-	FindEntryWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error)
-	CreateEntry(ctx context.Context, content any, table string) error
+	GetAll(ctx context.Context, postId string) ([]bson.M, error)
+	GetOneWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error)
+	CreateDoc(ctx context.Context, content any, table string) error
 }
 
 type mongoClient struct {
@@ -50,30 +48,8 @@ func New(dbName string) (Client, error) {
 	return newMongoClient(user, pass, addr, port, db)
 }
 
-func (c *mongoClient) PostComments(ctx context.Context, postId string, comments []interface{}) error {
-	collection := c.client.Database(c.database).Collection(postId)
-
-	_, err := collection.InsertMany(ctx, comments)
-	if err != nil {
-		return fmt.Errorf("failed to insert comments: %w", err)
-	}
-
-	return nil
-}
-
-func (c *mongoClient) PostComment(ctx context.Context, postId string, comment interface{}) error {
-	collection := c.client.Database(c.database).Collection(postId)
-
-	_, err := collection.InsertOne(ctx, comment)
-	if err != nil {
-		return fmt.Errorf("failed to insert comment: %w", err)
-	}
-
-	return nil
-}
-
-func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bson.M, error) {
-	collection := c.client.Database(c.database).Collection(postId)
+func (c *mongoClient) GetAll(ctx context.Context, collectionName string) ([]bson.M, error) {
+	collection := c.client.Database(c.database).Collection(collectionName)
 
 	cursor, err := collection.Find(ctx, bson.M{}) // bson.M{} means "match all"
 	if err != nil {
@@ -89,19 +65,7 @@ func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bso
 	return results, nil
 }
 
-func toBsonM(data map[string]any) bson.M {
-	result := bson.M{}
-	for key, value := range data {
-		if nestedMap, ok := value.(map[string]any); ok {
-			result[key] = toBsonM(nestedMap)
-		} else {
-			result[key] = value
-		}
-	}
-	return result
-}
-
-func (c *mongoClient) FindEntryWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error) {
+func (c *mongoClient) GetOneWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error) {
 	collection := c.client.Database(c.database).Collection(table)
 	var res bson.M
 
@@ -121,7 +85,7 @@ func (c *mongoClient) FindEntryWithFilter(ctx context.Context, filter bson.D, ta
 	return jsonBytes, nil
 }
 
-func (c *mongoClient) CreateEntry(ctx context.Context, content any, table string) error {
+func (c *mongoClient) CreateDoc(ctx context.Context, content any, table string) error {
 	collection := c.client.Database(c.database).Collection(table)
 
 	// convert from any struct to bson.M

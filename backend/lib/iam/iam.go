@@ -20,7 +20,7 @@ type Credentials struct {
 }
 
 type User struct {
-	Id          string      `json:"_id"`
+	ID          string      `bson:"_id" json:"_id"`
 	Name        string      `json:"name"`
 	Credentials Credentials `json:"credentials"`
 }
@@ -60,10 +60,9 @@ func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.R
 		return nil, fmt.Errorf("getting credentials from request body: %w", err)
 	}
 
-	alog.Info(ctx, "Querying the database for user %s, %s", creds.Email, creds.Password)
-
+	// Filter to find a single user by email
 	filter := bson.D{{"credentials.email", creds.Email}}
-	userBytes, err := dbClient.FindEntryWithFilter(ctx, filter, UsersCollection)
+	userBytes, err := dbClient.GetOneWithFilter(ctx, filter, UsersCollection)
 	if err != nil {
 		if errors.Is(err, myerrors.ErrUserNotFound) {
 			return nil, fmt.Errorf("check credentials: %w", err)
@@ -82,7 +81,7 @@ func SignUp(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.R
 	}
 
 	alog.Info(ctx, "Creating a database entry for user user %s, %s", newUser.Name, newUser.Credentials.Email)
-	err = dbClient.CreateEntry(ctx, newUser, UsersCollection)
+	err = dbClient.CreateDoc(ctx, newUser, UsersCollection)
 	if err != nil {
 		return fmt.Errorf("error creating use in database: %w", err)
 	}

@@ -23,7 +23,7 @@ func AddComment(ctx context.Context, dbClient mongodb.Client, postId string, com
 		return fmt.Errorf("error decoding comment: %w", err)
 	}
 
-	err := dbClient.PostComment(ctx, postId, comment)
+	err := dbClient.CreateDoc(ctx, comment, postId)
 	if err != nil {
 		return fmt.Errorf("error adding comment: %w", err)
 	}
@@ -32,7 +32,7 @@ func AddComment(ctx context.Context, dbClient mongodb.Client, postId string, com
 }
 
 func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) ([]byte, error) {
-	results, err := dbClient.GetPostComments(ctx, postId)
+	results, err := dbClient.GetAll(ctx, postId)
 
 	jsonString, err := bsonToJSONBytes(results)
 	if err != nil {
@@ -40,18 +40,6 @@ func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) 
 	}
 
 	return jsonString, nil
-}
-
-func bsonToJSONStringToBytes(data []bson.M) ([]byte, error) {
-	jsonData, err := json.Marshal(data)
-	if err != nil {
-		return nil, fmt.Errorf("error marshalling BSON to JSON: %w", err)
-	}
-	bytesData, err := json.Marshal(string(jsonData))
-	if err != nil {
-		return nil, fmt.Errorf("error marshalling BSON to JSON: %w", err)
-	}
-	return bytesData, nil
 }
 
 func bsonToJSONBytes(data []bson.M) ([]byte, error) {

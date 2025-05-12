@@ -51,7 +51,6 @@ export default function LoginForm({ onClose }) {
         }
 
         try {
-            console.log("Trying to register", email, password, name);
             const response = await fetch(`${backendURLPublic}/api/register_user`, { // Replace with your actual register endpoint
                 method: 'POST',
                 headers: {
