@@ -1,9 +1,9 @@
 package mongodb
 
 import (
-	"backend/alog"
 	"backend/lib/myerrors"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
@@ -16,8 +16,8 @@ type Client interface {
 	GetPostComments(ctx context.Context, postId string) ([]bson.M, error)
 	PostComments(ctx context.Context, postId string, comments []interface{}) error
 	PostComment(ctx context.Context, postId string, comment interface{}) error
-	GetUserInfo(ctx context.Context, email, password, table string) (string, string, error)
-	CreateUser(ctx context.Context, name, email, password, table string) error
+	FindEntryWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error)
+	CreateEntry(ctx context.Context, content any, table string) error
 }
 
 type mongoClient struct {
@@ -89,53 +89,52 @@ func (c *mongoClient) GetPostComments(ctx context.Context, postId string) ([]bso
 	return results, nil
 }
 
-func (c *mongoClient) GetUserInfo(ctx context.Context, email, password, table string) (string, string, error) {
-	collection := c.client.Database(c.database).Collection(table)
-
-	// Query the database for a user with matching email and password
-	filter := bson.M{"email": email}
-	var user struct {
-		Id       string `bson:"_id"`
-		Name     string `bson:"name"`
-		Password string `bson:"password"`
-	}
-
-	err := collection.FindOne(ctx, filter).Decode(&user)
-
-	alog.Info(ctx, "Found user %v", user)
-
-	if err != nil {
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			return "", "", fmt.Errorf("%w", myerrors.ErrUserNotFound)
+func toBsonM(data map[string]any) bson.M {
+	result := bson.M{}
+	for key, value := range data {
+		if nestedMap, ok := value.(map[string]any); ok {
+			result[key] = toBsonM(nestedMap)
+		} else {
+			result[key] = value
 		}
-		// Other errors
-		return "", "", fmt.Errorf("error querying database: %w", err)
 	}
-
-	if user.Password != password {
-		alog.Info(ctx, "Invalid password for user with email %s", email)
-		return "", "", fmt.Errorf("%w", myerrors.ErrUserNotFound)
-	}
-
-	return user.Id, user.Name, nil
+	return result
 }
 
-func (c *mongoClient) CreateUser(ctx context.Context, name, email, password, table string) error {
+func (c *mongoClient) FindEntryWithFilter(ctx context.Context, filter bson.D, table string) ([]byte, error) {
+	collection := c.client.Database(c.database).Collection(table)
+	var res bson.M
+
+	err := collection.FindOne(ctx, filter).Decode(&res)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, fmt.Errorf("%w", myerrors.ErrUserNotFound)
+		}
+		return nil, fmt.Errorf("error querying database: %w", err)
+	}
+
+	jsonBytes, err := json.Marshal(res)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse the result to json: %w", err)
+	}
+
+	return jsonBytes, nil
+}
+
+func (c *mongoClient) CreateEntry(ctx context.Context, content any, table string) error {
 	collection := c.client.Database(c.database).Collection(table)
 
-	// Create a new user document
-	newUser := bson.M{
-		"name":     name,
-		"email":    email,
-		"password": password,
+	// convert from any struct to bson.M
+	data, err := bson.Marshal(content)
+	if err != nil {
+		return fmt.Errorf("failed to bson the content: %w", err)
 	}
 
 	// Insert the new user into the collection
-	_, err := collection.InsertOne(ctx, newUser)
+	_, err = collection.InsertOne(ctx, data)
 	if err != nil {
 		return fmt.Errorf("failed to create user: %w", err)
 	}
 
-	alog.Info(ctx, "User created successfully: %s", email)
 	return nil
 }

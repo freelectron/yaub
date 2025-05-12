@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
 	"io"
 )
 
@@ -19,26 +20,50 @@ type Credentials struct {
 }
 
 type User struct {
-	Id          string      `json:"id"`
+	Id          string      `json:"_id"`
 	Name        string      `json:"name"`
 	Credentials Credentials `json:"credentials"`
 }
 
-type signUpFields struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Name     string `json:"name"`
-}
-
-func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.ReadCloser) ([]byte, error) {
+func getCredsFromRequestBody(signInRequestBody io.ReadCloser) (Credentials, error) {
 	var creds Credentials
 	err := json.NewDecoder(signInRequestBody).Decode(&creds)
 	if err != nil {
-		return nil, fmt.Errorf("decoding singin request body: %w", err)
+		return Credentials{}, fmt.Errorf("decoding singin request body: %w", err)
+	}
+	creds.Password, err = hashPassword(creds.Password)
+	if err != nil {
+		return Credentials{}, fmt.Errorf("processing the password: %w", err)
+	}
+
+	return creds, nil
+}
+
+func getUserFromRequestBody(signInRequestBody io.ReadCloser) (User, error) {
+	var newUser User
+	err := json.NewDecoder(signInRequestBody).Decode(&newUser)
+	if err != nil {
+		return User{}, fmt.Errorf("decoding sign up request body: %w", err)
+	}
+
+	newUser.Credentials.Password, err = hashPassword(newUser.Credentials.Password)
+	if err != nil {
+		return User{}, fmt.Errorf("processing the password: %w", err)
+	}
+
+	return newUser, nil
+}
+
+func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.ReadCloser) ([]byte, error) {
+	creds, err := getCredsFromRequestBody(signInRequestBody)
+	if err != nil {
+		return nil, fmt.Errorf("getting credentials from request body: %w", err)
 	}
 
 	alog.Info(ctx, "Querying the database for user %s, %s", creds.Email, creds.Password)
-	userId, userName, err := dbClient.GetUserInfo(ctx, creds.Email, creds.Password, UsersCollection)
+
+	filter := bson.D{{"credentials.email", creds.Email}}
+	userBytes, err := dbClient.FindEntryWithFilter(ctx, filter, UsersCollection)
 	if err != nil {
 		if errors.Is(err, myerrors.ErrUserNotFound) {
 			return nil, fmt.Errorf("check credentials: %w", err)
@@ -47,24 +72,17 @@ func SignIn(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.R
 		}
 	}
 
-	user := User{Id: userId, Name: userName, Credentials: creds}
-	jsonString, err := json.Marshal(user)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse the user: %w", err)
-	}
-
-	return jsonString, nil
+	return userBytes, nil
 }
 
 func SignUp(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.ReadCloser) error {
-	var signUp signUpFields
-	err := json.NewDecoder(signInRequestBody).Decode(&signUp)
+	newUser, err := getUserFromRequestBody(signInRequestBody)
 	if err != nil {
-		return fmt.Errorf("decoding sign up request body: %w", err)
+		return fmt.Errorf("creating user from sign up request body: %w", err)
 	}
 
-	alog.Info(ctx, "Creating a database entry for user user %s, %s", signUp.Name, signUp.Email)
-	err = dbClient.CreateUser(ctx, signUp.Name, signUp.Email, signUp.Password, UsersCollection)
+	alog.Info(ctx, "Creating a database entry for user user %s, %s", newUser.Name, newUser.Credentials.Email)
+	err = dbClient.CreateEntry(ctx, newUser, UsersCollection)
 	if err != nil {
 		return fmt.Errorf("error creating use in database: %w", err)
 	}

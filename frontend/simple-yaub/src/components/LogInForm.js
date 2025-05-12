@@ -57,7 +57,7 @@ export default function LoginForm({ onClose }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email, password, name }),
+                body: JSON.stringify({ name, credentials: {email, password}}),
             });
 
             if (!response.ok) {
