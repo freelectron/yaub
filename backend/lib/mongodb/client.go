@@ -89,16 +89,18 @@ func (c *mongoClient) GetOneWithFilter(ctx context.Context, filter bson.D, table
 func (c *mongoClient) CreateDoc(ctx context.Context, content any, table string) error {
 	collection := c.client.Database(c.database).Collection(table)
 
-	// convert from any struct to bson.M
 	data, err := bson.Marshal(content)
 	if err != nil {
 		return fmt.Errorf("failed to bson the content: %w", err)
 	}
 
-	// Insert the new user into the collection
 	_, err = collection.InsertOne(ctx, data)
 	if err != nil {
-		return fmt.Errorf("failed to create user: %w", err)
+		if mongo.IsDuplicateKeyError(err) {
+			return fmt.Errorf("failed to create user: %w", myerrors.ErrUserAlreadyExists)
+		} else {
+			return fmt.Errorf("failed to create user: %w", err)
+		}
 	}
 
 	return nil

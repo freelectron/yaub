@@ -31,7 +31,7 @@ func getCredsFromRequestBody(signInRequestBody io.ReadCloser) (Credentials, erro
 	if err != nil {
 		return Credentials{}, fmt.Errorf("decoding singin request body: %w", err)
 	}
-	creds.Password, err = hashPassword(creds.Password)
+	creds.Password, err = hashSecure(creds.Password)
 	if err != nil {
 		return Credentials{}, fmt.Errorf("processing the password: %w", err)
 	}
@@ -46,10 +46,12 @@ func getUserFromRequestBody(signInRequestBody io.ReadCloser) (User, error) {
 		return User{}, fmt.Errorf("decoding sign up request body: %w", err)
 	}
 
-	newUser.Credentials.Password, err = hashPassword(newUser.Credentials.Password)
+	newUser.Credentials.Password, err = hashSecure(newUser.Credentials.Password)
 	if err != nil {
 		return User{}, fmt.Errorf("processing the password: %w", err)
 	}
+
+	newUser.ID = hashEasy(newUser.Credentials.Email)
 
 	return newUser, nil
 }
@@ -83,7 +85,11 @@ func SignUp(ctx context.Context, dbClient mongodb.Client, signInRequestBody io.R
 	alog.Info(ctx, "Creating a database entry for user user %s, %s", newUser.Name, newUser.Credentials.Email)
 	err = dbClient.CreateDoc(ctx, newUser, UsersCollection)
 	if err != nil {
-		return fmt.Errorf("error creating use in database: %w", err)
+		if errors.Is(err, myerrors.ErrUserAlreadyExists) {
+			return fmt.Errorf("email already known: %w", err)
+		} else {
+			return fmt.Errorf("error creating user in database: %w", err)
+		}
 	}
 
 	return nil
