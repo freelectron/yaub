@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"os"
 )
 
 type Client interface {
@@ -36,9 +37,9 @@ func newMongoClient(user, pass, addr string, port int, database string) (Client,
 }
 
 func New(dbName string) (Client, error) {
-	user := "admin"     //os.Getenv("MONGO_DB_USERNAME")
-	pass := "admin"     //os.Getenv("MONGO_DB_PASSWORD")
-	addr := "localhost" //os.Getenv("MONGO_DB_ADDR")
+	user := os.Getenv("MONGO_DB_USERNAME")
+	pass := os.Getenv("MONGO_DB_PASSWORD")
+	addr := os.Getenv("MONGO_DB_ADDR")
 	port := 27017
 	db := dbName
 
