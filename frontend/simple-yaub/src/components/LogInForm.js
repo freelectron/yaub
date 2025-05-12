@@ -39,9 +39,16 @@ export default function LoginForm({ onClose }) {
         const formData = new FormData(eventSignUp.currentTarget);
         const email = formData.get("email");
         const password = formData.get("password");
+        const passwordConfirmation = formData.get("password_confirmation");
         const name = formData.get("name");
 
         const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL_PUBLIC || 'http://localhost:3001';
+
+        if (password !== passwordConfirmation) {
+            setError("Passwords do not match");
+            setLoading(false);
+            return;
+        }
 
         try {
             console.log("Trying to register", email, password, name);
@@ -103,6 +110,10 @@ export default function LoginForm({ onClose }) {
                             <input className="text" type="password" name="password" placeholder="" required />
                         </div>
                         <div className="input">
+                            <div className="title">Repeat Password</div>
+                            <input className="text" type="password" name="password_confirmation" placeholder="" required />
+                        </div>
+                        <div className="input">
                             <input type="submit" value="Sign Me Up!" disabled={loading} />
                         </div>
                     </form>
@@ -116,7 +127,7 @@ export default function LoginForm({ onClose }) {
                     <span className="text">Register</span>
                 </label>
             </div>
-            {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
+            {error && <p className="error-text">{error}</p>}
         </div>
     );
 }

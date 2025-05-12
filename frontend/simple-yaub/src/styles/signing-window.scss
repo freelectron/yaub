@@ -61,7 +61,7 @@ input[type="radio"]#signin:checked ~ .pages .page:nth-of-type(1) {
 
 input[type="radio"]#register:checked ~ .pages .page.signup {
     background: linear-gradient(to left, white, white);
-    height: 350px;
+    height: 400px;
     /* Add any additional styles for the signup page */
 }
 
@@ -93,6 +93,10 @@ input[type="radio"]#register:checked ~ .pages .page.signup {
 
 .input {
     margin-top: 20px;
+}
+
+.error-text{
+    text-align: center;
 }
 
 input.text {
