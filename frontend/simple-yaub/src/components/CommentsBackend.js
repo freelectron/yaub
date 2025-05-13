@@ -13,7 +13,7 @@ const fetchPostComments = async (postId) => {
 }
 
 const postPostComment = async (postId, comment) => {
-    const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL_PUBLIC || 'http://localhost:3001';
+    const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
     fetch(`${backendURLPublic}/api/post_comment?postId=${postId}`, {
         method: 'POST',

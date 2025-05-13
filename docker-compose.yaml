@@ -21,7 +21,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_BACKEND_URL: http://backend:3001
+      NEXT_PUBLIC_BACKEND_URL: https://yablo.ddns.net/public
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       NEXTAUTH_URL: ${NEXTAUTH_URL}
     networks:
@@ -38,8 +38,9 @@ services:
     depends_on:
       - nextjs
     volumes:
-      - ${SECRETS_LETSENCRYPT}:/etc/letsencrypt:ro
+      - ${SECRETS_LETSENCRYPT}:/etc/letsencrypt
       - ${SECRETS_CERTBOT_DATA}:/var/www/certbot
+      - ${NGINX_LOGS}:/var/log/nginx
     networks:
       - mongodb_network
 

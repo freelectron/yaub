@@ -42,7 +42,7 @@ export default function LoginForm({ onClose }) {
         const passwordConfirmation = formData.get("password_confirmation");
         const name = formData.get("name");
 
-        const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL_PUBLIC || 'http://localhost:3001';
+        const backendURLPublic = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
         if (password !== passwordConfirmation) {
             setError("Passwords do not match");

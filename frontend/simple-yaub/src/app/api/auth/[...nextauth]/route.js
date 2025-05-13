@@ -10,29 +10,51 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                const response = await fetch("http://localhost:3001/api/signin", {
+                const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+                const response = await fetch(`${backendURL}/api/signin`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(credentials),
                 });
 
                 if (response.ok) {
-                    return await response.json();
+                    const user = await response.json();
+                    return {
+                        id: user._id,
+                        name: user.name,
+                        email: user.credentials.email
+                    };
                 }
                 return null;
             },
         }),
     ],
     pages: {
-        signIn: "/", // Redirect to login page
+        signIn: "/",
     },
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
+            }
+            return token;
+        },
         async session({ session, token }) {
-            session.user.id = token.sub; // Attach user ID to session
+            if (token) {
+                session.user.id = token.id;
+                session.user.name = token.name;
+                session.user.email = token.email;
+            }
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET, // Set this in your .env.local file
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
