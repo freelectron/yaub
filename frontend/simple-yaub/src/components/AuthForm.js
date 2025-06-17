@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
-export default function LoginForm({ onClose }) {
+export default function AuthForm({ onClose }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 

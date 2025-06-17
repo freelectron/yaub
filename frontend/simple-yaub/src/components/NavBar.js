@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import LoginForm from "./LogInForm";
+import AuthForm from "./AuthForm";
 import "../styles/signing-window.scss";
 
 const NavBar = () => {
@@ -36,7 +36,7 @@ const NavBar = () => {
                     onClick={closeLogin}
                 >
                     <div onClick={(e) => e.stopPropagation()}>
-                        <LoginForm onClose={closeLogin} />
+                        <AuthForm onClose={closeLogin} />
                     </div>
                 </div>
             )}
