@@ -6,8 +6,8 @@ export const authOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "admin@example.com" },
-                password: { label: "Password", type: "password" },
+                email: { label: "Email", type: "email", placeholder: "slimshady@popsiclesucker.com" },
+                password: { label: "Password", type: "inbetweenlife" },
             },
             async authorize(credentials) {
                 const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
@@ -52,7 +52,7 @@ export const authOptions = {
     },
     session: {
         strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 days
+        maxAge: 2 * 24 * 60 * 60, // 30 days
     },
     secret: process.env.NEXTAUTH_SECRET,
 };

@@ -30,16 +30,14 @@ func init() {
 	DefaultWriter = newDefaultWriter()
 }
 
-////////////////////////////////////////////////////////
 // TODO: use context to provide more info about the log
-////////////////////////////////////////////////////////
 
 func Info(ctx context.Context, format string, v ...interface{}) {
 	DefaultWriter.write(&LogEntry{
 		Exe:       os.Args[0],
 		TimeStamp: time.Now(),
 		LevelName: "INFO",
-		Message:   fmt.Sprintf(format, v...),
+		Message:   fmt.Errorf(format, v...).Error(),
 	})
 }
 
@@ -48,7 +46,7 @@ func Warning(ctx context.Context, format string, v ...interface{}) {
 		Exe:       os.Args[0],
 		TimeStamp: time.Now(),
 		LevelName: "WARNING",
-		Message:   fmt.Sprintf(format, v...),
+		Message:   fmt.Errorf(format, v...).Error(),
 	})
 }
 func Error(ctx context.Context, format string, v ...interface{}) {
@@ -56,15 +54,16 @@ func Error(ctx context.Context, format string, v ...interface{}) {
 		Exe:       os.Args[0],
 		TimeStamp: time.Now(),
 		LevelName: "ERROR",
-		Message:   fmt.Sprintf(format, v...),
+		Message:   fmt.Errorf(format, v...).Error(),
 	})
+
 }
 func Fatal(ctx context.Context, format string, v ...interface{}) {
 	DefaultWriter.write(&LogEntry{
 		Exe:       os.Args[0],
 		TimeStamp: time.Now(),
 		LevelName: "FATAL",
-		Message:   fmt.Sprintf(format, v...),
+		Message:   fmt.Errorf(format, v...).Error(),
 	})
 	os.Exit(1)
 }

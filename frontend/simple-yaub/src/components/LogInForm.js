@@ -82,7 +82,7 @@ export default function LoginForm({ onClose }) {
                 <div className="page signinActive">
                     <form onSubmit={handleSubmitSignIn}>
                         <div className="input">
-                            <div className="title">Username</div>
+                            <div className="title">Username (email)</div>
                             <input className="text" type="text" name="email" placeholder="" required />
                         </div>
                         <div className="input">
