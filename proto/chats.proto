@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package llm_chat_v1;
+option go_package = "../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1";
+
+message StartSessionRequest {
+  string id = 1;
+}
+
+message StartSessionResponse {
+  string ack = 1;
+}
+
+service LLMChatService {
+  rpc ProcessText (StartSessionRequest) returns (StartSessionResponse);
+}
+

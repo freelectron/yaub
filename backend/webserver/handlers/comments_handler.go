@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"backend/alog"
+	"backend/database/mongodb"
 	"backend/lib/comments"
-	"backend/lib/mongodb"
 	"context"
 	"net/http"
 )
