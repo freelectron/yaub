@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/alog"
-	"backend/lib/mongodb"
+	"backend/database/mongodb"
 	"backend/webserver"
 	"backend/webserver/handlers"
 	"context"

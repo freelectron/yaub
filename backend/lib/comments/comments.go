@@ -1,7 +1,7 @@
 package comments
 
 import (
-	"backend/lib/mongodb"
+	"backend/database/mongodb"
 	"context"
 	"encoding/json"
 	"fmt"
