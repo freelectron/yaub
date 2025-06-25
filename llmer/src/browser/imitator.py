@@ -1,8 +1,3 @@
-"""
-Functionality:
- - broswer is a warpper around a selenium package's driver
- - imitator handler higher level interaction and can ba directlry called by the main program
-"""
 from abc import abstractmethod, ABC
 from time import sleep
 
