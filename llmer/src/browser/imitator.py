@@ -18,7 +18,7 @@ class LLMChromeSession(ABC):
     waiter_default_timeout = 1
 
     @staticmethod
-    def get_default_options(self):
+    def get_default_options():
         """Return default Chrome options."""
         options = uc.ChromeOptions()
         options.add_argument("--no-sandbox")
@@ -73,7 +73,7 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         """Send a message to ChatGPT."""
         editor_div = self.wait.until(EC.element_to_be_clickable((By.ID, "prompt-textarea")))
         editor_div.click()
-        editor_div.send_keys("What is your context length?")
+        editor_div.send_keys(message)
         editor_div.send_keys(Keys.ENTER)
 
     def get_last_assistant_block(self) -> str:
@@ -86,42 +86,15 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
 
 if __name__=="__main__":
 
-    # Function: init_browser
-    options = uc.ChromeOptions()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-blink-features=AutomationControlled")
-    driver = uc.Chrome(options=options)
-    wait = WebDriverWait(driver, 1)
+    open_ai = LLMBrowserSessionOpenAI()
 
-    # Function: start_chatgpt_session
-    driver.get("https://chat.openai.com/chat")
-
-    # Function: pass_captcha
     try:
-        iframe = wait.until(EC.presence_of_element_located(
-            (By.XPATH, "//iframe[contains(@src, 'challenge')]")
-        ))
-        driver.switch_to.frame(iframe)
-        checkbox = wait.until(EC.element_to_be_clickable((
-            By.XPATH, "//input[@type='checkbox'] | //div[contains(@class,'mark')]"
-        )))
-        checkbox.click()
+        open_ai.init_chat_session()
+        open_ai.send_message("What is your context length?")
+        sleep(10)
+        response = open_ai.get_last_assistant_block()
+        print(response)
     except Exception as e:
-        print(f"Captcha handling failed: {e}")
+        print(f"An error occurred: {e}")
 
-    # Function: send_message
-    editor_div = wait.until(EC.element_to_be_clickable((By.ID, "prompt-textarea")))
-    editor_div.click()
-    editor_div.send_keys("What is your context length?")
-    editor_div.send_keys(Keys.ENTER)
-
-    # Function: get_last_assistant_block
-    #  retry this after 5 seconds waiting N times
-    sleep(5)
-    assistant_blocks = wait.until(
-        EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-message-author-role='assistant']"))
-    )
-    assistant_last_block = assistant_blocks[-1]
-    print(assistant_last_block.text)
-
-    sleep(3600)
+    sleep(360)
