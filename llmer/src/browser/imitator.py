@@ -1,13 +1,13 @@
 from abc import abstractmethod, ABC
-from http.client import responses
-from time import sleep
-from xml.dom import VALIDATION_ERR
+from time import sleep, time
 
 import undetected as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+
+from src.browser.errors import BrowserTimeOutError
 
 
 class LLMChromeSession(ABC):
@@ -72,28 +72,42 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
     llm_chat_url = "https://chat.openai.com/chat"
     past_questions_answers = None
 
-    def _retrieve_last_answer(self):
-        return self.waiter.until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-message-author-role='assistant']"))
-        )[-1].text
+    def _retrieve_last_answer(self, time_out: int = 25):
+        start_time = time()
+        last_answer = ""
+        while True:
+            answer = self.waiter.until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-message-author-role='assistant']"))
+            )[-1]
+            if len(answer.text) > len(last_answer):
+                last_answer = answer.text
+            elif len(answer.text) == len(last_answer):
+                break
+            else:
+                if time() - start_time > time_out:
+                    break
+            sleep(1)
+
+        return last_answer
 
     def _validate_start_page_loaded(self, n_tries: int = 2):
         for i in range(n_tries):
-            self.logger.warning(f"Checking the page has loaded, try: {i+1}/2")
+            self.logger.info(f"Checking {i+1} if the LLM's start browser page is loaded.")
             html_source = self.driver.page_source
             if 'content="ChatGPT"><meta' in html_source:
                 return
             else:
                 self.wait()
 
-        raise TimeoutError("Failed to start chat session. Page did not load correctly.")
+        raise BrowserTimeOutError("Failed to start chat session. Page did not load correctly.")
 
     def _validate_message_sent(self, n_tries: int = 2):
         for i in range(n_tries):
-            last_answer_memory = self.past_questions_answers[-1] if self.past_questions_answers else ""
+            # ToDo: use a datastruct to access the answer attribute
+            last_answer_memory = self.past_questions_answers[-1]["answer"] if self.past_questions_answers else ""
             last_answer_on_page = self._retrieve_last_answer()
-            if last_answer_memory == last_answer_on_page:
-                self.logger.error("Could not retrieve the new response or it was the same as the last one.")
+            if last_answer_memory == last_answer_on_page or last_answer_on_page == "":
+                raise BrowserTimeOutError("No new response from LLM")
             else:
                 return last_answer_on_page
 
@@ -129,17 +143,19 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         self.wait(5)
 
         answer = self._validate_message_sent()
+        # ToDo: create a datastruct for this
         self.past_questions_answers.append({"message": message, "answer": answer})
 
 
 if __name__=="__main__":
-
     open_ai = LLMBrowserSessionOpenAI()
     try:
         open_ai.init_chat_session()
         open_ai.send_message("What is your context length?")
         print(open_ai.past_questions_answers[-1])
         open_ai.send_message("How can I send a message to you that is more than 120k tokens?")
+        print(open_ai.past_questions_answers[-1])
+        open_ai.send_message("Explain advanced techniques and best practices for error handling in python 3.13.")
         print(open_ai.past_questions_answers[-1])
     except Exception as e:
         print(f"An error occurred: {e}")
