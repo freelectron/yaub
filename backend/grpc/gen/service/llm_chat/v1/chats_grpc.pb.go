@@ -19,14 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	LLMChatService_ProcessText_FullMethodName = "/llm_chat_v1.LLMChatService/ProcessText"
+	LLMChatService_StartSession_FullMethodName = "/llm_chat_v1.LLMChatService/StartSession"
+	LLMChatService_SendMessage_FullMethodName  = "/llm_chat_v1.LLMChatService/SendMessage"
 )
 
 // LLMChatServiceClient is the client API for LLMChatService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LLMChatServiceClient interface {
-	ProcessText(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
+	StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error)
+	SendMessage(ctx context.Context, in *Question, opts ...grpc.CallOption) (*Answer, error)
 }
 
 type lLMChatServiceClient struct {
@@ -37,9 +39,18 @@ func NewLLMChatServiceClient(cc grpc.ClientConnInterface) LLMChatServiceClient {
 	return &lLMChatServiceClient{cc}
 }
 
-func (c *lLMChatServiceClient) ProcessText(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error) {
+func (c *lLMChatServiceClient) StartSession(ctx context.Context, in *StartSessionRequest, opts ...grpc.CallOption) (*StartSessionResponse, error) {
 	out := new(StartSessionResponse)
-	err := c.cc.Invoke(ctx, LLMChatService_ProcessText_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, LLMChatService_StartSession_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lLMChatServiceClient) SendMessage(ctx context.Context, in *Question, opts ...grpc.CallOption) (*Answer, error) {
+	out := new(Answer)
+	err := c.cc.Invoke(ctx, LLMChatService_SendMessage_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +61,8 @@ func (c *lLMChatServiceClient) ProcessText(ctx context.Context, in *StartSession
 // All implementations must embed UnimplementedLLMChatServiceServer
 // for forward compatibility
 type LLMChatServiceServer interface {
-	ProcessText(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
+	StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error)
+	SendMessage(context.Context, *Question) (*Answer, error)
 	mustEmbedUnimplementedLLMChatServiceServer()
 }
 
@@ -58,8 +70,11 @@ type LLMChatServiceServer interface {
 type UnimplementedLLMChatServiceServer struct {
 }
 
-func (UnimplementedLLMChatServiceServer) ProcessText(context.Context, *StartSessionRequest) (*StartSessionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ProcessText not implemented")
+func (UnimplementedLLMChatServiceServer) StartSession(context.Context, *StartSessionRequest) (*StartSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StartSession not implemented")
+}
+func (UnimplementedLLMChatServiceServer) SendMessage(context.Context, *Question) (*Answer, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
 }
 func (UnimplementedLLMChatServiceServer) mustEmbedUnimplementedLLMChatServiceServer() {}
 
@@ -74,20 +89,38 @@ func RegisterLLMChatServiceServer(s grpc.ServiceRegistrar, srv LLMChatServiceSer
 	s.RegisterService(&LLMChatService_ServiceDesc, srv)
 }
 
-func _LLMChatService_ProcessText_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LLMChatService_StartSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StartSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LLMChatServiceServer).ProcessText(ctx, in)
+		return srv.(LLMChatServiceServer).StartSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: LLMChatService_ProcessText_FullMethodName,
+		FullMethod: LLMChatService_StartSession_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LLMChatServiceServer).ProcessText(ctx, req.(*StartSessionRequest))
+		return srv.(LLMChatServiceServer).StartSession(ctx, req.(*StartSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LLMChatService_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Question)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LLMChatServiceServer).SendMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LLMChatService_SendMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LLMChatServiceServer).SendMessage(ctx, req.(*Question))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,8 +133,12 @@ var LLMChatService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*LLMChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ProcessText",
-			Handler:    _LLMChatService_ProcessText_Handler,
+			MethodName: "StartSession",
+			Handler:    _LLMChatService_StartSession_Handler,
+		},
+		{
+			MethodName: "SendMessage",
+			Handler:    _LLMChatService_SendMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

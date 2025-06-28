@@ -34,17 +34,28 @@ class LLMChatServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.ProcessText = channel.unary_unary(
-                '/llm_chat_v1.LLMChatService/ProcessText',
+        self.StartSession = channel.unary_unary(
+                '/llm_chat_v1.LLMChatService/StartSession',
                 request_serializer=chats__pb2.StartSessionRequest.SerializeToString,
                 response_deserializer=chats__pb2.StartSessionResponse.FromString,
+                _registered_method=True)
+        self.SendMessage = channel.unary_unary(
+                '/llm_chat_v1.LLMChatService/SendMessage',
+                request_serializer=chats__pb2.Question.SerializeToString,
+                response_deserializer=chats__pb2.Answer.FromString,
                 _registered_method=True)
 
 
 class LLMChatServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def ProcessText(self, request, context):
+    def StartSession(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -53,10 +64,15 @@ class LLMChatServiceServicer(object):
 
 def add_LLMChatServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'ProcessText': grpc.unary_unary_rpc_method_handler(
-                    servicer.ProcessText,
+            'StartSession': grpc.unary_unary_rpc_method_handler(
+                    servicer.StartSession,
                     request_deserializer=chats__pb2.StartSessionRequest.FromString,
                     response_serializer=chats__pb2.StartSessionResponse.SerializeToString,
+            ),
+            'SendMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendMessage,
+                    request_deserializer=chats__pb2.Question.FromString,
+                    response_serializer=chats__pb2.Answer.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -70,7 +86,7 @@ class LLMChatService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def ProcessText(request,
+    def StartSession(request,
             target,
             options=(),
             channel_credentials=None,
@@ -83,9 +99,36 @@ class LLMChatService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/llm_chat_v1.LLMChatService/ProcessText',
+            '/llm_chat_v1.LLMChatService/StartSession',
             chats__pb2.StartSessionRequest.SerializeToString,
             chats__pb2.StartSessionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SendMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/llm_chat_v1.LLMChatService/SendMessage',
+            chats__pb2.Question.SerializeToString,
+            chats__pb2.Answer.FromString,
             options,
             channel_credentials,
             insecure,

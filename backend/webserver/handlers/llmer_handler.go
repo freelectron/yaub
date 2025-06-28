@@ -29,7 +29,7 @@ func (h *LLMHandler) StartSession(ctx context.Context, w http.ResponseWriter, r 
 		return
 	}
 
-	resp, err := h.grpcClient.ProcessText(ctx, &req)
+	resp, err := h.grpcClient.StartSession(ctx, &req)
 	if err != nil {
 		http.Error(w, "Error processing text", http.StatusInternalServerError)
 		return

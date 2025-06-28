@@ -11,3 +11,8 @@ class BrowserTimeOutError(BrowserError):
     def __init__(self, message: str):
         # ToDo: possibly add a screen shot from the driver's browser
         super().__init__("Browser operation timed out: " + message)
+
+class BrowserUnknownModelError(BrowserError):
+    """Raised when an unknown model is specified."""
+    def __init__(self, message: str):
+        super().__init__("This model is not implemented in the backend: " + message)

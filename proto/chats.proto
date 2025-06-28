@@ -4,14 +4,26 @@ package llm_chat_v1;
 option go_package = "../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1";
 
 message StartSessionRequest {
-  string id = 1;
+  string model = 1;
 }
 
 message StartSessionResponse {
-  string ack = 1;
+  string id = 1;
+}
+
+message Question {
+  string session_id = 1;
+  string system_prompt = 2;
+  string question_prompt = 3;
+}
+
+message Answer {
+  string session_id = 1;
+  string text = 2;
 }
 
 service LLMChatService {
-  rpc ProcessText (StartSessionRequest) returns (StartSessionResponse);
+  rpc StartSession (StartSessionRequest) returns (StartSessionResponse);
+  rpc SendMessage (Question) returns (Answer);
 }
 

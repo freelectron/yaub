@@ -44,6 +44,37 @@ func main() {
 	svc.RegisterRoute("POST", "/api/signin", iamHandler.SignIn)
 	svc.RegisterRoute("POST", "/api/register_user", iamHandler.SignUp)
 
+	//// LLMER gRPC client setup
+	//llmerAddr := "llmer:50051" // Use "localhost:50051" if running backend outside Docker
+	//llmerConn, err := grpc.Dial(llmerAddr, grpc.WithInsecure())
+	//if err != nil {
+	//	alog.Fatal(sysCtx, "Failed to connect to llmer gRPC: ", err)
+	//}
+	//defer llmerConn.Close()
+	//llmerClient := llm_chat_v1.NewLLMChatServiceClient(llmerConn)
+	//llmerHandler := handlers.NewDefaultLLMHandler(llmerClient)
+	//
+	//svc.RegisterRoute("POST", "/api/llmer/start_session", llmerHandler.StartSession)
+	//
+	//time.Sleep(2 * time.Second) // Wait for the gRPC server to be ready
+	//// For testing: a GET endpoint that sends a StartSession request with a hardcoded model
+	//// Prepare the request body
+	//body := map[string]string{"model": "ChatGPT"}
+	//jsonBody, err := json.Marshal(body)
+	//if err != nil {
+	//	fmt.Errorf("Failed to marshal request body: "+err.Error(), http.StatusInternalServerError)
+	//	return
+	//}
+	//
+	//// Send POST request to self
+	//resp, err := http.Post("http://llmer:3001/api/llmer/start_session", "application/json", bytes.NewReader(jsonBody))
+	//if err != nil {
+	//	fmt.Errorf("Failed to send POST request: "+err.Error(), http.StatusInternalServerError)
+	//	return
+	//}
+	//defer resp.Body.Close()
+	//fmt.Println(resp, err)
+
 	// Run
 	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())
 }

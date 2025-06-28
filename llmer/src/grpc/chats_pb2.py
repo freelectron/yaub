@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hats.proto\x12\x0bllm_chat_v1\"!\n\x13StartSessionRequest\x12\n\n\x02id\x18\x01 \x01(\t\"#\n\x14StartSessionResponse\x12\x0b\n\x03\x61\x63k\x18\x01 \x01(\t2d\n\x0eLLMChatService\x12R\n\x0bProcessText\x12 .llm_chat_v1.StartSessionRequest\x1a!.llm_chat_v1.StartSessionResponseB5Z3../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hats.proto\x12\x0bllm_chat_v1\"$\n\x13StartSessionRequest\x12\r\n\x05model\x18\x01 \x01(\t\"\"\n\x14StartSessionResponse\x12\n\n\x02id\x18\x01 \x01(\t\"N\n\x08Question\x12\x12\n\nsession_id\x18\x01 \x01(\t\x12\x15\n\rsystem_prompt\x18\x02 \x01(\t\x12\x17\n\x0fquestion_prompt\x18\x03 \x01(\t\"*\n\x06\x41nswer\x12\x12\n\nsession_id\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t2\xa0\x01\n\x0eLLMChatService\x12S\n\x0cStartSession\x12 .llm_chat_v1.StartSessionRequest\x1a!.llm_chat_v1.StartSessionResponse\x12\x39\n\x0bSendMessage\x12\x15.llm_chat_v1.Question\x1a\x13.llm_chat_v1.AnswerB5Z3../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,9 +33,13 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z3../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1'
   _globals['_STARTSESSIONREQUEST']._serialized_start=28
-  _globals['_STARTSESSIONREQUEST']._serialized_end=61
-  _globals['_STARTSESSIONRESPONSE']._serialized_start=63
-  _globals['_STARTSESSIONRESPONSE']._serialized_end=98
-  _globals['_LLMCHATSERVICE']._serialized_start=100
-  _globals['_LLMCHATSERVICE']._serialized_end=200
+  _globals['_STARTSESSIONREQUEST']._serialized_end=64
+  _globals['_STARTSESSIONRESPONSE']._serialized_start=66
+  _globals['_STARTSESSIONRESPONSE']._serialized_end=100
+  _globals['_QUESTION']._serialized_start=102
+  _globals['_QUESTION']._serialized_end=180
+  _globals['_ANSWER']._serialized_start=182
+  _globals['_ANSWER']._serialized_end=224
+  _globals['_LLMCHATSERVICE']._serialized_start=227
+  _globals['_LLMCHATSERVICE']._serialized_end=387
 # @@protoc_insertion_point(module_scope)

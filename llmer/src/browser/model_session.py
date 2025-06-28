@@ -1,3 +1,10 @@
+"""
+ToDo:
+ 1. Split this file into two:
+     - one with implementation of the chrome session
+     - another with the model session (e.g., deepseek, llama, deepseek and etc)
+"""
+import os
 from abc import abstractmethod, ABC
 from time import sleep, time
 
@@ -23,6 +30,12 @@ class LLMChromeSession(ABC):
     def get_default_options():
         """Return default Chrome options."""
         options = uc.ChromeOptions()
+        print("GOT HERE")
+        if os.environ.get("NO_CHROME_GUI"):
+            print("GOT HERE")
+            options.add_argument("--headless=new")
+            # options.add_argument("--headless")
+            options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-blink-features=AutomationControlled")
         return options
@@ -45,6 +58,9 @@ class LLMChromeSession(ABC):
         return logger
 
     def __init__(self, options: uc.ChromeOptions = None):
+
+        print("Starting here")
+
         self.logger = self.get_logger()
         self.options = options if options else self.get_default_options()
         self.driver = uc.Chrome(options=self.options)
@@ -145,6 +161,8 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         answer = self._validate_message_sent()
         # ToDo: create a datastruct for this
         self.past_questions_answers.append({"message": message, "answer": answer})
+
+        return answer
 
 
 if __name__=="__main__":
