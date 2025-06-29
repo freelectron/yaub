@@ -21,6 +21,7 @@ class LLMChromeSession(ABC):
     """Abstract base class for browser"""
     waiter_default_timeout = 1
     logging_file = "llm_browser_session_base.log"
+    past_questions_answers = list()
 
     @staticmethod
     def wait(seconds: int = 1):
@@ -33,8 +34,8 @@ class LLMChromeSession(ABC):
         print("GOT HERE")
         if os.environ.get("NO_CHROME_GUI"):
             print("GOT HERE")
-            options.add_argument("--headless=new")
-            # options.add_argument("--headless")
+            # options.add_argument("--headless=new")
+            options.add_argument("--headless")
             options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-blink-features=AutomationControlled")
@@ -65,6 +66,8 @@ class LLMChromeSession(ABC):
         self.options = options if options else self.get_default_options()
         self.driver = uc.Chrome(options=self.options)
         self.waiter = WebDriverWait(self.driver, self.waiter_default_timeout)
+
+        print("Finishing there")
 
     @abstractmethod
     def init_chat_session(self):
@@ -110,10 +113,13 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         for i in range(n_tries):
             self.logger.info(f"Checking {i+1} if the LLM's start browser page is loaded.")
             html_source = self.driver.page_source
+
+            print(html_source)
+
             if 'content="ChatGPT"><meta' in html_source:
                 return
             else:
-                self.wait()
+                self.wait(30)
 
         raise BrowserTimeOutError("Failed to start chat session. Page did not load correctly.")
 
@@ -131,9 +137,12 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
 
     def init_chat_session(self):
         """Initialize the Chrome browser."""
+        print("Initializing chat session in the browser...")
         self.driver.get(self.llm_chat_url)
+        print("Waiting for the page to load...")
         self.wait()
 
+        print("Page loaded, validating...")
         self._validate_start_page_loaded()
         self.past_questions_answers = list()
 

@@ -27,9 +27,6 @@ class LLMerServicer(LLMChatServiceServicer):
             session = self.start_session(request.model)
             session.init_chat_session()
             self.sessions[session_id] = session
-
-            print(session_id)
-
             return StartSessionResponse(id=session_id)
         except BrowserUnknownModelError as e:
             context.set_details(str(e))
@@ -60,10 +57,19 @@ def serve():
     add_LLMChatServiceServicer_to_server(LLMerServicer(), server)
     server.add_insecure_port('0.0.0.0:50051')
     server.start()
+
     print("gRPC server started on port 50051")
     example = LLMerServicer()
     print("STARTING A TEST SESSION")
-    example.start_session("ChatGPT")
+    open_ai = example.start_session("ChatGPT")
+    open_ai.init_chat_session()
+    open_ai.send_message("What is your context length?")
+    print(open_ai.past_questions_answers[-1])
+    open_ai.send_message("How can I send a message to you that is more than 120k tokens?")
+    print(open_ai.past_questions_answers[-1])
+    open_ai.send_message("Explain advanced techniques and best practices for error handling in python 3.13.")
+    print(open_ai.past_questions_answers[-1])
+    print()
 
     server.wait_for_termination()
 
