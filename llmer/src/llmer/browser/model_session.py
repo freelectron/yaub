@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
-from src.browser.errors import BrowserTimeOutError
+from llmer.browser.errors import BrowserTimeOutError
 
 
 class LLMChromeSession(ABC):

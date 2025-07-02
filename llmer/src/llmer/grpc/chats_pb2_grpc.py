@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import llmer.src.grpc.chats_pb2 as chats__pb2
+import llmer.grpc.chats_pb2 as chats__pb2
 
 GRPC_GENERATED_VERSION = "1.73.0"
 GRPC_VERSION = grpc.__version__

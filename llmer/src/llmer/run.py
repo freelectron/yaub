@@ -1,13 +1,13 @@
 import uuid
 from concurrent import futures
 import grpc
-from llmer.src.grpc.chats_pb2 import StartSessionResponse, Answer
-from llmer.src.grpc.chats_pb2_grpc import (
+from llmer.grpc.chats_pb2 import StartSessionResponse, Answer
+from llmer.grpc.chats_pb2_grpc import (
     LLMChatServiceServicer,
     add_LLMChatServiceServicer_to_server,
 )
-from llmer.src.browser.model_session import LLMBrowserSessionOpenAI, LLMChromeSession
-from src.browser.errors import BrowserUnknownModelError
+from llmer.browser.model_session import LLMBrowserSessionOpenAI, LLMChromeSession
+from llmer.browser.errors import BrowserUnknownModelError
 
 
 class LLMerServicer(LLMChatServiceServicer):

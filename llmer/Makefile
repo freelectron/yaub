@@ -1,7 +1,8 @@
-.PHONY: requirements docker
+.PHONY: poetry
 
-requirements:
+poetry.requirements:
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
-docker.build: requirements
-	docker build -f llmer/Dockerfile -t llmer-grpc-server .
+poetry.run:
+	poetry install
+	poetry run llmer
