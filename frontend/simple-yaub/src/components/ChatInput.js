@@ -29,9 +29,13 @@ function ChatInput({ newMessage, isLoading, setNewMessage, submitNewMessage }) {
           onChange={e => setNewMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your message..."
-          style={{ width: '100%', minHeight: 36, resize: 'none', boxSizing: 'border-box' }}
+          style={{ width: '100%', minHeight: 100, fontSize: 12, resize: 'none', boxSizing: 'border-box', padding: '6px' }}
         />
-        <button onClick={submitNewMessage} disabled={isLoading || !newMessage.trim()}>
+        <button 
+          onClick={submitNewMessage} 
+          disabled={isLoading || !newMessage.trim()}
+          style={{ width: 60, height: 40 }}
+        >
           Send
         </button>
       </div>
