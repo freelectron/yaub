@@ -17,8 +17,10 @@ Posts
     margin: 0 auto;
     background-color: v.$post-background-color;
     border-radius: 30px;
-    padding: 1px;
+    padding: 16px;
     box-shadow: 0 4px 100px rgba(0, 0, 0, 0.1);
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 .posts-header1 {
     font-family: v.$post-font;
