@@ -103,29 +103,29 @@ class LLMChromeSession(ABC):
         self.driver = webdriver.Chrome(options=self.options)
         # Inject comprehensive anti-detection JS
         self.driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
-            'source': '''
+                'source': '''
                 // Remove navigator.webdriver
                 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                // Patch window.chrome
+                // Patch window.chrome (often used to detect chromedriver)
                 window.chrome = { runtime: {} };
-                // Patch plugins
+                // Patch plugins (mimic common plugins)
                 Object.defineProperty(navigator, 'plugins', {get: () => [
                     { name: 'Chrome PDF Plugin', filename: 'internal-pdf-viewer', description: 'Portable Document Format' },
                     { name: 'Chrome PDF Viewer', filename: 'mhjfbmdgcfjbbpaeojofohoefgiehjai', description: '' },
                     { name: 'Native Client', filename: 'internal-nacl-plugin', description: '' }
                 ]});
-                // Patch languages
+                // Patch languages (ensure consistent order and values)
                 Object.defineProperty(navigator, 'languages', {get: () => ['en-US', 'en']});
-                // Patch platform
+                // Patch platform (simulate common OS)
                 Object.defineProperty(navigator, 'platform', {get: () => 'Win32'});
-                // Patch permissions
+                // Patch permissions (to avoid "notifications denied" etc.)
                 const originalQuery = window.navigator.permissions.query;
                 window.navigator.permissions.query = (parameters) => (
                     parameters.name === 'notifications' ?
                     Promise.resolve({ state: Notification.permission }) :
                     originalQuery(parameters)
                 );
-                // Patch WebGL vendor/renderer
+                // Patch WebGL vendor/renderer (to hide automated GPU info)
                 try {
                     const getParameter = WebGLRenderingContext.prototype.getParameter;
                     WebGLRenderingContext.prototype.getParameter = function(parameter) {
@@ -134,22 +134,22 @@ class LLMChromeSession(ABC):
                         return getParameter(parameter);
                     };
                 } catch (e) {}
-                // Patch hardware
+                // Patch hardware (mimic common CPU/memory)
                 Object.defineProperty(navigator, 'hardwareConcurrency', {get: () => 8});
                 Object.defineProperty(navigator, 'deviceMemory', {get: () => 8});
-                // Patch screen
+                // Patch screen properties (ensure consistency with window size)
                 Object.defineProperty(window.screen, 'availWidth', {value: 1920});
                 Object.defineProperty(window.screen, 'availHeight', {value: 1040});
                 Object.defineProperty(window.screen, 'width', {value: 1920});
                 Object.defineProperty(window.screen, 'height', {value: 1080});
                 Object.defineProperty(window.screen, 'colorDepth', {value: 24});
                 Object.defineProperty(window.screen, 'pixelDepth', {value: 24});
-                // Patch Notification
+                // Patch Notification API
                 window.Notification = function() { return; };
                 window.Notification.permission = 'default';
-                // Patch HTMLElement.prototype for toString
+                // Patch HTMLElement.prototype for toString (to avoid detection of modified DOM elements)
                 window.HTMLElement.prototype.toString = function() { return '[object HTMLElement]'; };
-                // Patch RTCPeerConnection to avoid WebRTC leaks
+                // Patch RTCPeerConnection to avoid WebRTC leaks (can reveal real IP)
                 if (window.RTCPeerConnection) {
                     const orig = window.RTCPeerConnection;
                     window.RTCPeerConnection = function(...args) {
@@ -158,30 +158,34 @@ class LLMChromeSession(ABC):
                         return pc;
                     };
                 }
-                // Patch cdc_ variables (ChromeDriver signatures)
+                // Patch cdc_ variables (ChromeDriver specific signatures)
                 for (let key in window) {
                     if (key.match(/^cdc_.*$/)) {
                         try { window[key] = undefined; } catch (e) {}
                     }
                 }
-                // Patch mediaDevices
+                // Patch mediaDevices (to avoid revealing camera/mic info)
                 if (navigator.mediaDevices) {
                     navigator.mediaDevices.enumerateDevices = () => Promise.resolve([
                         { kind: 'videoinput', label: '', deviceId: 'default', groupId: 'default' },
                         { kind: 'audioinput', label: '', deviceId: 'default', groupId: 'default' }
                     ]);
                 }
-                // Patch connection
+                // Patch connection (mimic common network conditions)
                 if (navigator.connection) {
                     Object.defineProperty(navigator, 'connection', {get: () => ({
                         downlink: 10, effectiveType: '4g', rtt: 50, saveData: false
                     })});
                 }
-                // Patch outerWidth/outerHeight
-                Object.defineProperty(window, 'outerWidth', {get: () => 1920});
-                Object.defineProperty(window, 'outerHeight', {get: () => 1080});
-                // Patch devicePixelRatio
+                // Patch outerWidth/outerHeight (ensure consistency)
+                Object.defineProperty(window, 'outerWidth', {get: () => 1220});
+                Object.defineProperty(window, 'outerHeight', {get: () => 760});
+                // Patch devicePixelRatio (ensure consistent scaling)
                 Object.defineProperty(window, 'devicePixelRatio', {get: () => 1});
+                // Additional patches for other common WebDriver artifacts
+                Object.defineProperty(navigator, 'doNotTrack', { get: () => '1' }); // Indicate DNT
+                Object.defineProperty(navigator, 'appVersion', { get: () => '5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' });
+                Object.defineProperty(navigator, 'vendor', { get: () => 'Google Inc.' });
             '''
         })
         self.waiter = WebDriverWait(self.driver, self.waiter_default_timeout)
