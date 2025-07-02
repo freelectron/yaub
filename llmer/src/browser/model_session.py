@@ -75,11 +75,6 @@ class LLMChromeSession(ABC):
         pass
 
     @abstractmethod
-    def pass_captcha(self):
-        """Handle CAPTCHA if present."""
-        pass
-
-    @abstractmethod
     def send_message(self, message: str):
         """Send a message to ChatGPT."""
         pass
@@ -113,13 +108,10 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         for i in range(n_tries):
             self.logger.info(f"Checking {i+1} if the LLM's start browser page is loaded.")
             html_source = self.driver.page_source
-
-            print(html_source)
-
             if 'content="ChatGPT"><meta' in html_source:
                 return
             else:
-                self.wait(30)
+                self.wait(15)
 
         raise BrowserTimeOutError("Failed to start chat session. Page did not load correctly.")
 
@@ -145,19 +137,6 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         print("Page loaded, validating...")
         self._validate_start_page_loaded()
         self.past_questions_answers = list()
-
-    def pass_captcha(self):
-        """Handle CAPTCHA if present."""
-        iframe = self.waiter.until(EC.presence_of_element_located(
-            (By.XPATH, "//iframe[contains(@src, 'challenge')]")
-        ))
-        self.driver.switch_to.frame(iframe)
-        checkbox = self.waiter.until(EC.element_to_be_clickable((
-            By.XPATH, "//input[@type='checkbox'] | //div[contains(@class,'mark')]"
-        )))
-        checkbox.click()
-
-        self._validate_start_page_loaded()
 
     def send_message(self, message: str):
         """Send a message to ChatGPT."""

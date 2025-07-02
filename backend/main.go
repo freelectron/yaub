@@ -3,9 +3,19 @@ package main
 import (
 	"backend/alog"
 	"backend/database/mongodb"
+	llm_chat_v1 "backend/grpc/gen/service/llm_chat/v1"
 	"backend/webserver"
 	"backend/webserver/handlers"
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
+	"google.golang.org/grpc"
+	"io"
+	"net/http"
+	"os"
+	"sync"
+	"time"
 )
 
 type Config struct {
@@ -44,37 +54,57 @@ func main() {
 	svc.RegisterRoute("POST", "/api/signin", iamHandler.SignIn)
 	svc.RegisterRoute("POST", "/api/register_user", iamHandler.SignUp)
 
-	//// LLMER gRPC client setup
-	//llmerAddr := "llmer:50051" // Use "localhost:50051" if running backend outside Docker
-	//llmerConn, err := grpc.Dial(llmerAddr, grpc.WithInsecure())
-	//if err != nil {
-	//	alog.Fatal(sysCtx, "Failed to connect to llmer gRPC: ", err)
-	//}
-	//defer llmerConn.Close()
-	//llmerClient := llm_chat_v1.NewLLMChatServiceClient(llmerConn)
-	//llmerHandler := handlers.NewDefaultLLMHandler(llmerClient)
-	//
-	//svc.RegisterRoute("POST", "/api/llmer/start_session", llmerHandler.StartSession)
-	//
-	//time.Sleep(2 * time.Second) // Wait for the gRPC server to be ready
-	//// For testing: a GET endpoint that sends a StartSession request with a hardcoded model
-	//// Prepare the request body
-	//body := map[string]string{"model": "ChatGPT"}
-	//jsonBody, err := json.Marshal(body)
-	//if err != nil {
-	//	fmt.Errorf("Failed to marshal request body: "+err.Error(), http.StatusInternalServerError)
-	//	return
-	//}
-	//
-	//// Send POST request to self
-	//resp, err := http.Post("http://llmer:3001/api/llmer/start_session", "application/json", bytes.NewReader(jsonBody))
-	//if err != nil {
-	//	fmt.Errorf("Failed to send POST request: "+err.Error(), http.StatusInternalServerError)
-	//	return
-	//}
-	//defer resp.Body.Close()
-	//fmt.Println(resp, err)
+	//// ToDo: prettify?
+	llmerAddr := os.Getenv("BROWSER_SERVER_ADDR")
+	llmerConn, err := grpc.Dial(llmerAddr, grpc.WithInsecure())
+	if err != nil {
+		alog.Fatal(sysCtx, "Failed to connect to llmer gRPC: ", err)
+	}
+	defer llmerConn.Close()
+	llmerClient := llm_chat_v1.NewLLMChatServiceClient(llmerConn)
+	llmerHandler := handlers.NewDefaultLLMHandler(llmerClient)
+	svc.RegisterRoute("POST", "/api/llmer/start_session", llmerHandler.StartSession)
 
-	// Run
-	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())
+	// Run in separate goroutine to avoid blocking
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		err = svc.HttpServer.ListenAndServe()
+		time.Sleep(2 * time.Second)
+		//alog.Fatal(sysCtx, "Listen and serve error: ", err)
+		fmt.Println("Error while serving: ", err)
+		fmt.Println("Web server exited.")
+		wg.Done()
+	}()
+
+	////////////////////////
+	//      TESTING
+	////////////////////////
+	fmt.Println("Testing gRPC connection...")
+	time.Sleep(5 * time.Second) // Wait for the gRPC server to be ready
+	// For testing: a GET endpoint that sends a StartSession request with a hardcoded model
+	// Prepare the request body
+	body := map[string]string{"model": "ChatGPT"}
+	jsonBody, err := json.Marshal(body)
+	if err != nil {
+		fmt.Println("Could not marshal request body: ", err)
+		fmt.Errorf("Failed to marshal request body: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// Send a post request to itself
+	//resp, err := http.Post("http://backend:3001/api/llmer/start_session", "application/json", bytes.NewReader(jsonBody))
+	resp, err := http.Post("http://localhost:3001/api/llmer/start_session", "application/json", bytes.NewReader(jsonBody))
+
+	if err != nil {
+		fmt.Errorf("Failed to send POST request: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return
+	}
+	fmt.Println(string(respBody))
+	defer resp.Body.Close()
+	wg.Wait()
 }

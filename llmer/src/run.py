@@ -57,19 +57,14 @@ def serve():
     add_LLMChatServiceServicer_to_server(LLMerServicer(), server)
     server.add_insecure_port('0.0.0.0:50051')
     server.start()
-
     print("gRPC server started on port 50051")
     example = LLMerServicer()
+
     print("STARTING A TEST SESSION")
     open_ai = example.start_session("ChatGPT")
     open_ai.init_chat_session()
-    open_ai.send_message("What is your context length?")
+    open_ai.send_message("Explain how I can send messages or passages of text that are more more than 120k tokens? Or what ever your maximum message length is.")
     print(open_ai.past_questions_answers[-1])
-    open_ai.send_message("How can I send a message to you that is more than 120k tokens?")
-    print(open_ai.past_questions_answers[-1])
-    open_ai.send_message("Explain advanced techniques and best practices for error handling in python 3.13.")
-    print(open_ai.past_questions_answers[-1])
-    print()
 
     server.wait_for_termination()
 
