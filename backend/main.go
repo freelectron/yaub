@@ -59,5 +59,5 @@ func main() {
 	svc.RegisterRoute("POST", "/api/llmer/start_session", llmerHandler.StartSession)
 	svc.RegisterRoute("POST", "/api/llmer/send_message", llmerHandler.SendMessage)
 
-	alog.Fatal(sysCtx, "Listen and serve error: ", err)
+	alog.Fatal(sysCtx, "Listen and serve error: ", svc.HttpServer.ListenAndServe())
 }

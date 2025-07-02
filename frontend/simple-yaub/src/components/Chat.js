@@ -9,8 +9,31 @@ const Chat = () => {
     const [chatId, setChatId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    const [isRequestingSession, setIsRequestingSession] = useState(false);
 
     const isLoading = messages.length && messages[messages.length - 1].loading;
+
+    async function requestSessionId() {
+        setIsRequestingSession(true);
+        const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+        const urlInitLLMSession = `${backendURL}/api/llmer/start_session`;
+        try {
+            const response = await fetch(urlInitLLMSession, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ model: 'ChatGPT' }),
+            });
+            const data = await response.json();
+            setChatId(data.id);
+        }
+        catch (error) {
+            // ToDo: add error handling
+            console.error('Error requesting session ID:', error);
+        }
+        finally {
+            setIsRequestingSession(false);
+        }
+    }
 
     async function submitNewMessage() {
         const trimmedMessage = newMessage.trim();
@@ -24,15 +47,7 @@ const Chat = () => {
         ]);
         setNewMessage('');
 
-        let chatIdOrNew = chatId;
         try {
-            // Placeholder for API call to create chat
-            if (!chatId) {
-                // Simulate API call
-                const id = 'mock-chat-id';
-                setChatId(id);
-                chatIdOrNew = id;
-            }
             // Placeholder for streaming response
             // Simulate streaming by updating the last assistant message
             setMessages(prev => {
@@ -68,6 +83,24 @@ const Chat = () => {
         <div className="empty">
             <NavigationBar />
             <div className="content-holder-container">
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                    <button
+                        onClick={requestSessionId}
+                        disabled={!!chatId || isRequestingSession}
+                        style={{
+                            padding: '8px 24px',
+                            borderRadius: 8,
+                            background: chatId ? '#b3b3b3' : '#4f8cff',
+                            color: '#fff',
+                            border: 'none',
+                            fontWeight: 'bold',
+                            cursor: chatId ? 'not-allowed' : 'pointer',
+                            opacity: isRequestingSession ? 0.7 : 1
+                        }}
+                    >
+                        {chatId ? 'ChatGPT (active)' : isRequestingSession ? 'Requesting...' : 'ChatGPT'}
+                    </button>
+                </div>
                 {messages.length === 0 && (
                     <div style={{ textAlign: 'center', margin: '2rem 0', color: '#666' }}>
                         <b>Welcome to the Chatbot!</b> <br />
