@@ -24,7 +24,12 @@ class Question(_message.Message):
     session_id: str
     system_prompt: str
     question_prompt: str
-    def __init__(self, session_id: _Optional[str] = ..., system_prompt: _Optional[str] = ..., question_prompt: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self,
+        session_id: _Optional[str] = ...,
+        system_prompt: _Optional[str] = ...,
+        question_prompt: _Optional[str] = ...,
+    ) -> None: ...
 
 class Answer(_message.Message):
     __slots__ = ("session_id", "text")
@@ -32,4 +37,6 @@ class Answer(_message.Message):
     TEXT_FIELD_NUMBER: _ClassVar[int]
     session_id: str
     text: str
-    def __init__(self, session_id: _Optional[str] = ..., text: _Optional[str] = ...) -> None: ...
+    def __init__(
+        self, session_id: _Optional[str] = ..., text: _Optional[str] = ...
+    ) -> None: ...

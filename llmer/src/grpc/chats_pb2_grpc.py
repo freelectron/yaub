@@ -5,23 +5,26 @@ import warnings
 
 import llmer.src.grpc.chats_pb2 as chats__pb2
 
-GRPC_GENERATED_VERSION = '1.73.0'
+GRPC_GENERATED_VERSION = "1.73.0"
 GRPC_VERSION = grpc.__version__
 _version_not_supported = False
 
 try:
     from grpc._utilities import first_version_is_lower
-    _version_not_supported = first_version_is_lower(GRPC_VERSION, GRPC_GENERATED_VERSION)
+
+    _version_not_supported = first_version_is_lower(
+        GRPC_VERSION, GRPC_GENERATED_VERSION
+    )
 except ImportError:
     _version_not_supported = True
 
 if _version_not_supported:
     raise RuntimeError(
-        f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in chats_pb2_grpc.py depends on'
-        + f' grpcio>={GRPC_GENERATED_VERSION}.'
-        + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
-        + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
+        f"The grpc package installed is at version {GRPC_VERSION},"
+        + f" but the generated code in chats_pb2_grpc.py depends on"
+        + f" grpcio>={GRPC_GENERATED_VERSION}."
+        + f" Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}"
+        + f" or downgrade your generated code using grpcio-tools<={GRPC_VERSION}."
     )
 
 
@@ -35,15 +38,17 @@ class LLMChatServiceStub(object):
             channel: A grpc.Channel.
         """
         self.StartSession = channel.unary_unary(
-                '/llm_chat_v1.LLMChatService/StartSession',
-                request_serializer=chats__pb2.StartSessionRequest.SerializeToString,
-                response_deserializer=chats__pb2.StartSessionResponse.FromString,
-                _registered_method=True)
+            "/llm_chat_v1.LLMChatService/StartSession",
+            request_serializer=chats__pb2.StartSessionRequest.SerializeToString,
+            response_deserializer=chats__pb2.StartSessionResponse.FromString,
+            _registered_method=True,
+        )
         self.SendMessage = channel.unary_unary(
-                '/llm_chat_v1.LLMChatService/SendMessage',
-                request_serializer=chats__pb2.Question.SerializeToString,
-                response_deserializer=chats__pb2.Answer.FromString,
-                _registered_method=True)
+            "/llm_chat_v1.LLMChatService/SendMessage",
+            request_serializer=chats__pb2.Question.SerializeToString,
+            response_deserializer=chats__pb2.Answer.FromString,
+            _registered_method=True,
+        )
 
 
 class LLMChatServiceServicer(object):
@@ -52,54 +57,59 @@ class LLMChatServiceServicer(object):
     def StartSession(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
     def SendMessage(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_LLMChatServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'StartSession': grpc.unary_unary_rpc_method_handler(
-                    servicer.StartSession,
-                    request_deserializer=chats__pb2.StartSessionRequest.FromString,
-                    response_serializer=chats__pb2.StartSessionResponse.SerializeToString,
-            ),
-            'SendMessage': grpc.unary_unary_rpc_method_handler(
-                    servicer.SendMessage,
-                    request_deserializer=chats__pb2.Question.FromString,
-                    response_serializer=chats__pb2.Answer.SerializeToString,
-            ),
+        "StartSession": grpc.unary_unary_rpc_method_handler(
+            servicer.StartSession,
+            request_deserializer=chats__pb2.StartSessionRequest.FromString,
+            response_serializer=chats__pb2.StartSessionResponse.SerializeToString,
+        ),
+        "SendMessage": grpc.unary_unary_rpc_method_handler(
+            servicer.SendMessage,
+            request_deserializer=chats__pb2.Question.FromString,
+            response_serializer=chats__pb2.Answer.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'llm_chat_v1.LLMChatService', rpc_method_handlers)
+        "llm_chat_v1.LLMChatService", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('llm_chat_v1.LLMChatService', rpc_method_handlers)
+    server.add_registered_method_handlers(
+        "llm_chat_v1.LLMChatService", rpc_method_handlers
+    )
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class LLMChatService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def StartSession(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def StartSession(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/llm_chat_v1.LLMChatService/StartSession',
+            "/llm_chat_v1.LLMChatService/StartSession",
             chats__pb2.StartSessionRequest.SerializeToString,
             chats__pb2.StartSessionResponse.FromString,
             options,
@@ -110,23 +120,26 @@ class LLMChatService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )
 
     @staticmethod
-    def SendMessage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
+    def SendMessage(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/llm_chat_v1.LLMChatService/SendMessage',
+            "/llm_chat_v1.LLMChatService/SendMessage",
             chats__pb2.Question.SerializeToString,
             chats__pb2.Answer.FromString,
             options,
@@ -137,4 +150,5 @@ class LLMChatService(object):
             wait_for_ready,
             timeout,
             metadata,
-            _registered_method=True)
+            _registered_method=True,
+        )

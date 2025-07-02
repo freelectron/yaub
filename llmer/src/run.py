@@ -2,7 +2,10 @@ import uuid
 from concurrent import futures
 import grpc
 from llmer.src.grpc.chats_pb2 import StartSessionResponse, Answer
-from llmer.src.grpc.chats_pb2_grpc import LLMChatServiceServicer, add_LLMChatServiceServicer_to_server
+from llmer.src.grpc.chats_pb2_grpc import (
+    LLMChatServiceServicer,
+    add_LLMChatServiceServicer_to_server,
+)
 from llmer.src.browser.model_session import LLMBrowserSessionOpenAI, LLMChromeSession
 from src.browser.errors import BrowserUnknownModelError
 
@@ -12,10 +15,7 @@ class LLMerServicer(LLMChatServiceServicer):
         self.sessions = {}
 
     @staticmethod
-    def start_session( model: str) -> LLMChromeSession :
-
-        print("I AM HERE")
-
+    def start_session(model: str) -> LLMChromeSession:
         if model == "ChatGPT":
             return LLMBrowserSessionOpenAI()
         else:
@@ -52,26 +52,15 @@ class LLMerServicer(LLMChatServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return Answer(session_id=request.session_id, text="")
 
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=9))
     add_LLMChatServiceServicer_to_server(LLMerServicer(), server)
-    server.add_insecure_port('0.0.0.0:50051')
+    server.add_insecure_port("0.0.0.0:50051")
     server.start()
     print("gRPC server started on port 50051")
-    example = LLMerServicer()
-
-    print("STARTING A TEST SESSION")
-    open_ai = example.start_session("ChatGPT")
-    open_ai.init_chat_session()
-    open_ai.send_message("Explain how I can send messages or passages of text that are more more than 120k tokens? Or what ever your maximum message length is.")
-    print(open_ai.past_questions_answers[-1])
-
     server.wait_for_termination()
+
 
 if __name__ == "__main__":
     serve()
-
-
-
-
-
