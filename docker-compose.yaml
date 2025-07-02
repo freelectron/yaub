@@ -15,17 +15,6 @@ services:
       MONGO_DB_ADDR: "mongodb"
       BROWSER_SERVER_ADDR: host.docker.internal:50051
 
-  llmer:
-    build:
-      context: ./llmer
-      dockerfile: Dockerfile
-    ports:
-      - "50051:50051"
-    networks:
-      - mongodb_network
-    environment:
-      NO_CHROME_GUI:  "true"
-
   nextjs:
     build:
       context: ./frontend/simple-yaub
