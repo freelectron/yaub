@@ -39,3 +39,26 @@ func (h *LLMHandler) StartSession(ctx context.Context, w http.ResponseWriter, r 
 		http.Error(w, "Error writing response", http.StatusInternalServerError)
 	}
 }
+
+func (h *LLMHandler) SendMessage(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req gprcLLMer.Question
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := h.grpcClient.SendMessage(ctx, &req)
+	if err != nil {
+		http.Error(w, "Error processing text", http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		http.Error(w, "Error writing response", http.StatusInternalServerError)
+	}
+}
