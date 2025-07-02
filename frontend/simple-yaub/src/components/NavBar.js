@@ -24,6 +24,12 @@ const NavBar = () => {
                     </a>
                 </li>
                 <li className="nav-item">
+                    <a href="/chat">
+                        <i className="nav-bar-icon fa fa-comments"></i>
+                        <span className="tooltip">Chat</span>
+                    </a>
+                </li>
+                <li className="nav-item">
                     <button onClick={openLogin}>
                         <i className="nav-bar-icon-login-button fa fa-user"></i>
                         <span className="tooltip">User</span>

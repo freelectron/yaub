@@ -37,7 +37,7 @@ const MainPage = ({ defaultPostsMetaInfo }) => {
 
             <NavigationBar />
 
-            <div className="posts-container">
+            <div className="content-holder-container">
 
                 <div className="posts-header1">
                     {/*<p> Your selection </p>*/}
