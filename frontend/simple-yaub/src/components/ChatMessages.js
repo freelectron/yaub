@@ -33,7 +33,7 @@ function ChatMessages({ messages, isLoading }) {
                 }}
             >
               {msg.content}
-              {msg.loading && <span style={{ marginLeft: 8 }}>...</span>}
+              {msg.loading && <span style={{ marginLeft: 8 }}> <Spinner /> </span>}
             </div>
           </div>
       ))}
