@@ -1,11 +1,10 @@
 """
 ToDo:
  1. Split this file into two:
-     - one with implementation of the chrome session
+     - one with implementation of the browser (chrome) session
      - another with the model session (e.g., deepseek, llama, deepseek and etc)
 """
 
-import os
 from abc import abstractmethod, ABC
 from time import sleep, time
 
@@ -15,7 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
-from llmer.browser.errors import BrowserTimeOutError
+from llmer.browser.errors import BrowserTimeOutError, BrowserStayLoggedOutFailed
 
 
 class LLMChromeSession(ABC):
@@ -71,6 +70,10 @@ class LLMChromeSession(ABC):
     @abstractmethod
     def send_message(self, message: str):
         """Send a message to ChatGPT."""
+        pass
+
+    def pass_stay_logged_out(self):
+        """Method to ensure the user is logged out."""
         pass
 
 
@@ -155,7 +158,21 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
         # ToDo: create a datastruct for this
         self.past_questions_answers.append({"message": message, "answer": answer})
 
+        # ToDo: see if this is robust
+        if "Stay logged out" in self.driver.page_source:
+            self.logger.warning("'Stay logged out' link found. Clicking it..")
+            self.pass_stay_logged_out()
+
         return answer
+
+    def pass_stay_logged_out(self):
+        try:
+            stay_logged_out_link = self.waiter.until(
+                EC.element_to_be_clickable((By.LINK_TEXT, "Stay logged out"))
+            )
+            stay_logged_out_link.click()
+        except Exception as e:
+            raise BrowserStayLoggedOutFailed(e.__str__())
 
 
 if __name__ == "__main__":
@@ -165,13 +182,28 @@ if __name__ == "__main__":
         open_ai.send_message("What is your context length?")
         print(open_ai.past_questions_answers[-1])
         open_ai.send_message(
-            "How can I send a message to you that is more than 120k tokens?"
-        )
+            "just say hie"        )
         print(open_ai.past_questions_answers[-1])
         open_ai.send_message(
-            "Explain advanced techniques and best practices for error handling in python 3.13."
+            "just say agaga"        )
+        print(open_ai.past_questions_answers[-1])
+
+        open_ai.send_message(
+            "just say wewe"        )
+        print(open_ai.past_questions_answers[-1])
+
+        open_ai.send_message(
+            "just say 4hre"
         )
         print(open_ai.past_questions_answers[-1])
+
+        open_ai.send_message(
+            "just say 909055"
+        )
+        print(open_ai.past_questions_answers[-1])
+        # sleep(4)
+        # open_ai.pass_stay_logged_out()
+
     except Exception as e:
         print(f"An error occurred: {e}")
 

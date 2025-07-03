@@ -20,3 +20,9 @@ class BrowserUnknownModelError(BrowserError):
 
     def __init__(self, message: str):
         super().__init__("This model is not implemented in the backend: " + message)
+
+class BrowserStayLoggedOutFailed(BrowserError):
+    """Raised when the 'Stay logged out' link is not found."""
+
+    def __init__(self, message: str):
+        super().__init__("The 'Stay logged out' link was not found/clicked: " + message)
