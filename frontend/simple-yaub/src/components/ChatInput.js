@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-function ChatInput({ newMessage, isLoading, setNewMessage, submitNewMessage }) {
+function ChatInput({ chatId, newMessage, isLoading, setNewMessage, submitNewMessage }) {
   const textareaRef = useRef(null);
 
   // Auto-resize textarea height
@@ -33,7 +33,7 @@ function ChatInput({ newMessage, isLoading, setNewMessage, submitNewMessage }) {
         />
         <button 
           onClick={submitNewMessage} 
-          disabled={isLoading || !newMessage.trim()}
+          disabled={isLoading || !newMessage.trim() || !chatId}
           style={{ width: 60, height: 40 }}
         >
           Send

@@ -5,6 +5,41 @@ import Footer from "@/components/Footer";
 import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 
+async function requestSessionIdBackend(model = 'ChatGPT') {
+    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const urlInitLLMSession = `${backendURL}/api/llmer/start_session`;
+    const response = await fetch(urlInitLLMSession, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: model }),
+    });
+    const data = await response.json();
+    return data.id;
+}
+
+async function sendMessageBackend(chatId, trimmedMessage) {
+    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const urlSendMessage = `${backendURL}/api/llmer/send_message`;
+
+    const response =  await fetch(urlSendMessage, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            "session_id": chatId,
+            "system_prompt": "Return the results in raw markdown format.",
+            "question_prompt": trimmedMessage,
+        }),
+    });
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    if (!data || !data.text) {
+        throw new Error('Invalid response format.');
+    }
+    return data.text;
+}
+
 const Chat = () => {
     const [chatId, setChatId] = useState(null);
     const [messages, setMessages] = useState([]);
@@ -15,16 +50,9 @@ const Chat = () => {
 
     async function requestSessionId() {
         setIsRequestingSession(true);
-        const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-        const urlInitLLMSession = `${backendURL}/api/llmer/start_session`;
         try {
-            const response = await fetch(urlInitLLMSession, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ model: 'ChatGPT' }),
-            });
-            const data = await response.json();
-            setChatId(data.id);
+            const sessionId = await requestSessionIdBackend();
+            setChatId(sessionId);
         }
         catch (error) {
             // ToDo: add error handling
@@ -35,47 +63,41 @@ const Chat = () => {
         }
     }
 
+    function SetLastAnswer(answer) {
+        setMessages(prev => {
+            const updated = [...prev];
+            updated[updated.length - 1] = {
+                ...updated[updated.length - 1],
+                // Append to the last assistant's message
+                content: (updated[updated.length - 1].content || '') + answer,
+                loading: false,
+            };
+            return updated;
+        });
+    }
+
+    function AppendNewQuestionAnswer(messageContent) {
+        setMessages(prev => [
+            ...prev,
+            { role: 'user', content: messageContent },
+            { role: 'assistant', content: '', loading: true }
+        ]);
+        setNewMessage('');
+    }
+
     async function submitNewMessage() {
         const trimmedMessage = newMessage.trim();
         if (!trimmedMessage || isLoading) return;
 
-        // Add user message and loading assistant message
-        setMessages(prev => [
-            ...prev,
-            { role: 'user', content: trimmedMessage },
-            { role: 'assistant', content: '', loading: true }
-        ]);
-        setNewMessage('');
+        AppendNewQuestionAnswer(trimmedMessage);
 
         try {
-            // Placeholder for streaming response
-            // Simulate streaming by updating the last assistant message
-            setMessages(prev => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                    ...updated[updated.length - 1],
-                    content: (updated[updated.length - 1].content || '') + 'Hello! This is a mock response.',
-                };
-                return updated;
-            });
-            setMessages(prev => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                    ...updated[updated.length - 1],
-                    loading: false,
-                };
-                return updated;
-            });
-        } catch (err) {
-            setMessages(prev => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                    ...updated[updated.length - 1],
-                    loading: false,
-                    error: true,
-                };
-                return updated;
-            });
+            const answer = await sendMessageBackend(chatId, trimmedMessage);
+
+            SetLastAnswer(answer)
+        }
+        catch (error) {
+            console.error('Error sending message:', error);
         }
     }
 
@@ -109,6 +131,7 @@ const Chat = () => {
                 )}
                 <ChatMessages messages={messages} isLoading={isLoading} />
                 <ChatInput
+                    chatId={chatId}
                     newMessage={newMessage}
                     isLoading={isLoading}
                     setNewMessage={setNewMessage}
