@@ -5,13 +5,16 @@ import Footer from "@/components/Footer";
 import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 
-async function requestSessionIdBackend(model = 'ChatGPT') {
+async function requestSessionIdBackend(user, mode = 'QuestionAnsweringChatBot') {
     const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
     const urlInitLLMSession = `${backendURL}/api/llmer/start_session`;
+
+    console.log("SENDING REQUEST TO BACKEND", user);
+
     const response = await fetch(urlInitLLMSession, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: model }),
+        body: JSON.stringify({ user: user, mode: mode }),
     });
     const data = await response.json();
     return data.id;
@@ -26,7 +29,7 @@ async function sendMessageBackend(chatId, trimmedMessage) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             "session_id": chatId,
-            "system_prompt": "Return the results only in markdown format.",
+            "system_prompt": "",
             "question_prompt": trimmedMessage,
         }),
     });
@@ -40,7 +43,7 @@ async function sendMessageBackend(chatId, trimmedMessage) {
     return data.text;
 }
 
-const Chat = () => {
+const Chat = (session) => {
     const [chatId, setChatId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
@@ -48,10 +51,10 @@ const Chat = () => {
 
     const isLoading = messages.length && messages[messages.length - 1].loading;
 
-    async function requestSessionId() {
+    async function requestSessionId(userId) {
         setIsRequestingSession(true);
         try {
-            const sessionId = await requestSessionIdBackend();
+            const sessionId = await requestSessionIdBackend(userId);
             setChatId(sessionId);
         }
         catch (error) {
@@ -101,46 +104,61 @@ const Chat = () => {
         }
     }
 
-    return (
-        <div className="empty">
-            <NavigationBar />
-            <div className="content-holder-container">
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-                    <button
-                        onClick={requestSessionId}
-                        disabled={!!chatId || isRequestingSession}
-                        style={{
-                            padding: '8px 24px',
-                            borderRadius: 8,
-                            background: chatId ? '#b3b3b3' : '#4f8cff',
-                            color: '#fff',
-                            border: 'none',
-                            fontWeight: 'bold',
-                            cursor: chatId ? 'not-allowed' : 'pointer',
-                            opacity: isRequestingSession ? 0.7 : 1
-                        }}
-                    >
-                        {chatId ? 'ChatGPT (active)' : isRequestingSession ? 'Requesting...' : 'ChatGPT'}
-                    </button>
-                </div>
-                {messages.length === 0 && (
+    if (!session.session) {
+        return (
+            <div className="empty">
+                <NavigationBar />
+                <div className="content-holder-container">
                     <div style={{ textAlign: 'center', margin: '2rem 0', color: '#666' }}>
                         <b>Welcome to the Chatbot!</b> <br />
-                        Ask me anything.
+                        Please log in to start chatting.
                     </div>
-                )}
-                <ChatMessages messages={messages} isLoading={isLoading} />
-                <ChatInput
-                    chatId={chatId}
-                    newMessage={newMessage}
-                    isLoading={isLoading}
-                    setNewMessage={setNewMessage}
-                    submitNewMessage={submitNewMessage}
-                />
+                </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
-    );
+            )
+        } else {
+        return (
+            <div className="empty">
+                <NavigationBar />
+                <div className="content-holder-container">
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                        <button
+                            onClick={() => requestSessionId(session.session.user.id)}
+                            disabled={!!chatId || isRequestingSession}
+                            style={{
+                                padding: '8px 24px',
+                                borderRadius: 8,
+                                background: chatId ? '#b3b3b3' : '#4f8cff',
+                                color: '#fff',
+                                border: 'none',
+                                fontWeight: 'bold',
+                                cursor: chatId ? 'not-allowed' : 'pointer',
+                                opacity: isRequestingSession ? 0.7 : 1
+                            }}
+                        >
+                            {chatId ? 'ChatGPT (active)' : isRequestingSession ? 'Requesting...' : 'ChatGPT'}
+                        </button>
+                    </div>
+                    {messages.length === 0 && (
+                        <div style={{ textAlign: 'center', margin: '2rem 0', color: '#666' }}>
+                            <b>Welcome to the Chatbot!</b> <br />
+                            Ask me anything.
+                        </div>
+                    )}
+                    <ChatMessages messages={messages} isLoading={isLoading} />
+                    <ChatInput
+                        chatId={chatId}
+                        newMessage={newMessage}
+                        isLoading={isLoading}
+                        setNewMessage={setNewMessage}
+                        submitNewMessage={submitNewMessage}
+                    />
+                </div>
+                <Footer />
+            </div>
+            );
+        }
 };
 
 export default Chat; 

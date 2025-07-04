@@ -9,7 +9,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 	"os"
 )
 
@@ -28,6 +27,7 @@ func newMongoClient(user, pass, addr string, port int, database string) (Client,
 	mongoURI := fmt.Sprintf("mongodb://%s:%s@%s:%d", user, pass, addr, port)
 	clientOptions := options.Client().ApplyURI(mongoURI)
 	client, err := mongo.Connect(context.Background(), clientOptions)
+
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to mongodb: %w", err)
 	}
@@ -54,7 +54,7 @@ func (c *mongoClient) GetAll(ctx context.Context, collectionName string) ([]bson
 
 	cursor, err := collection.Find(ctx, bson.M{}) // bson.M{} means "match all"
 	if err != nil {
-		log.Fatal("Find failed:", err)
+		return nil, fmt.Errorf("mongodb's Find failed: %w", err)
 	}
 	defer cursor.Close(ctx)
 

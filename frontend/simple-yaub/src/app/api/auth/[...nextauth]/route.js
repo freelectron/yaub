@@ -6,8 +6,8 @@ export const authOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "slimshady@popsiclesucker.com" },
-                password: { label: "Password", type: "inbetweenlife" },
+                email: { label: "Email", type: "email", placeholder: "slimshady@popsicle.com" },
+                password: { label: "Password", type: "inbetweenlife"},
             },
             async authorize(credentials) {
                 const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';

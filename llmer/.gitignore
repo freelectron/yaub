@@ -1,1 +1,9 @@
 ./.venv
+
+*__pycache__/*
+llmer/src/llmer/grpc/__pycache__/*
+*.pyc
+
+*~
+llmer/src/llmer/browser/~/
+llmer/src/~/

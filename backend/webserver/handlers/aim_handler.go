@@ -30,11 +30,13 @@ func (h *IAMHandler) SignIn(ctx context.Context, w http.ResponseWriter, r *http.
 	if err != nil {
 		alog.Error(ctx, "Error signing in: %w", err)
 		http.Error(w, "Error Signing in", http.StatusInternalServerError)
+		return
 	}
 
 	if _, err = w.Write(userBytes); err != nil {
 		alog.Error(ctx, "error writing data %v", err)
 		http.Error(w, "failed write data to the response body", http.StatusInternalServerError)
+		return
 	}
 	// todo: set header for json
 }

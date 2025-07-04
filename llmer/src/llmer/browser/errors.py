@@ -15,11 +15,11 @@ class BrowserTimeOutError(BrowserError):
         super().__init__("Browser operation timed out: " + message)
 
 
-class BrowserUnknownModelError(BrowserError):
+class BrowserUnknownModeError(BrowserError):
     """Raised when an unknown model is specified."""
 
     def __init__(self, message: str):
-        super().__init__("This model is not implemented in the backend: " + message)
+        super().__init__("This mode is not implemented in the backend: " + message)
 
 class BrowserStayLoggedOutFailed(BrowserError):
     """Raised when the 'Stay logged out' link is not found."""

@@ -30,7 +30,7 @@ const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
     }, []);
 
     //  If not logged, do not allow commenting
-    if (!session) {
+    if (!session || !session.session) {
         return (
             <div className="empty">
                 <NavigationBar />

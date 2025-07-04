@@ -19,8 +19,13 @@ export default async function PostPageWrapper({params}) {
 
     const session = await getServerSession(authOptions);
 
-    // Fetch and parse comments from backend
-    const comments =  await fetchPostComments(id);
+    let comments = [];
+    if (!session) {
+        comments = [];
+    } else{
+        comments =  await fetchPostComments(id);
+    }
+
 
     return (
         <PostPage postId={id} serverRenderedPost={renderedPost} session={session} rawComments = {comments}/>

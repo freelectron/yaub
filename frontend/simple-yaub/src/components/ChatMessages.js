@@ -1,5 +1,6 @@
 import React from 'react';
 import Spinner from './Spinner';
+import Markdown from "react-markdown";
 
 function ChatMessages({ messages, isLoading }) {
   const scrollContentRef = React.useRef(null);

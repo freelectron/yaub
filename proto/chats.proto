@@ -4,7 +4,8 @@ package llm_chat_v1;
 option go_package = "../backend/grpc/gen/service/llm_chat/v1;llm_chat_v1";
 
 message StartSessionRequest {
-  string model = 1;
+  string user = 1;
+  string mode = 2;
 }
 
 message StartSessionResponse {

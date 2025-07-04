@@ -1,5 +1,4 @@
 import uuid
-import logging
 from concurrent import futures
 import grpc
 from llmer.grpc.chats_pb2 import StartSessionResponse, Answer
@@ -7,50 +6,41 @@ from llmer.grpc.chats_pb2_grpc import (
     LLMChatServiceServicer,
     add_LLMChatServiceServicer_to_server,
 )
-from llmer.browser.model_session import LLMBrowserSessionOpenAI, LLMChromeSession
-from llmer.browser.errors import BrowserUnknownModelError
+from llmer.browser.model_session import LLMBrowserSessionOpenAI, ChromeBrowser, get_logger, LLMBrowserSession
+from llmer.browser.errors import BrowserUnknownModeError
 
 
 class LLMerServicer(LLMChatServiceServicer):
-    logging_file = "LLMerServicer.log"
-
-    @classmethod
-    def get_logger(cls, file_logging: bool = False):
-        logger = logging.getLogger(cls.__class__.__name__)
-        if not logger.hasHandlers():
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            )
-            handler.setFormatter(formatter)
-            logger.addHandler(handler)
-            logger.setLevel(logging.INFO)
-            if file_logging:
-                file_handler = logging.FileHandler(cls.logging_file)
-                file_handler.setFormatter(formatter)
-                logger.addHandler(file_handler)
-
-        return logger
-
     def __init__(self):
+        self.browsers = {}
         self.sessions = {}
-        self.logger = self.get_logger()
+        self.logger = get_logger(self.__class__.__name__)
 
     @staticmethod
-    def start_session(model: str) -> LLMChromeSession:
-        if model == "ChatGPT":
-            return LLMBrowserSessionOpenAI()
+    def start_llm_session(mode: str, browser: ChromeBrowser) -> LLMBrowserSession:
+        if mode == "QuestionAnsweringChatBot":
+            return LLMBrowserSessionOpenAI(browser)
         else:
-            raise BrowserUnknownModelError(model)
+            raise BrowserUnknownModeError(mode)
+
+    def start_browser_llm_session(self, user: str, model: str) -> LLMBrowserSession:
+        if user in self.browsers.keys():
+            browser = self.browsers[user]
+        else:
+            browser = ChromeBrowser()
+            self.browsers[user] = browser
+
+        return self.start_llm_session(model, browser)
 
     def StartSession(self, request, context):
         session_id = str(uuid.uuid4())
+        self.logger.info("Starting a new %s session with ID: %s for user: %s", request.mode, session_id, request.user)
         try:
-            session = self.start_session(request.model)
+            session = self.start_browser_llm_session(request.user, request.mode)
             session.init_chat_session()
             self.sessions[session_id] = session
             return StartSessionResponse(id=session_id)
-        except BrowserUnknownModelError as e:
+        except BrowserUnknownModeError as e:
             context.set_details(str(e))
             context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
             return StartSessionResponse(id="")

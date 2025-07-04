@@ -27,11 +27,13 @@ func (h *CHandler) GetComments(ctx context.Context, w http.ResponseWriter, r *ht
 	if err != nil {
 		alog.Error(context.Background(), "Error when fetching comment %s", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	if _, err = w.Write(content); err != nil {
 		alog.Error(ctx, "error writing data %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 	// todo: set header for json
 }

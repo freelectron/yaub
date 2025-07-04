@@ -5,10 +5,12 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class StartSessionRequest(_message.Message):
-    __slots__ = ("model",)
-    MODEL_FIELD_NUMBER: _ClassVar[int]
-    model: str
-    def __init__(self, model: _Optional[str] = ...) -> None: ...
+    __slots__ = ("user", "mode")
+    USER_FIELD_NUMBER: _ClassVar[int]
+    MODE_FIELD_NUMBER: _ClassVar[int]
+    user: str
+    mode: str
+    def __init__(self, user: _Optional[str] = ..., mode: _Optional[str] = ...) -> None: ...
 
 class StartSessionResponse(_message.Message):
     __slots__ = ("id",)
@@ -24,12 +26,7 @@ class Question(_message.Message):
     session_id: str
     system_prompt: str
     question_prompt: str
-    def __init__(
-        self,
-        session_id: _Optional[str] = ...,
-        system_prompt: _Optional[str] = ...,
-        question_prompt: _Optional[str] = ...,
-    ) -> None: ...
+    def __init__(self, session_id: _Optional[str] = ..., system_prompt: _Optional[str] = ..., question_prompt: _Optional[str] = ...) -> None: ...
 
 class Answer(_message.Message):
     __slots__ = ("session_id", "text")
@@ -37,6 +34,4 @@ class Answer(_message.Message):
     TEXT_FIELD_NUMBER: _ClassVar[int]
     session_id: str
     text: str
-    def __init__(
-        self, session_id: _Optional[str] = ..., text: _Optional[str] = ...
-    ) -> None: ...
+    def __init__(self, session_id: _Optional[str] = ..., text: _Optional[str] = ...) -> None: ...

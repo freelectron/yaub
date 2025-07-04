@@ -33,6 +33,9 @@ func AddComment(ctx context.Context, dbClient mongodb.Client, postId string, com
 
 func FetchComments(ctx context.Context, dbClient mongodb.Client, postId string) ([]byte, error) {
 	results, err := dbClient.GetAll(ctx, postId)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching comments: %w", err)
+	}
 
 	jsonString, err := bsonToJSONBytes(results)
 	if err != nil {
