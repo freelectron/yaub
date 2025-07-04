@@ -150,7 +150,12 @@ class LLMBrowserSessionOpenAI(LLMChromeSession):
             EC.element_to_be_clickable((By.ID, "prompt-textarea"))
         )
         editor_div.click()
-        editor_div.send_keys(message)
+        # editor_div.send_keys(message)
+        # editor_div.send_keys(Keys.ENTER)
+        for i, line in enumerate(message.split('\n')):
+            if i > 0:
+                editor_div.send_keys(Keys.SHIFT, Keys.ENTER)
+            editor_div.send_keys(line)
         editor_div.send_keys(Keys.ENTER)
         self.wait(5)
 

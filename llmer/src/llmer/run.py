@@ -1,4 +1,5 @@
 import uuid
+import logging
 from concurrent import futures
 import grpc
 from llmer.grpc.chats_pb2 import StartSessionResponse, Answer
@@ -11,8 +12,29 @@ from llmer.browser.errors import BrowserUnknownModelError
 
 
 class LLMerServicer(LLMChatServiceServicer):
+    logging_file = "LLMerServicer.log"
+
+    @classmethod
+    def get_logger(cls, file_logging: bool = False):
+        logger = logging.getLogger(cls.__class__.__name__)
+        if not logger.hasHandlers():
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
+            handler.setFormatter(formatter)
+            logger.addHandler(handler)
+            logger.setLevel(logging.INFO)
+            if file_logging:
+                file_handler = logging.FileHandler(cls.logging_file)
+                file_handler.setFormatter(formatter)
+                logger.addHandler(file_handler)
+
+        return logger
+
     def __init__(self):
         self.sessions = {}
+        self.logger = self.get_logger()
 
     @staticmethod
     def start_session(model: str) -> LLMChromeSession:
@@ -40,11 +62,12 @@ class LLMerServicer(LLMChatServiceServicer):
     def SendMessage(self, request, context):
         session = self.sessions.get(request.session_id)
         if not session:
+            self.logger.warning("Trying to send a message to a non-existing session: %s", request.session_id)
             context.set_details("Session not found")
             context.set_code(grpc.StatusCode.NOT_FOUND)
             return Answer(session_id=request.session_id, text="")
         try:
-            prompt = request.system_prompt + "\n" + request.question_prompt
+            prompt = f"System instructions: {request.system_prompt}.\nUser question: {request.question_prompt}"
             answer = session.send_message(prompt)
             return Answer(session_id=request.session_id, text=answer)
         except Exception as e:

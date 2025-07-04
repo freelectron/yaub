@@ -26,7 +26,7 @@ async function sendMessageBackend(chatId, trimmedMessage) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             "session_id": chatId,
-            "system_prompt": "Return the results in raw markdown format.",
+            "system_prompt": "Return the results only in markdown format.",
             "question_prompt": trimmedMessage,
         }),
     });
@@ -93,11 +93,11 @@ const Chat = () => {
 
         try {
             const answer = await sendMessageBackend(chatId, trimmedMessage);
-
             SetLastAnswer(answer)
         }
         catch (error) {
             console.error('Error sending message:', error);
+            SetLastAnswer("Failed to get a response :'( ")
         }
     }
 
