@@ -6,10 +6,8 @@ import ChatMessages from "@/components/ChatMessages";
 import ChatInput from "@/components/ChatInput";
 
 async function requestSessionIdBackend(user, mode = 'QuestionAnsweringChatBot') {
-    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL_PUBLIC || 'http://localhost:3001';
     const urlInitLLMSession = `${backendURL}/api/llmer/start_session`;
-
-    console.log("SENDING REQUEST TO BACKEND", user);
 
     const response = await fetch(urlInitLLMSession, {
         method: 'POST',

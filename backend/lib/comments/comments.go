@@ -5,8 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 	"io"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Comment struct {

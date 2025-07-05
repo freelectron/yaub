@@ -5,4 +5,4 @@ poetry.requirements:
 
 poetry.run:
 	poetry install
-	poetry run llmer
+	@bash -c 'set -a && source ../.env && set +a && poetry run llmer'

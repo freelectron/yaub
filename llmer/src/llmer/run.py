@@ -23,21 +23,27 @@ class LLMerServicer(LLMChatServiceServicer):
         else:
             raise BrowserUnknownModeError(mode)
 
-    def start_browser_llm_session(self, user: str, model: str) -> LLMBrowserSession:
-        if user in self.browsers.keys():
-            browser = self.browsers[user]
+    def start_browser_llm_session(self, user: str, mode: str) -> LLMBrowserSession:
+        # ToDo: make it work with different profiles i.e., multiple users
+        if user == "admin" or user == "3b408cb48548b5037822c10eb0976b3cbf2cee3bf9c708796bf03941fbecd80f":
+            if user not in self.browsers.keys():
+                self.browsers[user] = ChromeBrowser(profile="Profile 1")
+            browser = self.browsers[user] 
         else:
-            browser = ChromeBrowser()
-            self.browsers[user] = browser
+            user = "default"
+            if user not in self.browsers.keys():
+                self.browsers[user] = ChromeBrowser(profile="Default")
+            browser = self.browsers[user]
 
-        return self.start_llm_session(model, browser)
+        return self.start_llm_session(mode, browser)
 
     def StartSession(self, request, context):
         session_id = str(uuid.uuid4())
-        self.logger.info("Starting a new %s session with ID: %s for user: %s", request.mode, session_id, request.user)
         try:
+            self.logger.info("Trying to start a new %s session with ID %s for user %s", request.mode, session_id, request.user)
             session = self.start_browser_llm_session(request.user, request.mode)
             session.init_chat_session()
+            self.logger.info("Iniated the %s session with ID %s for user %s", request.mode, session_id, request.user)
             self.sessions[session_id] = session
             return StartSessionResponse(id=session_id)
         except BrowserUnknownModeError as e:

@@ -4,6 +4,7 @@ import (
 	gprcLLMer "backend/grpc/gen/service/llm_chat/v1"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -22,6 +23,7 @@ func (h *LLMHandler) StartSession(ctx context.Context, w http.ResponseWriter, r 
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
+	defer r.Body.Close()
 
 	var req gprcLLMer.StartSessionRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -31,13 +33,13 @@ func (h *LLMHandler) StartSession(ctx context.Context, w http.ResponseWriter, r 
 
 	resp, err := h.grpcClient.StartSession(ctx, &req)
 	if err != nil {
-		http.Error(w, "Error processing text", http.StatusInternalServerError)
+		fmt.Printf("gRPC error: %v\n", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	if err := json.NewEncoder(w).Encode(resp); err != nil {
-		http.Error(w, "Error writing response", http.StatusInternalServerError)
-	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
 }
 
 func (h *LLMHandler) SendMessage(ctx context.Context, w http.ResponseWriter, r *http.Request) {

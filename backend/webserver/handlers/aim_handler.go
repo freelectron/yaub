@@ -21,6 +21,7 @@ func NewDefaultIAMHandler(dbClient mongodb.Client) *IAMHandler {
 }
 
 func (h *IAMHandler) SignIn(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	alog.Info(ctx, "SignIn: %v", r)
 	if r.Method != http.MethodPost {
 		alog.Error(ctx, "Invalid method %s", r.Method)
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -42,6 +43,7 @@ func (h *IAMHandler) SignIn(ctx context.Context, w http.ResponseWriter, r *http.
 }
 
 func (h *IAMHandler) SignUp(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	alog.Info(ctx, "SignUp: %v", r)
 	if r.Method != http.MethodPost {
 		alog.Error(ctx, "Invalid method %s", r.Method)
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)

@@ -4,10 +4,11 @@ import (
 	"backend/webserver/handlers"
 	"context"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 	"net"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 const keyServerAddr = "serverAddr"
