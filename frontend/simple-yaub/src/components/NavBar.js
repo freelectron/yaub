@@ -3,9 +3,11 @@
 import { useState } from "react";
 import AuthForm from "./AuthForm";
 import "../styles/signing-window.scss";
+import {SessionProvider, useSession} from "next-auth/react";
 
 const NavBar = () => {
     const [showLogin, setShowLogin] = useState(false);
+    const { data: session, status } = useSession();
 
     const openLogin = () => setShowLogin(true);
     const closeLogin = () => setShowLogin(false);
@@ -42,7 +44,10 @@ const NavBar = () => {
                     onClick={closeLogin}
                 >
                     <div onClick={(e) => e.stopPropagation()}>
-                        <AuthForm onClose={closeLogin} />
+                        <AuthForm onClose={closeLogin}
+                                  session={session}
+                                  status={status}
+                        />
                     </div>
                 </div>
             )}

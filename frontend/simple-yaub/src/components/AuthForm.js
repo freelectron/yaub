@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import {signIn, signOut} from "next-auth/react";
 
-export default function AuthForm({ onClose }) {
+export default function AuthForm({ onClose, session, status }) {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -74,6 +74,27 @@ export default function AuthForm({ onClose }) {
         }
     }
 
+    if (session) {
+        return (
+            <div className="logout-window">
+                <p>You are already logged in as <b>{session.user?.email || session.user?.name}</b>.</p>
+                <div className="input">
+                    <button
+                        onClick={async () => {
+                            await signOut({ redirect: false });
+                            onClose();
+                        }}
+                        disabled={loading}
+                    >
+                        Log out
+                    </button>
+                    <button onClick={onClose} style={{ marginLeft: 8 }}>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        );
+    } else {
     return (
         <div className="signing-window">
             <input type="radio" name="tab" id="signin" defaultChecked />
@@ -129,4 +150,5 @@ export default function AuthForm({ onClose }) {
             {error && <p className="error-text">{error}</p>}
         </div>
     );
+    }
 }
