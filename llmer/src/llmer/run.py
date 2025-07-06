@@ -1,5 +1,8 @@
 import uuid
 from concurrent import futures
+
+from selenium.webdriver.common.bidi.cdp import session_context
+
 import grpc
 from llmer.grpc.chats_pb2 import StartSessionResponse, Answer
 from llmer.grpc.chats_pb2_grpc import (
@@ -7,7 +10,7 @@ from llmer.grpc.chats_pb2_grpc import (
     add_LLMChatServiceServicer_to_server,
 )
 from llmer.browser.model_session import LLMBrowserSessionOpenAI, ChromeBrowser, get_logger, LLMBrowserSession
-from llmer.browser.errors import BrowserUnknownModeError
+from llmer.utils.errors import BrowserUnknownModeError
 
 
 class LLMerServicer(LLMChatServiceServicer):
@@ -17,15 +20,17 @@ class LLMerServicer(LLMChatServiceServicer):
         self.logger = get_logger(self.__class__.__name__)
 
     @staticmethod
-    def start_llm_session(mode: str, browser: ChromeBrowser) -> LLMBrowserSession:
+    def start_llm_session(mode: str, user: str, browser: ChromeBrowser) -> LLMBrowserSession:
+        session_id = user + mode
+
         if mode == "QuestionAnsweringChatBot":
-            return LLMBrowserSessionOpenAI(browser)
+            return LLMBrowserSessionOpenAI(browser, session_id)
         else:
             raise BrowserUnknownModeError(mode)
 
     def start_browser_llm_session(self, user: str, mode: str) -> LLMBrowserSession:
-        # ToDo: make it work with different profiles i.e., multiple users
-        if user == "admin" or user == "3b408cb48548b5037822c10eb0976b3cbf2cee3bf9c708796bf03941fbecd80f":
+        # ToDo: implement proper 1 user = 1 browser profile
+        if "admin" in user.lower() :
             if user not in self.browsers.keys():
                 self.browsers[user] = ChromeBrowser(profile="Profile 1")
             browser = self.browsers[user] 
@@ -35,15 +40,15 @@ class LLMerServicer(LLMChatServiceServicer):
                 self.browsers[user] = ChromeBrowser(profile="Default")
             browser = self.browsers[user]
 
+
         return self.start_llm_session(mode, browser)
 
     def StartSession(self, request, context):
-        session_id = str(uuid.uuid4())
         try:
-            self.logger.info("Trying to start a new %s session with ID %s for user %s", request.mode, session_id, request.user)
+            self.logger.info("Trying to start a new %s session with ID %s for user %s", request.mode, request.user)
             session = self.start_browser_llm_session(request.user, request.mode)
             session.init_chat_session()
-            self.logger.info("Iniated the %s session with ID %s for user %s", request.mode, session_id, request.user)
+            self.logger.info("Initiated the %s session with ID %s for user %s", request.mode, session_id, request.user)
             self.sessions[session_id] = session
             return StartSessionResponse(id=session_id)
         except BrowserUnknownModeError as e:
