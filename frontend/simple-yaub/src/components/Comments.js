@@ -73,12 +73,10 @@ const handleTextSelection = (setSelectedText, setShowCommentForm) => {
 };
 
 const handleAddComment = async (
-    e,
     user,
     comments,
     setComments,
     newComment,
-    setNewComment,
     selectedText,
     setSelectedText,
     setShowCommentForm,
@@ -86,7 +84,6 @@ const handleAddComment = async (
     currentCommentsLength,
     setCurrentCommentsLength
 ) => {
-    e.preventDefault();
     setCurrentCommentsLength(currentCommentsLength + 1);
     const newCommentObject = {
         id: currentCommentsLength + 1,
@@ -98,7 +95,6 @@ const handleAddComment = async (
     // send post request to backend to save the comment
     await postPostComment(postId, newCommentObject).then(r => console.log(r));
     setComments([...comments, newCommentObject]);
-    setNewComment('');
     setSelectedText('');
     setShowCommentForm(true);
 };

@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import {Comment, handleTextSelection, handleAddComment, addReply, parseComments} from './Comments';
 import NavigationBar from "@/components/NavBar";
+import CommentForm from "@/components/CommentForm";
 
 const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
     const renderedPost = serverRenderedPost || '';
@@ -12,13 +13,11 @@ const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
 
     const [selectedText, setSelectedText] = useState('');
     const [comments, setComments] = useState(postComments);
-    const [newComment, setNewComment] = useState('');
     const [showCommentForm, setShowCommentForm] = useState(true);
     const [currentCommentsLength, setCurrentCommentsLength] = useState(comments.length);
 
     // Detect selected text
     const handleTextSelectionWrapper = () => handleTextSelection(setSelectedText, setShowCommentForm);
-    const handleAddCommentWrapper = (e) => handleAddComment(e, session.user.name, comments, setComments, newComment, setNewComment, selectedText, setSelectedText, setShowCommentForm, postId, currentCommentsLength, setCurrentCommentsLength);
     const addReplyWrapper = (commentId, replyContent) => addReply(session.user.name, commentId, replyContent, comments, setComments);
 
     // Listen for text selection
@@ -30,6 +29,23 @@ const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
     }, []);
 
     console.log("session in posts page: ", session)
+
+    // This function will now be passed to CommentForm
+    const handleAddCommentFromForm = (commentContent) => {
+        // Call your original handleAddComment logic here
+        handleAddComment(
+            session.user.name,
+            comments,
+            setComments,
+            commentContent, // Use the content passed from CommentForm
+            selectedText,
+            setSelectedText,
+            setShowCommentForm,
+            postId,
+            currentCommentsLength,
+            setCurrentCommentsLength
+        );
+    };
 
     //  If not logged, do not allow commenting
     if (!session || !session.user) {
@@ -58,22 +74,12 @@ const PostPage = ({ postId, serverRenderedPost, session, rawComments }) => {
         <div className="empty">
             {/* Comment Form */}
             {showCommentForm && (
-                <form onSubmit={handleAddCommentWrapper} className="comment-form">
-                    <h5>Comment on: "{selectedText}"</h5>
-                    <div className="form-group">
-                        <textarea
-                            className="form-control"
-                            rows="3"
-                            placeholder="Write your comment here..."
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit" className="btn primary-btn">Add Comment</button>
-                    <button type="button" className="btn secondary-btn" onClick={() => setShowCommentForm(false)}>
-                        Cancel
-                    </button>
-                </form>
+                <CommentForm
+                    session={session} // todo: this is not needed, double check
+                    selectedText={selectedText}
+                    onAddComment={handleAddCommentFromForm}
+                    onCloseForm={() => setShowCommentForm(false)}
+                />
             )}
 
             {/* Comments Section */}
