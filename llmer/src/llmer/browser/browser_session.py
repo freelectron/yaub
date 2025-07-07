@@ -9,12 +9,15 @@ from llmer.utils.helpers import get_logger
 
 
 class ChromeBrowser:
-    """Abstract base class for browser"""
     waiter_default_timeout = 1
     logging_file = "llm_browser_session_base.log"
     past_questions_answers = list()
-    chrome_user_data_dir = os.getenv("CHROME_USER_DATA_DIR", "~/Library/Application Support/Google/Chrome")
-    default_profile_directory_name = os.getenv("CHROME_PROFILE_DIRECTORY_NAME", "Profile 1")
+    chrome_user_data_dir = os.getenv(
+        "CHROME_USER_DATA_DIR", "~/Library/Application Support/Google/Chrome"
+    )
+    default_profile_directory_name = os.getenv(
+        "CHROME_PROFILE_DIRECTORY_NAME", "Profile 1"
+    )
     # Mapping from tabs tittle to their window handles
     opened_tabs: Dict[str, Any] = {}
 
@@ -37,6 +40,6 @@ class ChromeBrowser:
         self.profile = profile if profile else self.default_profile_directory_name
         self.driver = uc.Chrome(
             options=self.options,
-            user_data_dir=os.path.join(self.chrome_user_data_dir, self.profile)
+            user_data_dir=os.path.join(self.chrome_user_data_dir, self.profile),
         )
         self.waiter = WebDriverWait(self.driver, self.waiter_default_timeout)

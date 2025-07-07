@@ -6,7 +6,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
 from llmer.browser.browser_session import ChromeBrowser
-from llmer.utils.errors import BrowserTimeOutError, BrowserStayLoggedOutFailed, LogInError, MessageNotSentError
+from llmer.utils.errors import (
+    BrowserTimeOutError,
+    BrowserStayLoggedOutFailed,
+    LogInError,
+    MessageNotSentError,
+)
 from llmer.utils.helpers import get_logger
 
 
@@ -18,7 +23,6 @@ class LLMBrowserSession:
         self.browser = chrome_browser
         self.session_id = session_id
         self.past_questions_answers = list()
-
 
     def _validate_start_page_loaded(self):
         """Check if the LLM's start page is loaded."""
@@ -65,6 +69,7 @@ class LLMBrowserSession:
 
     def pass_checks(self):
         pass
+
 
 class LLMBrowserSessionOpenAI(LLMBrowserSession):
     waiter_default_timeout = 1
@@ -118,7 +123,7 @@ class LLMBrowserSessionOpenAI(LLMBrowserSession):
             EC.element_to_be_clickable((By.ID, "prompt-textarea"))
         )
         editor_div.click()
-        for i, line in enumerate(message.split('\n')):
+        for i, line in enumerate(message.split("\n")):
             if i > 0:
                 editor_div.send_keys(Keys.SHIFT, Keys.ENTER)
             editor_div.send_keys(line)
@@ -137,7 +142,7 @@ class LLMBrowserSessionOpenAI(LLMBrowserSession):
         return answer
 
     def pass_checks(self):
-        """ Click 'Stay logged out' link that needs to be clicked or something of this sort"""
+        """Click 'Stay logged out' link that needs to be clicked or something of this sort"""
         try:
             stay_logged_out_link = self.browser.waiter.until(
                 EC.element_to_be_clickable((By.LINK_TEXT, "Stay logged out"))
@@ -154,36 +159,58 @@ class LLMBrowserSessionDeepSeek(LLMBrowserSession):
 
     def __init__(self, chrome_browser: ChromeBrowser, session_id: str = None):
         super().__init__(chrome_browser, session_id)
-        self.email = os.environ.get("DEEPSEEK_EMAIL") if os.environ.get("DEEPSEEK_EMAIL") else None
-        self.password = os.environ.get("DEEPSEEK_PASSWORD") if os.environ.get("DEEPSEEK_PASSWORD") else None
+        self.email = (
+            os.environ.get("DEEPSEEK_EMAIL")
+            if os.environ.get("DEEPSEEK_EMAIL")
+            else None
+        )
+        self.password = (
+            os.environ.get("DEEPSEEK_PASSWORD")
+            if os.environ.get("DEEPSEEK_PASSWORD")
+            else None
+        )
         if not self.email or not self.password:
-            raise ValueError("DeepSeek email and password must be set in environment variables.")
+            raise ValueError(
+                "DeepSeek email and password must be set in environment variables."
+            )
 
     def _validate_start_page_loaded(self):
         self.browser.wait(2)
         if "Only login via" in self.browser.driver.page_source:
             self.logger.info("Trying to log in to DeepSeek.")
             input_field_css_placeholder_email = self.browser.waiter.until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "input[placeholder='Phone number / email address']"))
+                EC.element_to_be_clickable(
+                    (
+                        By.CSS_SELECTOR,
+                        "input[placeholder='Phone number / email address']",
+                    )
+                )
             )
             self.logger.info("Filling in email field.")
             input_field_css_placeholder_email.click()
             input_field_css_placeholder_email.send_keys(self.email)
 
             input_field_css_placeholder_password = self.browser.waiter.until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "input[placeholder='Password']"))
+                EC.element_to_be_clickable(
+                    (By.CSS_SELECTOR, "input[placeholder='Password']")
+                )
             )
             self.logger.info("Filling in password field.")
             input_field_css_placeholder_password.click()
             input_field_css_placeholder_password.send_keys(self.password)
 
             login_button_xpath_text = self.browser.waiter.until(
-                EC.element_to_be_clickable((By.XPATH, "//div[text()='Log in' and @role='button']"))
+                EC.element_to_be_clickable(
+                    (By.XPATH, "//div[text()='Log in' and @role='button']")
+                )
             )
             login_button_xpath_text.click()
             self.browser.wait(2)
 
-        if "How can I help you today?" in  self.browser.driver.page_source or "Message DeepSeek" in self.browser.driver.page_source:
+        if (
+            "How can I help you today?" in self.browser.driver.page_source
+            or "Message DeepSeek" in self.browser.driver.page_source
+        ):
             self.logger.info("DeepSeek chat page loaded successfully.")
             return
         else:
@@ -197,7 +224,10 @@ class LLMBrowserSessionDeepSeek(LLMBrowserSession):
         while True:
             answer = self.browser.waiter.until(
                 EC.presence_of_all_elements_located(
-                    (By.XPATH, "//div[contains(@class, 'ds-markdown') and contains(@class, 'ds-markdown--block')]")
+                    (
+                        By.XPATH,
+                        "//div[contains(@class, 'ds-markdown') and contains(@class, 'ds-markdown--block')]",
+                    )
                 )
             )[-1]
             if len(answer.text) > len(last_answer):
@@ -216,7 +246,7 @@ class LLMBrowserSessionDeepSeek(LLMBrowserSession):
             EC.element_to_be_clickable((By.ID, "chat-input"))
         )
         chat_input_textarea.click()
-        for i, line in enumerate(message.split('\n')):
+        for i, line in enumerate(message.split("\n")):
             if i > 0:
                 chat_input_textarea.send_keys(Keys.SHIFT, Keys.ENTER)
             chat_input_textarea.send_keys(line)
@@ -230,7 +260,7 @@ class LLMBrowserSessionDeepSeek(LLMBrowserSession):
         return answer
 
     def pass_checks(self):
-        """ Click 'Stay logged out' link that needs to be clicked or something of this sort"""
+        """Click 'Stay logged out' link that needs to be clicked or something of this sort"""
         try:
             stay_logged_out_link = self.browser.waiter.until(
                 EC.element_to_be_clickable((By.LINK_TEXT, "Stay logged out"))
@@ -238,6 +268,7 @@ class LLMBrowserSessionDeepSeek(LLMBrowserSession):
             stay_logged_out_link.click()
         except Exception as e:
             raise BrowserStayLoggedOutFailed(e.__str__())
+
 
 if __name__ == "__main__":
     chrome_browser = ChromeBrowser("Profile 1")
@@ -263,6 +294,5 @@ if __name__ == "__main__":
         print(deepseek.past_questions_answers[-1])
     except Exception as e:
         print(f"An error occurred: {e}")
-
 
     sleep(360)
