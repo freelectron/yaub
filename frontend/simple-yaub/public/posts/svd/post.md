@@ -440,6 +440,8 @@ $~$
 ### Changing basis with the Covariance Matrix 
 $~$
 
+[//]: # ( why can i always transform Z, i.e., say Cov(Z) = 1 always exist)
+[//]: # ( ou can always transform $Z$ into white noise (making $Cov(Z) = I$) because of a fundamental property of covariance matrices: they are Symmetric and Positive Semi-Definite. .)
 One can think of a set of data points as representing a matrix of some
 sort ($X$). The data points are scattered around the feature space and
 one can find the average vector over all the points ($\vec{m}$). Thus,
@@ -510,7 +512,7 @@ $$
 \end{align}
 $$
 
-The result is mind-blowing, right? We have the covariance matrix popping
+THE RESULT IS NOT MINDBLOWING, IT FOLLOWS FROM YOUR ASSUMPTION ABD WHITE NOISE... REWORK THIS PARAGRAPH: The result is mind-blowing, right? We have the covariance matrix popping
 up in the transformation of white noise! What?! Who would have expected
 that?! Moreover, we once again see that the covariance matrix is
 symmetric, and by the spectral theorem - [the
