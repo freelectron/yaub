@@ -2,33 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import type {Session} from 'next-auth'
 
 import {
   Comment,
   handleTextSelection,
   handleAddComment,
   addReply,
-  parseComments
+  parseComments,
+  CommentType
 } from './Comments';
 import NavigationBar from '@/components/NavBar';
 import CommentForm from '@/components/CommentForm';
 
-interface SessionUser {
-  name: string;
-}
-
-interface Session {
-  user: SessionUser;
-}
-
-interface CommentType {
-  id: string | number;
-  [key: string]: any;
-}
 
 interface PostPageProps {
   postId: string;
-  serverRenderedPost?: string;
+  serverRenderedPost: React.JSX.Element;
   session?: Session;
   rawComments: any;
 }
@@ -52,7 +42,7 @@ const PostPage: React.FC<PostPageProps> = ({
   const handleTextSelectionWrapper = () =>
     handleTextSelection(setSelectedText, setShowCommentForm);
 
-  const addReplyWrapper = (commentId: string, replyContent: string) =>
+  const addReplyWrapper = (commentId: string | number, replyContent: string) =>
     addReply(
       session?.user?.name || '',
       commentId,

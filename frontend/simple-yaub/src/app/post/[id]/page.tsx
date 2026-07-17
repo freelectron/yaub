@@ -16,8 +16,7 @@ interface PageProps {
 
 export default async function PostPageWrapper({ params }: PageProps) {
   const { id } = await params;
-  const postContentResponse = await fetchPostContent(id);
-  const renderedPost = renderMarkdown(postContentResponse);
+  const renderedPost = renderMarkdown(fetchPostContent(id));
 
   const session = await getServerSession(authOptions);
 

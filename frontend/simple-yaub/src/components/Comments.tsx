@@ -119,7 +119,7 @@ export const handleAddComment = async (
 
 export const addReply = (
     user: string,
-    commentId: number,
+    commentId: string | number,
     replyContent: string,
     comments: CommentType[],
     setComments: (c: CommentType[]) => void

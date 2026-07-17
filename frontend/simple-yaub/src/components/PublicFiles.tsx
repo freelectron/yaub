@@ -1,12 +1,12 @@
 import fs from 'fs';
 
-const fetchPostContent = async (postId: string): Promise<string | { content: string }> => {
+const fetchPostContent = (postId: string): string => {
     const filePath = `public/posts/${postId}/post.md`;
     try {
         return fs.readFileSync(filePath, 'utf-8');
     } catch (error) {
         console.error('Error fetching the post:', error);
-        return { content: '' };
+        return '';
     }
 };
 
