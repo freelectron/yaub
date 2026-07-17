@@ -1,20 +1,20 @@
 
-$general-background-color: rgba(12, 17, 115, 0.64);
+$general-background-color: #f0f0f0;
 $logo-background-color: #090a09;
-$nav-bar-icon-color : #050505;
-$card-background-color: rgb(255, 255, 255);
+$nav-bar-icon-color: #222222;
+$card-background-color: #ffffff;
 
 $tooltip-background-color: #f3f6f3;
-$post-background-color: $card-background-color;
+$post-background-color: #ebebeb;
 
-$active-link-color: rgb(186, 181, 183);
+$active-link-color: #d0d0d0;
 $active-sidebar-link-color: $active-link-color;
 
-$filter-badges-background-color: $card-background-color;
+$filter-badges-background-color: #f0f0f0;
 
 $logo-font: 'Marker Felt';
 $post-font: 'Rockwell';
-$description-text-colour: #666;
+$description-text-colour: #555;
+$footer-text-colour: #888;
 
-
-$posts-box-size: 120vh
+$posts-box-size: 140vh

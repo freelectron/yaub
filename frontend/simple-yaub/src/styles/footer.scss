@@ -7,6 +7,9 @@
 .footer-text {
     padding: 10px;
     font-family: v.$logo-font;
+    color: v.$footer-text-colour;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
 }
 body {
     margin: 20px;

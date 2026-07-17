@@ -1,7 +1,8 @@
 @use '../styles/variables' as v;
 
 body {
-    background-color: v.$general-background-color;
+    background: v.$general-background-color;
+    min-height: 100vh;
     cursor: pointer;
 }
 
@@ -48,9 +49,9 @@ Posts
     background-color: v.$active-link-color;
 }
 .filter-button-active {
-    background-color: #333;
+    background-color: #222;
     color: #fff;
-    border-color: #333;
+    border-color: #222;
     font-weight: bold;
 }
 
@@ -74,18 +75,25 @@ Posts
     display: flex;
     flex-direction: column;
     border-radius: 10px;
-    border: 2px solid v.$active-link-color;
-    background: v.$card-background-color;
-    box-shadow: 0 2px 6px v.$active-link-color;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ebebeb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
     margin: 0;
+    overflow: hidden;
     transition: transform 150ms ease, box-shadow 150ms ease;
 }
+.card-img-wrap {
+    border-radius: 8px 8px 0 0;
+    padding: 14px 0 10px 0;
+    display: flex;
+    justify-content: center;
+}
 .card img {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto; /* Center horizontally */
+    width: 72px;
+    height: 72px;
     object-fit: cover;
     display: block;
+    mix-blend-mode: multiply;
 }
 .card-link {
     text-decoration: none;
@@ -93,9 +101,9 @@ Posts
     display: block;
 }
 .card-link:hover .card {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    border-color: #999;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.12);
 }
 /* Make sure the text color doesn't change on hover */
 .card-link:hover .card-title,
@@ -131,4 +139,8 @@ Posts
     color: v.$description-text-colour;
     font-family: v.$post-font;
     font-size: 0.85rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }

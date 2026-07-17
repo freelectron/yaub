@@ -78,7 +78,9 @@ const MainPage: React.FC<MainPageProps> = ({ defaultPostsMetaInfo }) => {
                         <div className="col" key={post.id}>
                             <Link href={`/post/${post.id}`} className="card-link">
                                 <div className="card">
-                                    <img src={post.iconImage} />
+                                    <div className="card-img-wrap">
+                                        <img src={post.iconImage} />
+                                    </div>
                                     <div className="card-body">
                                         <p className="card-title">{post.title}</p>
                                         <p className="card-details">{formatDate(post.date)} · {post.author}</p>

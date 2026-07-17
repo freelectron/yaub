@@ -18,7 +18,19 @@ const NavBar: React.FC<NavBarProps> = () => {
         <nav className="sidebar-navigation">
             <div className="nav-left"></div>
             <div className="logo-image">
-                <img src="/icon_yablo_no_background.png" alt="Yablo Logo" />
+                <svg viewBox="0 0 120 48" width="120" height="48" xmlns="http://www.w3.org/2000/svg" aria-label="YABLO">
+                  <text
+                    x="60" y="36"
+                    textAnchor="middle"
+                    fontFamily="'Marker Felt', 'Comic Sans MS', cursive"
+                    fontWeight="bold"
+                    fontSize="36"
+                    fill="#222222"
+                    stroke="#222222"
+                    strokeWidth="0.5"
+                    letterSpacing="2"
+                  >YABLO</text>
+                </svg>
             </div>
             <ul className="nav-right">
                 <li className="nav-item">
