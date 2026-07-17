@@ -20,6 +20,11 @@ interface MainPageProps {
     };
 }
 
+const formatDate = (dateStr: string): string => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+};
+
 const getUniqueTags = (posts: Post[]): string[] => {
     if (posts && Array.isArray(posts)) {
         const uniqueTags = new Set<string>(['All']);
@@ -61,7 +66,7 @@ const MainPage: React.FC<MainPageProps> = ({ defaultPostsMetaInfo }) => {
                         <button
                             key={tag}
                             onClick={() => handleFilterChange(tag)}
-                            className="filter-button"
+                            className={`filter-button${selectedTag === tag ? ' filter-button-active' : ''}`}
                         >
                             {tag}
                         </button>
@@ -76,7 +81,7 @@ const MainPage: React.FC<MainPageProps> = ({ defaultPostsMetaInfo }) => {
                                     <img src={post.iconImage} />
                                     <div className="card-body">
                                         <p className="card-title">{post.title}</p>
-                                        <p className="card-details">On {post.date} by {post.author}</p>
+                                        <p className="card-details">{formatDate(post.date)} · {post.author}</p>
                                         <p className="card-text">
                                             {post.content.slice(0, 100)}
                                         </p>

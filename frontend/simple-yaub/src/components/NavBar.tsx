@@ -34,8 +34,20 @@ const NavBar: React.FC<NavBarProps> = () => {
                     </a>
                 </li>
                 <li className="nav-item">
-                    <button onClick={openLogin}>
+                    <button onClick={openLogin} style={{ position: 'relative' }}>
                         <i className="nav-bar-icon-login-button fa fa-user"></i>
+                        {session && (
+                            <span style={{
+                                position: 'absolute',
+                                top: 0,
+                                right: 0,
+                                width: 8,
+                                height: 8,
+                                borderRadius: '50%',
+                                background: '#4caf50',
+                                border: '1.5px solid white',
+                            }} />
+                        )}
                         <span className="tooltip">User</span>
                     </button>
                 </li>
